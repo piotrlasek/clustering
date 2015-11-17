@@ -1,0 +1,25 @@
+package org.dmtools.clustering.DBSCAN;
+
+import lvaindex.vafile.Cell;
+import lvaindex.vafile.LVAIndex;
+import lvaindex.vafile.VAFile;
+import clusterapp.model.api.IClusteringParameters;
+
+public class DBSCANVAFILE extends DBSCANBase {
+
+    public static final String NAME = "DBSCAN-VAFILE";
+    
+    @Override
+    protected void createIndex() {
+        int[] bits = new int[nDim];
+        for (int i = 0; i < nDim; i++)
+            bits[i] = b;
+        isp = new VAFile(nDim, bits);
+    }
+
+    @Override
+    public String getName() {
+        return DBSCANVAFILE.NAME;
+    }
+    
+}

@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="iText-2.1.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/iText-2.1.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/Jama-1.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javaee-api-6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcommon-1.0.18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.15-experimental.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.15-swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/LVA-Index.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lva.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ojdm_api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/servlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/spatialindex.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swing-layout-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swtgraphics2d.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/spatialindex.jar!/" />
+    </SOURCES>
+  </library>
+</component>

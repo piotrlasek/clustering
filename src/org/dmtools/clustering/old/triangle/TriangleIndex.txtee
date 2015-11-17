@@ -1,0 +1,153 @@
+package org.dmtools.clustering.old.triangle;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import lvaindex.vafile.ISpatialIndex;
+import lvaindex.vafile.ISpatialObject;
+
+public class TriangleIndex implements ISpatialIndex {
+
+	ArrayList<TrianglePoint> list;
+	int numberOfDimensions;
+	TrianglePoint first;
+	
+	public TriangleIndex() {
+		
+	}
+	
+	@Override
+	public void add(Collection<ISpatialObject> objectsList) {
+		list = new ArrayList<TrianglePoint>();
+		numberOfDimensions = objectsList.iterator().next().getCoordinates().length;
+		createSortedList(objectsList, list);
+	}
+	
+	private void createSortedList(Collection<ISpatialObject> input, ArrayList<TrianglePoint> output) {
+		double[] zeroPointCoordinates = new double[numberOfDimensions];
+		TrianglePoint zeroPoint = new TrianglePoint(zeroPointCoordinates);
+		
+		// ...
+		for(ISpatialObject o:input) {
+			
+			//TriangleIndexPoint point = new TriangleIndexPoint(o.getCoordinates());
+			TrianglePoint point = (TrianglePoint) o;
+			
+			double distance = getDistance(zeroPoint, point);
+			point.setDistance(distance);
+			
+			if (list.size() == 0) {
+				list.add(point);
+			} else {
+				for(int i = 0; i < list.size(); i++) {
+					TrianglePoint tip = list.get(i);
+					
+					if (distance < tip.getDistance()) {
+						// insert before the current point
+						list.add(i, point);
+						point.next = tip;
+						if (i > 0) {
+							TrianglePoint pr = list.get(i-1);
+							point.previous = pr;
+							pr.next = point;
+						}
+						tip.previous = point;
+						break;
+					} else if (i == list.size() - 1) {
+						// insert at the end
+						list.add(point);
+						tip.next = point;
+						point.previous = tip;
+						point.next = null;
+						break;
+					} else {
+						// compare to the next point
+						;
+					}
+				}
+			}
+		}
+		
+		for(TrianglePoint p:list) {
+			String s = "";
+			TrianglePoint prev = p.previous;
+			TrianglePoint next = p.next;
+			s += p.toString();
+			s += " ";
+			if (prev == null) s += "null"; else s += prev.toString();
+			s += " ";
+			if (next == null) s += "null"; else s += next.toString();
+			System.out.println(s);
+		}
+	}
+	
+	
+    public double getDistance(ISpatialObject a, ISpatialObject b) {
+        double dist = 0;
+        double[] ac = a.getCoordinates();
+        double[] bc = b.getCoordinates();
+        for(int i = 0; i < ac.length; i++) {
+            dist += Math.pow(ac[i] - bc[i], 2);
+        }
+        return Math.sqrt(dist);
+    }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<ISpatialObject> getNeighbors(ISpatialObject object,
+			int count, double max) {
+		return null;
+	}
+
+	@Override
+	public Collection<ISpatialObject> getNeighbors(ISpatialObject object,
+			double max) {
+		ArrayList<ISpatialObject> neighbors = new ArrayList<ISpatialObject>();
+		TrianglePoint point = (TrianglePoint) object;
+		double distance = point.getDistance();
+		double epsilon = max;
+		
+		// search forward
+		{
+			double treshold = epsilon + distance;
+			
+			TrianglePoint nextPoint = point.getNext();
+			while(nextPoint != null) {
+				if (!(nextPoint.getDistance() > treshold)) {
+					if (getDistance(nextPoint, object) < epsilon) {
+						neighbors.add(nextPoint);
+					}
+				}
+				nextPoint = nextPoint.getNext();
+			}
+		}
+		
+		//printNeighbors(object, neighbors);
+		return neighbors;
+	}
+
+	private void printNeighbors(ISpatialObject object,
+			ArrayList<ISpatialObject> neighbors) {
+		System.out.println("Query: " + object.toString());
+		for(ISpatialObject p:neighbors) {
+			String s = "";
+			s += p.toString();
+			s += " - ";
+			s += getDistance(object, p);
+			System.out.println(s);
+		}
+		System.out.println("-----");
+	}
+
+	@Override
+	public Collection<ISpatialObject> getNeighbors(ISpatialObject object,
+			int count) {
+		return null;
+	}
+
+}
