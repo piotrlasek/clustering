@@ -24,9 +24,11 @@ import javax.datamining.rule.Rule;
 import javax.datamining.task.BuildTask;
 
 import org.dmtools.clustering.CDMClusteringSettingsFactory;
+import org.dmtools.clustering.CNBC.CNBCAlgorithm;
 import org.dmtools.clustering.CNBC.CNBCAlgorithmSettings;
 import org.dmtools.clustering.DBSCAN.DbScanNetTrafficAlgorithmSettings;
 import org.dmtools.clustering.DBSCAN.DbScanSlicerAlgorithmSettings;
+import org.dmtools.clustering.NBC.NBCAlgorithm;
 import org.dmtools.clustering.NBC.NBCAlgorithmSettings;
 import org.dmtools.clustering.NBC.DM.NBCDMAlgorithmSettings;
 import org.dmtools.clustering.NBCTextIndex.ClusteringTextIndex;
@@ -55,7 +57,7 @@ public class Main {
 			Path currentRelativePath = Paths.get("");
 			String cdmPath = currentRelativePath.toAbsolutePath().toString();
 			
-			cdmPath = "/Users/piotr/Documents/PROJECTS/ClusterApp";
+			cdmPath = "C:/Users/Piotr/IdeaProjects/Clustering";
 			
 			String current = new java.io.File( "." ).getCanonicalPath();
 			System.out.println("Current dir: " + current);
@@ -94,7 +96,7 @@ public class Main {
 	        // cs.setURI(cdmPath + "/data/net-traffic/sample24_1000000.csv");
 			//cs.setURI("/Users/piotr/Desktop/plik.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\t7.10k-002.txt"); //~6 000 elements
-	        cs.setURI(cdmPath + "/data/new-data/t7.10k-002.txt"); //~10 000 elements
+	        cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
 	        
 			Connection conn = null;
 			
@@ -149,7 +151,12 @@ public class Main {
 			/*DbScanSlicerAlgorithmSettings algorithmSettings =
 					new DbScanSlicerAlgorithmSettings();/**/
 			
-			NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
+			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
+
+			//CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
+
+			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
 
