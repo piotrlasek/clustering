@@ -153,9 +153,9 @@ public class Main {
 			
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
 
-			//CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
+			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
 
-			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
