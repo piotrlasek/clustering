@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.old.BasicClusterInfo;
 import org.dmtools.clustering.old.BasicClusteringData;
 import org.dmtools.clustering.old.BasicClusteringObject;
@@ -36,11 +37,6 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      */
     String description;
 
-    /**
-     * 
-     */
-    public final int UNCLASSIFIED = -2;
-    public final int NOISE = -1;
 
     /**
      * 
@@ -146,12 +142,12 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
 
     protected void DBSCAN() {
         // SetOfPoints is UNCLASSIFIED
-        Integer ClusterId = nextId(NOISE);
+        Integer ClusterId = nextId(CDMCluster.NOISE);
         
         for (ISpatialObject point : SetOfPoints) {
             //BasicSpatialObject point = (DbscanSpatialObject) p;
             //point.ClId = UNCLASSIFIED;
-            setClId(point, UNCLASSIFIED);
+            setClId(point, CDMCluster.UNCLASSIFIED);
         }
 
         // ClusterId := nextId(NOISE);
@@ -161,7 +157,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
             //DbscanSpatialObject Point = (DbscanSpatialObject) p;
             // IF Point.ClId = UNCLASSIFIED THEN
             ///if (Point.ClId == UNCLASSIFIED)
-            if (getClId(Point) == UNCLASSIFIED)
+            if (getClId(Point) == CDMCluster.UNCLASSIFIED)
             // IF ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts) THEN
             {
                 if (ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts)) {
@@ -196,7 +192,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
         // IF seeds.size<MinPts THEN // no core point
         if (seeds.size() < MinPts) {
             // SetOfPoint.changeClId(Point,NOISE);
-            changeClId(Point, NOISE);
+            changeClId(Point, CDMCluster.NOISE);
             // RETURN False;
             return false;
         }
@@ -222,10 +218,10 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
                         //        .get(i);
                         ISpatialObject resultP = result.get(i);
                         // IF resultP.ClId IN {UNCLASSIFIED, NOISE} THEN
-                        if (getClId(resultP) == UNCLASSIFIED
-                                || getClId(resultP) == NOISE) {
+                        if (getClId(resultP) == CDMCluster.UNCLASSIFIED
+                                || getClId(resultP) == CDMCluster.NOISE) {
                             // IF resultP.ClId = UNCLASSIFIED THEN
-                            if (getClId(resultP) == UNCLASSIFIED) {
+                            if (getClId(resultP) == CDMCluster.UNCLASSIFIED) {
                                 // seeds.append(resultP);
                                 seeds.add(resultP);
                                 // END IF;
@@ -274,8 +270,6 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
 
     /**
      * 
-     * @param Point
-     * @param NOISE
      */
     public void changeClId(ISpatialObject Point, int ClId) {
         //DbscanSpatialObject o = (DbscanSpatialObject) Point;

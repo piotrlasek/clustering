@@ -127,7 +127,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
                     if (q.clst_no != CNBCRTree.UNCLASSIFIED)
                         continue;
 
-                    q.clst_no = cluster_count;
+                    q.clst_no = cluster_count; // TODO cluster count
 
                     // if (q.ndf >= 1) DPSet.add(q)
                     if (q.ndf >= 1) {
@@ -159,7 +159,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         
        
         // for each object p in Dataset // label noise
-        li = Dataset.listIterator();
+        li = Dataset.listIterator(); // TODO Add dump method. Dataset is ArrayList<>
         while (li.hasNext()) {
             // if (p.clst_no=NULL) NoiseSet.add(p)
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();

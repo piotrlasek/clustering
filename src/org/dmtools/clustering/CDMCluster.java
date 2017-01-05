@@ -20,6 +20,10 @@ public class CDMCluster implements Cluster {
 	private int level;
 	private Cluster parent;
 	private boolean isRoot;
+
+	public static final int NOISE = -1;
+	public static final int UNCLASSIFIED = -2;
+	public static final int DEFERRED = -3;
 	
 	public CDMCluster()
 	{

@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.ListIterator;
 
 import org.dmtools.clustering.old.*;
-
+import util.Dump;
 import java.util.*;
 
 /**
@@ -181,6 +181,8 @@ public class NBCRTree implements IClusteringAlgorithm {
         			"; p.SizeOfkNB= " + p.numberOfkNB + 
         			"; p.ndf= " + p.ndf);
         }
+        Dump.toFile(Dataset);
+
                
         // printing
         // li = Dataset.listIterator();
@@ -286,6 +288,7 @@ public class NBCRTree implements IClusteringAlgorithm {
             al.add(bco);
         }
         bcd.set(al);
+        Dump.toFile(Dataset); //data to dump
 
         return bcd;
     }

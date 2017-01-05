@@ -45,9 +45,6 @@ import org.dmtools.datamining.task.CDMBuildTaskFactory;
  */
 public class Main {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		
 		try {
@@ -57,7 +54,7 @@ public class Main {
 			Path currentRelativePath = Paths.get("");
 			String cdmPath = currentRelativePath.toAbsolutePath().toString();
 			
-			cdmPath = "C:/Users/Piotr/IdeaProjects/Clustering";
+			//cdmPath = "C:/Users/Piotr/IdeaProjects/Clustering";
 			
 			String current = new java.io.File( "." ).getCanonicalPath();
 			System.out.println("Current dir: " + current);
@@ -70,16 +67,14 @@ public class Main {
 			ConnectionSpec cs = fcf.getConnectionSpec();
 	        
 			//cs.setURI(cdmPath + "/data/manual/my-file-2d.txt"); //~3 000 elements
-	        
-	        
+
 	        //cs.setURI(cdmPath + "\\data\\iris\\iris.data-2");
-	        ////cs.setURI(cdmPath + "\\data\\my\\new");
+	        //cs.setURI(cdmPath + "\\data\\my\\new");
 	        //cs.setURI(cdmPath + "\\data\\my2\\new");
 	        
 	        //source http://cs.joensuu.fi/sipu/datasets/
 	        //cs.setURI(cdmPath + "\\data\\birch\\birch1-10000.txt");
-	        //birch1.txt"); // ~100 000 elements
-	        //cs.setURI(cdmPath + "\\data\\new-data\\breast.txt");
+			//cs.setURI(cdmPath + "\\data\\new-data\\breast.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\r15.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\spiral.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\a3.txt"); //~30 000 elements
@@ -92,22 +87,20 @@ public class Main {
 	        //cs.setURI(cdmPath + "\\data\\new-data\\flame.txt"); //~240 elements
 	        //cs.setURI(cdmPath + "\\data\\new-data\\a1.txt"); //~3 000 elements
 			//cs.setURI(cdmPath + "/data/new-data/D31.txt"); //~3 000 elements
+
 			// net traffic
 	        // cs.setURI(cdmPath + "/data/net-traffic/sample24_1000000.csv");
 			//cs.setURI("/Users/piotr/Desktop/plik.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\t7.10k-002.txt"); //~6 000 elements
 	        cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
-	        
+//	        cs.setURI(cdmPath + "/data/new-data/birch1.txt"); //brich1
+
 			Connection conn = null;
-			
 			conn = fcf.getConnection(cs);
 			
 			// Create physical data set.
-			CDMFilePhysicalDataSetFactory pdsf =
-					new CDMFilePhysicalDataSetFactory();
-			
+			CDMFilePhysicalDataSetFactory pdsf = new CDMFilePhysicalDataSetFactory();
 			PhysicalDataSet fpds = null;
-			
 			fpds = setAttributes(pdsf, cs);  // TODO
 			
 			conn.saveObject("MyPhysicalDataSet", fpds, true);
@@ -120,8 +113,9 @@ public class Main {
 			
 			ClusteringSettings clusteringSettings = null;
 			clusteringSettings = clusterintSettigsFactory.create();
-			clusteringSettings.setMinClusterCaseCount(25); // set parameter k
-			
+//			clusteringSettings.setMinClusterCaseCount(25); // set parameter k
+			clusteringSettings.setMinClusterCaseCount(100); // set parameter k
+
 			clusteringSettings.setLogicalDataName("MyLogicalData");
 			clusteringSettings.setDescription("test description");
 			clusteringSettings.setAggregationFunction(
@@ -130,8 +124,8 @@ public class Main {
 			/*KMeansAlgorithmSettings algorithmSettings = new KMeansAlgorithmSettings();
 			/**/
 			
-			/*NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
-			/**/
+//			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+
 			
 			/*CNBCDMAlgorithmSettings algorithmSettings = new CNBCDMAlgorithmSettings();
 			/**/
@@ -143,26 +137,22 @@ public class Main {
 			/*
 			DM_KMeansAlgorithmSettings algorithmSettings = 
 				ew DM_KMeansAlgorithmSettings(); /**/
-			
-			
+
+
 			/*DbScanNetTrafficAlgorithmSettings algorithmSettings =
 					new DbScanNetTrafficAlgorithmSettings();/**/
-			
+
 			/*DbScanSlicerAlgorithmSettings algorithmSettings =
 					new DbScanSlicerAlgorithmSettings();/**/
 			
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
-
-			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
-
-			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+//			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
+			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
 
-			
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
-			
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);
 	
 			// BUILD TASK			

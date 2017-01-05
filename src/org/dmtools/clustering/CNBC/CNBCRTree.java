@@ -1,5 +1,6 @@
 package org.dmtools.clustering.CNBC;
 
+import org.dmtools.clustering.CDMCluster;
 import spatialindex.spatialindex.*;
 import spatialindex.spatialindex.ISpatialIndex;
 import spatialindex.storagemanager.*;
@@ -20,9 +21,7 @@ import org.dmtools.clustering.old.*;
 public class CNBCRTree implements IClusteringAlgorithm {
     
     public static final String NAME = "C-NBC-RTree                     ";
-    public static final int NOISE = -1;
-    public static final int UNCLASSIFIED = -2;
-    public static final int DEFERRED = -3;
+
     
     String description;
 
@@ -44,8 +43,8 @@ public class CNBCRTree implements IClusteringAlgorithm {
     /** Creates a new instance of NBC */
     public void run() {
     	
-    	CNBCRTreePoint p0 = new CNBCRTreePoint(new double[]{438.0, 259.0}, UNCLASSIFIED);
-    	CNBCRTreePoint p1 = new CNBCRTreePoint(new double[]{440.0, 255.0}, UNCLASSIFIED);    	
+    	CNBCRTreePoint p0 = new CNBCRTreePoint(new double[]{438.0, 259.0}, CDMCluster.UNCLASSIFIED);
+    	CNBCRTreePoint p1 = new CNBCRTreePoint(new double[]{440.0, 255.0}, CDMCluster.UNCLASSIFIED);
     	
     	ic.add(new double[]{443.0, 271.0}, new double[]{448.0, 278.0}, false);
     	ic.add(new double[]{421.0, 333.0}, new double[]{433.0, 325.0}, false);
@@ -78,7 +77,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
 	        
 	        for (int i = 0; i < kNN.neighbours.size(); i++) {
 	        	CNBCRTreePoint pcl1 = (CNBCRTreePoint) kNN.neighbours.get(i);
-	            pcl1.clst_no = NOISE;
+	            pcl1.clst_no = CDMCluster.NOISE;
 	        }
         }
         
@@ -88,7 +87,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
 	        
 	        for (int i = 0; i < kNN.neighbours.size(); i++) {
 	        	CNBCRTreePoint pcl1 = (CNBCRTreePoint) kNN.neighbours.get(i);
-	            pcl1.clst_no = NOISE;
+	            pcl1.clst_no = CDMCluster.NOISE;
 	        }
         }
 
@@ -97,7 +96,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
         while (li.hasNext()) {
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();
             // if (p.clst_no != NULL or p.ndf < 1)) continue;
-            if (p.clst_no != UNCLASSIFIED || p.ndf < 1)
+            if (p.clst_no != CDMCluster.UNCLASSIFIED || p.ndf < 1)
                 continue;
             p.clst_no = cluster_count; // label a new cluster
             DPSet.clear(); // initialize DPSet
@@ -111,10 +110,10 @@ public class CNBCRTree implements IClusteringAlgorithm {
             if (existsCannotLink){
             	for (int i = 0; i < kNN.neighbours.size(); i++) {
             		CNBCRTreePoint pcl1 = (CNBCRTreePoint) kNN.neighbours.get(i);
-            		if (pcl1.clst_no != UNCLASSIFIED) {
+            		if (pcl1.clst_no != CDMCluster.UNCLASSIFIED) {
             			System.out.println("XXX");
             		}
-                    pcl1.clst_no = NOISE;
+                    pcl1.clst_no = CDMCluster.NOISE;
                 }
                 continue;
             } // end of applying cannot-link constraints
@@ -150,7 +149,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
                 while (liKNNpD.hasNext()) {
                     CNBCRTreePoint q = (CNBCRTreePoint) liKNNpD.next();
                     // if (q.clst_no!NULL) continue
-                    if (q.clst_no != UNCLASSIFIED)
+                    if (q.clst_no != CDMCluster.UNCLASSIFIED)
                         continue;
 
                     q.clst_no = cluster_count;
@@ -174,12 +173,12 @@ public class CNBCRTree implements IClusteringAlgorithm {
         }
 
         // for each object p in Dataset // label noise
-        li = Dataset.listIterator();
+        li = Dataset.listIterator(); // TODO add dump method to Dataset
         while (li.hasNext()) {
             // if (p.clst_no=NULL) NoiseSet.add(p)
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();
-            if (p.clst_no == UNCLASSIFIED)
-                p.clst_no = NOISE;
+            if (p.clst_no == CDMCluster.UNCLASSIFIED)
+                p.clst_no = CDMCluster.NOISE;
         }
     }
 
@@ -323,9 +322,9 @@ public class CNBCRTree implements IClusteringAlgorithm {
         // building R-Tree
         for (IClusteringObject ico : tmp) {
             CNBCRTreePoint mp = new CNBCRTreePoint(ico.getSpatialObject()
-                    .getCoordinates(), UNCLASSIFIED);
+                    .getCoordinates(), CDMCluster.UNCLASSIFIED);
             Dataset.add(id, mp);
-            byte[] d = new byte[]{UNCLASSIFIED};
+            byte[] d = new byte[]{CDMCluster.UNCLASSIFIED};
             tree.insertData(d, mp, id);
             id++;
         }
