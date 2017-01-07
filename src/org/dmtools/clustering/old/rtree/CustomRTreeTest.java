@@ -1,10 +1,9 @@
 package org.dmtools.clustering.old.rtree;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import org.dmtools.clustering.old.ISpatialIndex;
-import org.dmtools.clustering.old.ISpatialObject;
+import org.dmtools.clustering.model.ISpatialIndex;
+import org.dmtools.clustering.model.ISpatialObject;
 
 import junit.framework.TestCase;
 
@@ -103,7 +102,7 @@ public class CustomRTreeTest extends TestCase {
     
     public String s(ISpatialObject so)
     {
-        double[] d = so.getCoordinates();
+        double[] d = so.getValues();
         String s="";
         for(int i =0;i < d.length; i++) {
             if (i>0) s += "," + d[i];

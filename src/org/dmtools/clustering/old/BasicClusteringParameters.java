@@ -1,5 +1,7 @@
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.IClusteringParameters;
+
 import java.util.Enumeration;
 import java.util.Properties;
 

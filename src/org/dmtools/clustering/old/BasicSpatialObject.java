@@ -1,5 +1,7 @@
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.ISpatialObject;
+
 import java.util.ArrayList;
 
 public class BasicSpatialObject implements ISpatialObject {
@@ -23,16 +25,16 @@ public class BasicSpatialObject implements ISpatialObject {
 		return this.approximation;
 	}
 
-	public int getValue() {
+	public int getClusterId() {
 		return value;
 	}
 	
-	public void setValue(int value)
+	public void setClusterId(int clusterId)
 	{
-	    this.value = value;
+	    this.value = clusterId;
 	}
 
-	public double[] getCoordinates() {
+	public double[] getValues() {
 		return coordinates;
 	}
 
@@ -56,9 +58,9 @@ public class BasicSpatialObject implements ISpatialObject {
 
 	/**
 	 * 
-	 * @param coordinates
+	 * @param values
 	 */
-	public void setCoordinates(double[] coordinates) {
+	public void setValues(double[] values) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

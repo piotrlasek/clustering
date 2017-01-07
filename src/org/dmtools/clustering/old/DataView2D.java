@@ -6,6 +6,11 @@
 
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringDataSource;
+import org.dmtools.clustering.model.IClusteringObject;
+import org.dmtools.clustering.model.IClusteringObserver;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -339,7 +344,7 @@ public class DataView2D extends JFrame implements IClusteringObserver, IClusteri
 			{
 				for (IClusteringObject o:list)
 				{
-					double coordinates[] = o.getSpatialObject().getCoordinates();
+					double coordinates[] = o.getSpatialObject().getValues();
 					int c = o.getClusterInfo().getClusterId();
 					PointView pv = new PointView(coordinates, c);
 					al.add(pv);
@@ -400,7 +405,7 @@ public class DataView2D extends JFrame implements IClusteringObserver, IClusteri
 		
 		for(IClusteringObject o:objects)
 		{
-			double[] coords = o.getSpatialObject().getCoordinates();
+			double[] coords = o.getSpatialObject().getValues();
 			int classId= o.getClusterInfo().getClusterId();
 			
 			PointView p = new PointView(coords, classId);

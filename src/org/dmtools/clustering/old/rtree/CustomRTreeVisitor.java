@@ -2,7 +2,7 @@ package org.dmtools.clustering.old.rtree;
 
 import java.util.ArrayList;
 
-import org.dmtools.clustering.old.ISpatialObject;
+import org.dmtools.clustering.model.ISpatialObject;
 
 import spatialindex.spatialindex.IData;
 import spatialindex.spatialindex.INode;

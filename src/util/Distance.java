@@ -1,7 +1,7 @@
 package util;
 
-import org.dmtools.clustering.NBC.Point;
-import org.dmtools.clustering.old.ISpatialObject;
+import org.dmtools.clustering.algorithm.NBC.Point;
+import org.dmtools.clustering.model.ISpatialObject;
 
 
 public class Distance {
@@ -52,8 +52,8 @@ public class Distance {
     
     public static double Distance2(ISpatialObject a, ISpatialObject b) {
         double dist = 0;
-        double[] ac = a.getCoordinates();
-        double[] bc = b.getCoordinates();
+        double[] ac = a.getValues();
+        double[] bc = b.getValues();
         for(int i = 0; i < ac.length; i++) {
             dist += Math.pow(ac[i] - bc[i], 2);
         }
@@ -62,8 +62,8 @@ public class Distance {
 
     public static double DistanceM2(ISpatialObject a, ISpatialObject b, int m) {
         double dist = 0;
-        double[] ac = a.getCoordinates();
-        double[] bc = b.getCoordinates();
+        double[] ac = a.getValues();
+        double[] bc = b.getValues();
         for(int i = 0; i < ac.length; i++) {
             dist += Math.pow(ac[i] - bc[i], m);
             //dist += Math.pow(ac[i] - bc[i], 2);
@@ -73,8 +73,8 @@ public class Distance {
 
 	public static double DistancePacket2(Point p, Point q) {
 
-		double[] d1 = p.getCoordinates();
-		double[] d2 = q.getCoordinates();
+		double[] d1 = p.getValues();
+		double[] d2 = q.getValues();
 		
 		double dist = 0;
 		

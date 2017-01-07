@@ -1,6 +1,6 @@
 package util;
 
-import org.dmtools.clustering.NBC.NBCRTreePoint;
+import org.dmtools.clustering.algorithm.NBC.NBCRTreePoint;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;

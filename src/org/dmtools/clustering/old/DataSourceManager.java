@@ -1,5 +1,8 @@
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.IClusteringDataSource;
+import org.dmtools.clustering.model.IClusteringObject;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;

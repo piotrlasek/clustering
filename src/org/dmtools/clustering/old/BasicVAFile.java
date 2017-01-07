@@ -7,6 +7,9 @@
 
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.ISpatialIndex;
+import org.dmtools.clustering.model.ISpatialObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -157,7 +160,7 @@ public abstract class BasicVAFile implements ISpatialIndex
         {
             for (int i = 0; i < dimensionsCount; i++)
             {
-                double x = so.getCoordinates()[i];
+                double x = so.getValues()[i];
                 if (x < minValues[i]) minValues[i] = x;
                 if (x >= maxValues[i]) maxValues[i] = x + 1;
             }
@@ -179,7 +182,7 @@ public abstract class BasicVAFile implements ISpatialIndex
             int nod = dimensionsCount;
             for (int i = 0; i < nod; i++)
             {
-                int x = so.getCoordinates()[i];
+                int x = so.getValues()[i];
 
                 if (x > maxValues[i] || maxValues[i] == -1)
                 {
@@ -496,8 +499,8 @@ public abstract class BasicVAFile implements ISpatialIndex
     public double getDist(ISpatialObject a, ISpatialObject b)
     {
         double dist = 0;
-        double[] ac = a.getCoordinates();
-        double[] bc = b.getCoordinates();
+        double[] ac = a.getValues();
+        double[] bc = b.getValues();
         for(int i = 0; i < dimensionsCount; i++)
         {
             dist += Math.pow(ac[i] - bc[i], 2);
@@ -560,7 +563,7 @@ public abstract class BasicVAFile implements ISpatialIndex
     public double lowerBound(ISpatialObject pObject, ISpatialObject qObject)
     {
         double lBnd = 0;
-        double[] q = qObject.getCoordinates();
+        double[] q = qObject.getValues();
         int approx[] = pObject.getParentCellCoordinates();
         //approximationToCoordinates(apx);
 

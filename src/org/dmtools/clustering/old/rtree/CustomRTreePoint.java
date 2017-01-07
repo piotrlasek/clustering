@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.dmtools.clustering.old.BasicSpatialObject;
 import org.dmtools.clustering.old.Cell;
-import org.dmtools.clustering.old.ISpatialObject;
+import org.dmtools.clustering.model.ISpatialObject;
 
 import spatialindex.spatialindex.Point;
 
@@ -31,7 +31,7 @@ public class CustomRTreePoint extends Point implements ISpatialObject {
     }
 
     @Override
-    public double[] getCoordinates() {
+    public double[] getValues() {
         return m_pCoords;
     }
 
@@ -51,8 +51,8 @@ public class CustomRTreePoint extends Point implements ISpatialObject {
     }
 
     @Override
-    public void setCoordinates(double[] coordinates) {
-        bso.setCoordinates(coordinates);
+    public void setValues(double[] values) {
+        bso.setValues(values);
     }
 
     @Override
@@ -61,13 +61,13 @@ public class CustomRTreePoint extends Point implements ISpatialObject {
     }
 
     @Override
-    public void setValue(int value) {
-        bso.setValue(value);
+    public void setClusterId(int clusterId) {
+        bso.setClusterId(clusterId);
     }
 
     @Override
-    public int getValue() {
-        return bso.getValue();
+    public int getClusterId() {
+        return bso.getClusterId();
     }
 
     @Override

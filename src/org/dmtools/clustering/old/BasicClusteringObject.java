@@ -1,13 +1,15 @@
 package org.dmtools.clustering.old;
 
-import java.util.HashMap;
+import org.dmtools.clustering.model.IClusterInfo;
+import org.dmtools.clustering.model.IClusteringObject;
+import org.dmtools.clustering.model.ISpatialObject;
 
-import javax.print.attribute.HashAttributeSet;
+import java.util.HashMap;
 
 public class BasicClusteringObject implements IClusteringObject
 {
 	BasicClusterInfo bci;
-	ISpatialObject so; 
+	ISpatialObject so;
 	
 	HashMap<String, String> has = new HashMap();
 	

@@ -32,13 +32,13 @@ import javax.datamining.task.BuildTask;
 import javax.datamining.clustering.ClusteringSettings;
 
 import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.CNBC.CNBCAlgorithm;
-import org.dmtools.clustering.DBSCAN.DbScanNetTraffic;
-import org.dmtools.clustering.DBSCAN.DbScanSlicer;
-import org.dmtools.clustering.KMeans.KMeansAlgorithm;
-import org.dmtools.clustering.NBC.NBCAlgorithm;
-import org.dmtools.clustering.NBC.DM.NBCDMAlgorithm;
-import org.dmtools.clustering.KMeans.DM.DM_KMeansAlgorithm;
+import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithm;
+import org.dmtools.clustering.algorithm.DBSCAN.DbScanNetTraffic;
+import org.dmtools.clustering.algorithm.DBSCAN.DbScanSlicer;
+import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
+import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
+import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
+import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
 
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 

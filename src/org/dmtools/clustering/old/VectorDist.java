@@ -5,6 +5,8 @@
 
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.ISpatialObject;
+
 /**
  *
  * @author Piotr Lasek

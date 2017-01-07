@@ -1,6 +1,8 @@
 package org.dmtools.clustering.old;
 
-public class BasicClusterInfo implements IClusterInfo 
+import org.dmtools.clustering.model.IClusterInfo;
+
+public class BasicClusterInfo implements IClusterInfo
 {
 	int clusterId = -1;
 	int previousClusterId = -1;

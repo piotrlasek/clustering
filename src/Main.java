@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
@@ -15,7 +14,6 @@ import javax.datamining.clustering.Cluster;
 import javax.datamining.clustering.ClusteringModel;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.AttributeDataType;
-import javax.datamining.data.LogicalData;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
 import javax.datamining.resource.Connection;
@@ -24,16 +22,8 @@ import javax.datamining.rule.Rule;
 import javax.datamining.task.BuildTask;
 
 import org.dmtools.clustering.CDMClusteringSettingsFactory;
-import org.dmtools.clustering.CNBC.CNBCAlgorithm;
-import org.dmtools.clustering.CNBC.CNBCAlgorithmSettings;
-import org.dmtools.clustering.DBSCAN.DbScanNetTrafficAlgorithmSettings;
-import org.dmtools.clustering.DBSCAN.DbScanSlicerAlgorithmSettings;
-import org.dmtools.clustering.NBC.NBCAlgorithm;
-import org.dmtools.clustering.NBC.NBCAlgorithmSettings;
-import org.dmtools.clustering.NBC.DM.NBCDMAlgorithmSettings;
-import org.dmtools.clustering.NBCTextIndex.ClusteringTextIndex;
-import org.dmtools.clustering.KMeans.KMeansAlgorithmSettings;
-import org.dmtools.clustering.KMeans.DM.DM_KMeansAlgorithmSettings;
+import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
+import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
 import org.dmtools.datamining.data.CDMPhysicalAttributeFactory;
 import org.dmtools.datamining.resource.CDMFileConnectionFactory;
@@ -54,7 +44,7 @@ public class Main {
 			Path currentRelativePath = Paths.get("");
 			String cdmPath = currentRelativePath.toAbsolutePath().toString();
 			
-			//cdmPath = "C:/Users/Piotr/IdeaProjects/Clustering";
+			///CD
 			
 			String current = new java.io.File( "." ).getCanonicalPath();
 			System.out.println("Current dir: " + current);
@@ -146,8 +136,8 @@ public class Main {
 					new DbScanSlicerAlgorithmSettings();/**/
 			
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
-//			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
-			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
+			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/

@@ -1,10 +1,10 @@
 package org.dmtools.clustering.old;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringDataSource;
+import org.dmtools.clustering.model.IClusteringObserver;
+
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 
 /**

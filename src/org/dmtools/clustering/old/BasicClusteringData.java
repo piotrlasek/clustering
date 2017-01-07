@@ -1,5 +1,8 @@
 package org.dmtools.clustering.old;
 
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 

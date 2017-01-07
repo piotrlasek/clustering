@@ -38,7 +38,7 @@ public class FilePhysicalDataRecord extends BasicMiningObject implements Physica
 		}
 		else {
 			throw new JDMException(0, "Attribute " + attributeName + 
-					" not found in FilePhysicalDataRecord.getValue(...)");
+					" not found in FilePhysicalDataRecord.getClusterId(...)");
 		}
 	}
 

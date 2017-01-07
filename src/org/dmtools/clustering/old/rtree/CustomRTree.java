@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.dmtools.clustering.old.ISpatialIndex;
-import org.dmtools.clustering.old.ISpatialObject;
+import org.dmtools.clustering.model.ISpatialIndex;
+import org.dmtools.clustering.model.ISpatialObject;
 
 import spatialindex.rtree.RTree;
 import spatialindex.storagemanager.IBuffer;
@@ -33,7 +33,7 @@ public class CustomRTree implements ISpatialIndex {
     @Override
     public void add(Collection<ISpatialObject> objectsList) {
         
-        nDim = objectsList.iterator().next().getCoordinates().length;
+        nDim = objectsList.iterator().next().getValues().length;
         Dataset = new ArrayList<ISpatialObject>();
         
         try {
@@ -47,7 +47,7 @@ public class CustomRTree implements ISpatialIndex {
         
         // building R-Tree
         for (ISpatialObject iso : objectsList) {
-            CustomRTreePoint rtp = new CustomRTreePoint(iso.getCoordinates());
+            CustomRTreePoint rtp = new CustomRTreePoint(iso.getValues());
             byte[] d = new byte[]{-1};
             Dataset.add(id, iso);
             tree.insertData(d, rtp, id);
@@ -68,7 +68,7 @@ public class CustomRTree implements ISpatialIndex {
     @Override
     public Collection<ISpatialObject> getNeighbors(ISpatialObject object,
             double max) {
-        CustomRTreePoint ctp = new CustomRTreePoint(object.getCoordinates());
+        CustomRTreePoint ctp = new CustomRTreePoint(object.getValues());
         visitor.clear();
         tree.nearestNeighborQuery(max, ctp, visitor, Dataset.size());        
         return visitor.getNeighbors();
@@ -77,7 +77,7 @@ public class CustomRTree implements ISpatialIndex {
     @Override
     public Collection<ISpatialObject> getNeighbors(ISpatialObject object,
             int count) {
-        CustomRTreePoint ctp = new CustomRTreePoint(object.getCoordinates());
+        CustomRTreePoint ctp = new CustomRTreePoint(object.getValues());
         visitor.clear();
         tree.nearestNeighborQuery(count, ctp, visitor);
         return visitor.getNeighbors();
@@ -91,7 +91,7 @@ public class CustomRTree implements ISpatialIndex {
         ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
                 .get();
         Dataset = new ArrayList<CustomRTreePoint>();
-        nDim = data.get().iterator().next().getSpatialObject().getCoordinates().length;
+        nDim = data.get().iterator().next().getSpatialObject().getValues().length;
         try {
             initRTree();
         } catch (IOException ioe) {
@@ -103,7 +103,7 @@ public class CustomRTree implements ISpatialIndex {
         
         // building R-Tree
         for (IClusteringObject ico : tmp) {
-            CustomRTreePoint mp = new CustomRTreePoint(ico.getSpatialObject().getCoordinates());
+            CustomRTreePoint mp = new CustomRTreePoint(ico.getSpatialObject().getValues());
             byte[] d = new byte[]{-1};
             Dataset.add(mp);
             tree.insertData(d, mp, id);
