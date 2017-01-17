@@ -15,6 +15,8 @@ import org.dmtools.clustering.model.IClusteringObject;
 import org.dmtools.clustering.model.ISpatialObject;
 import org.dmtools.clustering.old.rtree.CustomRTree;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import util.SetConstraints;
+
 import javax.datamining.JDMException;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
