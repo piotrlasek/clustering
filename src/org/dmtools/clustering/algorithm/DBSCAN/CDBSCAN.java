@@ -106,6 +106,7 @@ public class CDBSCAN extends DBSCANBase {
 	 *
 	 */
 	private void generateConstraints() {
+		SetConstraints.forCDBSCAN(ic);
 //		ic.add(new double[] { 231, 104 }, new double[] { 273, 132 }, false);
 //		ic.add(new double[] { 127, 146 }, new double[] { 165, 174 }, false);
 //		ic.add(new double[] { 129, 155 }, new double[] { 189, 172 }, false);
