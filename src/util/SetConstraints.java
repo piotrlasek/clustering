@@ -37,7 +37,7 @@ public class SetConstraints {
 
     public static void forCDBSCAN(InstanceConstraints ic){
         ArrayList<ArrayList<String>> list = getConstraints();
-        for(int i = 0; i < list.size(); i++){
+        for(int i = 0; i < list.size(); i++) {
             ArrayList<String> currentLine = list.get(i);
 
             String firstPoint[] = currentLine.get(0).split(",");
@@ -58,6 +58,7 @@ public class SetConstraints {
 //             } else {
 //                 System.out.println("error when set constraints");
 //             }
+        }
     }
 
 

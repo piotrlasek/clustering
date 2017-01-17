@@ -29,7 +29,7 @@ import java.util.ArrayList;
             return Long.valueOf(this.approximation);
         }
 
-        public Integer getValue() {
+        public int getValue() {
             return this.value;
         }
 
