@@ -50,13 +50,14 @@ public class SetConstraints {
 
             int type = Integer.parseInt(currentLine.get(2));
 
-            if ( type == 0) {
-                ic.add(new double[] { firstPointX, firstPointY }, new double[] { secondPointX, secondPointY }, false);
-            } else if (type == 1) {
-                ic.add(new double[] { firstPointX, firstPointY }, new double[] { secondPointX, secondPointY }, true);
-            } else {
-                System.out.println("error when set constraints");
-            }
+// ERROR InstanceConstraints Points in ic,add
+//             if ( type == 0) {
+//                 ic.add(new double[] { firstPointX, firstPointY }, new double[] { secondPointX, secondPointY }, false);
+//             } else if (type == 1) {
+//                 ic.add(new double[] { firstPointX, firstPointY }, new double[] { secondPointX, secondPointY }, true);
+//             } else {
+//                 System.out.println("error when set constraints");
+//             }
     }
 
 
