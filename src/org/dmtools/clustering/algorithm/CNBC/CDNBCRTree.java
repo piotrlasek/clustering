@@ -551,8 +551,8 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         
         // SETTING NUMBER OF CONSTRAINTS
         
-        randomConstraints(10, 10, Dataset.size());
-    	//setConstraints();
+//         randomConstraints(10, 10, Dataset.size());
+    	setConstraints();
     }
 
     
@@ -594,46 +594,48 @@ public class CDNBCRTree implements IClusteringAlgorithm {
     }
     
 	private void setConstraints() {
-		CNBCRTreePoint p0 = new CNBCRTreePoint(new double[]{438.0, 259.0}, CDMCluster.UNCLASSIFIED);
-    	CNBCRTreePoint p1 = new CNBCRTreePoint(new double[]{440.0, 255.0}, CDMCluster.UNCLASSIFIED);
-    	CNBCRTreePoint p2, p3, p4; 
-    	
-    	p0 = new CNBCRTreePoint(new double[]{443.0, 271.0}, CDMCluster.UNCLASSIFIED);
-    	p0 = Dataset.get(2730);
-    	p1 = new CNBCRTreePoint(new double[]{448.0, 278.0}, CDMCluster.UNCLASSIFIED);
-    	p2 = new CNBCRTreePoint(new double[]{421.0,333.0}, CDMCluster.UNCLASSIFIED);
-    	p3 = new CNBCRTreePoint(new double[]{433.0,325.0}, CDMCluster.UNCLASSIFIED);
-    	
-    	p0 = Dataset.get(Dataset.indexOf(p0));
-    	p1 = Dataset.get(Dataset.indexOf(p1));
-    	p2 = Dataset.get(Dataset.indexOf(p2));
-    	p3 = Dataset.get(Dataset.indexOf(p3));
-    	
-    	ic.addCannotLinkPoints(p0,  p1);
-    	ic.addCannotLinkPoints(p2,  p3);
-    	
-    	p0 = new CNBCRTreePoint(new double[]{457.0, 334.0}, CDMCluster.UNCLASSIFIED);
-    	p1 = new CNBCRTreePoint(new double[]{467.0, 340.0}, CDMCluster.UNCLASSIFIED);
-    	p2 = new CNBCRTreePoint(new double[]{475.0, 348.0}, CDMCluster.UNCLASSIFIED);
-    	p3 = new CNBCRTreePoint(new double[]{478.0, 356.0}, CDMCluster.UNCLASSIFIED);
-    	p4 = new CNBCRTreePoint(new double[]{508.0, 373.0}, CDMCluster.UNCLASSIFIED);
-    	
-    	p0 = Dataset.get(Dataset.indexOf(p0));
-    	p1 = Dataset.get(Dataset.indexOf(p1));
-    	p2 = Dataset.get(Dataset.indexOf(p2));
-    	p3 = Dataset.get(Dataset.indexOf(p3));
-    	p4 = Dataset.get(Dataset.indexOf(p4));    	
-    	
-    	ic.addCannotLinkPoints(p0, p1);
-    	ic.addCannotLinkPoints(p1, p2);
-    	ic.addCannotLinkPoints(p2, p3);
-    	ic.addCannotLinkPoints(p3, p4);
-    	
-    	p0 = new CNBCRTreePoint(new double[]{326.0, 314.0}, CDMCluster.UNCLASSIFIED);
-    	p1 = new CNBCRTreePoint(new double[]{359.0, 369.0}, CDMCluster.UNCLASSIFIED);
-    	p0 = Dataset.get(Dataset.indexOf(p0));
-    	p1 = Dataset.get(Dataset.indexOf(p1));
-    	ic.addMustLinkPoints(p0, p1);
+	        SetConstraints.forCNBC(Dataset, ic);
+
+// 		CNBCRTreePoint p0 = new CNBCRTreePoint(new double[]{438.0, 259.0}, CDMCluster.UNCLASSIFIED);
+// 		CNBCRTreePoint p1 = new CNBCRTreePoint(new double[]{440.0, 255.0}, CDMCluster.UNCLASSIFIED);
+// 		CNBCRTreePoint p2, p3, p4; 
+
+// 		p0 = new CNBCRTreePoint(new double[]{443.0, 271.0}, CDMCluster.UNCLASSIFIED);
+// 		p0 = Dataset.get(2730);
+// 		p1 = new CNBCRTreePoint(new double[]{448.0, 278.0}, CDMCluster.UNCLASSIFIED);
+// 		p2 = new CNBCRTreePoint(new double[]{421.0,333.0}, CDMCluster.UNCLASSIFIED);
+// 		p3 = new CNBCRTreePoint(new double[]{433.0,325.0}, CDMCluster.UNCLASSIFIED);
+
+// 		p0 = Dataset.get(Dataset.indexOf(p0));
+// 		p1 = Dataset.get(Dataset.indexOf(p1));
+// 		p2 = Dataset.get(Dataset.indexOf(p2));
+// 		p3 = Dataset.get(Dataset.indexOf(p3));
+
+// 		ic.addCannotLinkPoints(p0,  p1);
+// 		ic.addCannotLinkPoints(p2,  p3);
+
+// 		p0 = new CNBCRTreePoint(new double[]{457.0, 334.0}, CDMCluster.UNCLASSIFIED);
+// 		p1 = new CNBCRTreePoint(new double[]{467.0, 340.0}, CDMCluster.UNCLASSIFIED);
+// 		p2 = new CNBCRTreePoint(new double[]{475.0, 348.0}, CDMCluster.UNCLASSIFIED);
+// 		p3 = new CNBCRTreePoint(new double[]{478.0, 356.0}, CDMCluster.UNCLASSIFIED);
+// 		p4 = new CNBCRTreePoint(new double[]{508.0, 373.0}, CDMCluster.UNCLASSIFIED);
+
+// 		p0 = Dataset.get(Dataset.indexOf(p0));
+// 		p1 = Dataset.get(Dataset.indexOf(p1));
+// 		p2 = Dataset.get(Dataset.indexOf(p2));
+// 		p3 = Dataset.get(Dataset.indexOf(p3));
+// 		p4 = Dataset.get(Dataset.indexOf(p4));    	
+
+// 		ic.addCannotLinkPoints(p0, p1);
+// 		ic.addCannotLinkPoints(p1, p2);
+// 		ic.addCannotLinkPoints(p2, p3);
+// 		ic.addCannotLinkPoints(p3, p4);
+
+// 		p0 = new CNBCRTreePoint(new double[]{326.0, 314.0}, CDMCluster.UNCLASSIFIED);
+// 		p1 = new CNBCRTreePoint(new double[]{359.0, 369.0}, CDMCluster.UNCLASSIFIED);
+// 		p0 = Dataset.get(Dataset.indexOf(p0));
+// 		p1 = Dataset.get(Dataset.indexOf(p1));
+// 		ic.addMustLinkPoints(p0, p1);
 	}
 
     @Override
