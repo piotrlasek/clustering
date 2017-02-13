@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class SetConstraints {
 
     private static ArrayList<ArrayList<String>> getConstraints() {
-        String filePath = "/home/user/workspace/edu/clustering/data/experiment/constraints.txt";
+        String filePath = "/home/user/workspace/edu/clustering/data/experiment/constraintsBrich1.txt";
         Scanner s = null;
         try {
             s = new Scanner(new File(filePath));

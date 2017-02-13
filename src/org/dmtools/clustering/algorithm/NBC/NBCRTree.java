@@ -182,7 +182,6 @@ public class NBCRTree implements IClusteringAlgorithm {
         			"; p.SizeOfkNB= " + p.numberOfkNB + 
         			"; p.ndf= " + p.ndf);
         }
-        Dump.toFile(Dataset);
 
                
         // printing
