@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.dmtools.clustering.old.*;
+import util.Dump;
 
 
 /**
@@ -298,6 +299,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
         }
         
         bcd.set(al);
+        Dump.toFile(Dataset); //data to dump
 
         return bcd;
     }

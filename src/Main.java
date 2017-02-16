@@ -28,6 +28,7 @@ import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
 import org.dmtools.datamining.data.CDMPhysicalAttributeFactory;
 import org.dmtools.datamining.resource.CDMFileConnectionFactory;
 import org.dmtools.datamining.task.CDMBuildTaskFactory;
+import util.GenConstraints;
 
 /**
  * @author Piotr Lasek
@@ -36,7 +37,6 @@ import org.dmtools.datamining.task.CDMBuildTaskFactory;
 public class Main {
 
 	public static void main(String[] args) {
-		
 		try {
 			// DATASET PREPARATION
 			// -----------------------------------------------------------------
@@ -82,8 +82,10 @@ public class Main {
 	        // cs.setURI(cdmPath + "/data/net-traffic/sample24_1000000.csv");
 			//cs.setURI("/Users/piotr/Desktop/plik.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\t7.10k-002.txt"); //~6 000 elements
-	        cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
-//	        cs.setURI(cdmPath + "/data/new-data/birch1.txt"); //brich1
+			cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
+//	        cs.setURI(cdmPath + "/data/experiment/birch1.txt"); //brich1
+//	        cs.setURI(cdmPath + "/data/experiment/birch2.txt"); //brich2
+//	        cs.setURI(cdmPath + "/data/experiment/birch3.txt"); //brich3
 
 			Connection conn = null;
 			conn = fcf.getConnection(cs);
@@ -137,7 +139,7 @@ public class Main {
 			
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
 			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
-			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+//			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
@@ -253,8 +255,7 @@ public class Main {
 						"determined (2).");
 			}
 		}
-		
-		
+
 		return fpds;
 	}
 }
