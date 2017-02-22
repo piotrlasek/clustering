@@ -67,7 +67,21 @@ public class GenConstraints {
 
     private static void forBrich1() {
         ArrayList<ArrayList<String>> list = getConstraints("constraintsBrich1Unprocessed.txt");
+        for (int i = 0; i < list.get(0).size(); i++) {
+            if(i <= 89) {
+                String p0 = list.get(0).get(i);
+                String p1 = list.get(0).get(i + 10);
+                String line = p0 + "\t" + p1 + "\t0";
+                toFile(line, "constraintsBrich1.txt");
+            }
 
+            if(i%10 < 9) {
+                String p0 = list.get(0).get(i);
+                String p1 = list.get(0).get(i + 1);
+                String line = p0 + "\t" + p1 + "\t0";
+                toFile(line, "constraintsBrich1.txt");
+            }
+        }
     }
 
     private static void forBrich2() {
@@ -100,16 +114,7 @@ public class GenConstraints {
     }
 
     public static void main(String[] args) {
-//        ArrayList<ArrayList<String>> x = getConstraints("constraintsBrich1Unprocessed.txt");
-//        int y = 0;
-//        System.out.println(x.get(0));
-//        while (y < x.get(0).size()) {
-//            System.out.println(x.get(0).get(y));
-//            y++;
-//        }
 //        forBrich1();
-
-
 //        forBrich2();
 //        forBrich3();
     }
