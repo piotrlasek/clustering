@@ -1,5 +1,8 @@
 package util;
 
+/**
+ * @author Adam Konieczny
+ */
 
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
@@ -10,10 +13,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ *
+ */
 public class SetConstraints {
 
-    private static ArrayList<ArrayList<String>> getConstraints() {
-        String filePath = "/home/user/workspace/edu/clustering/data/experiment/constraintsBrich1.txt";
+    private static ArrayList<ArrayList<String>> readConstraintsFromFile() {
+
+        String filePath = Workspace.getWorkspacePath() + "/data/experiment/constraintsBrich1.txt";
+
         Scanner s = null;
         try {
             s = new Scanner(new File(filePath));
@@ -35,8 +43,12 @@ public class SetConstraints {
         return list;
     }
 
+    /**
+     *
+     * @param ic
+     */
     public static void forCDBSCAN(InstanceConstraints ic){
-        ArrayList<ArrayList<String>> list = getConstraints();
+        ArrayList<ArrayList<String>> list = readConstraintsFromFile();
         for(int i = 0; i < list.size(); i++) {
             ArrayList<String> currentLine = list.get(i);
 
@@ -62,9 +74,9 @@ public class SetConstraints {
     }
 
 
-    public static void forCNBC(ArrayList Dataset, InstanceConstraints ic){
+    public static void forCNBC(ArrayList Dataset, InstanceConstraints ic) {
         CNBCRTreePoint p0, p1;
-        ArrayList<ArrayList<String>> list = getConstraints();
+        ArrayList<ArrayList<String>> list = readConstraintsFromFile();
         for(int i = 0; i < list.size(); i++){
             ArrayList<String> currentLine = list.get(i);
 
@@ -83,7 +95,10 @@ public class SetConstraints {
                 p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
 
                 p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+                p0.setClusterId(CDMCluster.UNCLASSIFIED);
+
                 p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+                p1.setClusterId(CDMCluster.UNCLASSIFIED);
 
                 ic.addCannotLinkPoints(p0, p1);
             } else if (type == 1) {
@@ -91,7 +106,10 @@ public class SetConstraints {
                 p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
 
                 p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+                p0.setClusterId(CDMCluster.UNCLASSIFIED);
+
                 p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+                p1.setClusterId(CDMCluster.UNCLASSIFIED);
 
                 ic.addMustLinkPoints(p0, p1);
             } else {

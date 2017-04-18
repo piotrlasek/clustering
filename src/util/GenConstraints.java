@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class GenConstraints {
     private static ArrayList<ArrayList<String>> getConstraints(String name) {
-        String filePath = "/home/user/workspace/edu/clustering/data/experiment/" + name;
+        String filePath = Workspace.getWorkspacePath() + "/data/experiment/" + name;
         Scanner s = null;
         try {
             s = new Scanner(new File(filePath));
@@ -54,7 +54,8 @@ public class GenConstraints {
 
 
     private static void toFile(String line, String name) {
-        String fileName = "/home/user/workspace/edu/clustering/data/experiment/" + name;
+
+        String fileName = Workspace.getWorkspacePath() + "/data/experiment/" + name;
         FileWriter writer = null;
         try {
             writer = new FileWriter(fileName, true);
@@ -65,21 +66,54 @@ public class GenConstraints {
         }
     }
 
+    /**
+     *
+     */
     private static void forBrich1() {
-        ArrayList<ArrayList<String>> list = getConstraints("constraintsBrich1Unprocessed.txt");
-        for (int i = 0; i < list.get(0).size(); i++) {
-            if(i <= 89) {
-                String p0 = list.get(0).get(i);
-                String p1 = list.get(0).get(i + 10);
-                String line = p0 + "\t" + p1 + "\t0";
-                toFile(line, "constraintsBrich1.txt");
+
+        // left-top to bottom-right
+        ArrayList<ArrayList<String>> list = getConstraints("constraintsBirch1-Unprocessed-A.txt");
+        ArrayList<String> cannotLinkConstraints = list.get(0);
+        int size = cannotLinkConstraints.size();
+
+        for (int i = 0; i < size; i++) {
+            String p00 = cannotLinkConstraints.get(i);
+
+            if ((i+1) % 20 != 0) {
+                String p10 = cannotLinkConstraints.get(i + 1);
+                String line = p00 + "\t" + p10 + "\t0";
+                line = p00 + "\t" + p10 + "\t0";
+                toFile(line, "constraintsbrich1.txt");
             }
 
-            if(i%10 < 9) {
-                String p0 = list.get(0).get(i);
-                String p1 = list.get(0).get(i + 1);
-                String line = p0 + "\t" + p1 + "\t0";
-                toFile(line, "constraintsBrich1.txt");
+//            if (i + 1 <= 90) {
+//                String p01 = cannotLinkConstraints.get(i + 10);
+//                String line = p00 + "\t" + p01 + "\t0";
+//                toFile(line, "constraintsBrich1.txt");
+//            }
+//
+//            if ((i+1) % 10 != 0) {
+//                string p10 = cannotlinkconstraints.get(i + 1);
+//                string line = p00 + "\t" + p10 + "\t0";
+//                line = p00 + "\t" + p10 + "\t0";
+//                tofile(line, "constraintsbrich1.txt");
+//            }
+        }
+        // right-top to bottom-left
+
+
+        list = getConstraints("constraintsBirch1-Unprocessed-B.txt");
+        cannotLinkConstraints = list.get(0);
+        size = cannotLinkConstraints.size();
+
+        for (int i = 0; i < size; i++) {
+            String p00 = cannotLinkConstraints.get(i);
+
+            if ((i + 1) % 20 != 0) {
+                String p10 = cannotLinkConstraints.get(i + 1);
+                String line = p00 + "\t" + p10 + "\t0";
+                line = p00 + "\t" + p10 + "\t0";
+                toFile(line, "constraintsbrich1.txt");
             }
         }
     }
@@ -114,7 +148,7 @@ public class GenConstraints {
     }
 
     public static void main(String[] args) {
-//        forBrich1();
+        forBrich1();
 //        forBrich2();
 //        forBrich3();
     }

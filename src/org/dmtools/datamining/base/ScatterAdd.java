@@ -1,22 +1,10 @@
 package org.dmtools.datamining.base;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Rectangle;
-import java.awt.TextArea;
-import java.awt.event.ActionEvent;
-import java.awt.geom.Ellipse2D;
-import java.util.*;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import org.jfree.chart.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -25,6 +13,12 @@ import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 
@@ -62,7 +56,6 @@ public class ScatterAdd extends JFrame {
         
         renderer.setToolTipGenerator(new XYToolTipGenerator()
         {
-
 			@Override
 			public String generateToolTip(XYDataset arg0, int arg1, int arg2) {
 				// TODO Auto-generated method stub
@@ -74,11 +67,8 @@ public class ScatterAdd extends JFrame {
         
         renderer.setBaseItemLabelsVisible(true);
         
-        for (int i = 0; i <= 20; i++)
-        {
+        for (int i = 0; i <= 20; i++) {
         	renderer.setSeriesShape(i, new Ellipse2D.Float(-1,-1,1,1));
-            
-        	
         }
                 
         adjustAxis((NumberAxis) xyPlot.getDomainAxis(), true);
@@ -121,34 +111,20 @@ public class ScatterAdd extends JFrame {
         }
         
         // ADD NOISE
-        
-        
-        for(double[] point : data)
-        {
+
+        for(double[] point : data) {
         	int id = (int) point[point.length-1];
-        	if (id >= 0)
-        	{
-        		//System.out.println("tempSeries.size= " + tempSeries.size());
-        		if(id >= tempSeries.size())
-        			id = tempSeries.size() - 2;
-        		
-	        	XYSeries s = tempSeries.get(id + 1);
-	        	s.add(new XYDataItem(point[0], point[1]));
-        	}
-        	else
-        	{
-        		XYSeries n = tempSeries.get(0);
-        		n.add(new XYDataItem(point[0], point[1]));
-        	}
+
+            XYSeries s = tempSeries.get(id);
+            s.add(new XYDataItem(point[0], point[1]));
+
         	System.out.println(Arrays.toString(point));
         }
         
-        if (tempPoints != null)
-        {
+        if (tempPoints != null) {
 		    XYSeries ts = new XYSeries("Temp");
 		
-		    for(double[] point : tempPoints)
-		    {
+		    for(double[] point : tempPoints) {
 		    	ts.add(new XYDataItem(point[0], point[1]));
 		    }
 		    
@@ -156,8 +132,7 @@ public class ScatterAdd extends JFrame {
         }
         
         //
-        for(XYSeries s : tempSeries)
-        {
+        for(XYSeries s : tempSeries) {
         	xySeriesCollection.addSeries(s);	
         }
 	                

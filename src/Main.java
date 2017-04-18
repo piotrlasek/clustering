@@ -1,11 +1,10 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Scanner;
+import org.dmtools.clustering.CDMClusteringSettingsFactory;
+import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithmSettings;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
+import org.dmtools.datamining.data.CDMPhysicalAttributeFactory;
+import org.dmtools.datamining.resource.CDMFileConnectionFactory;
+import org.dmtools.datamining.task.CDMBuildTaskFactory;
+import util.Workspace;
 
 import javax.datamining.ExecutionStatus;
 import javax.datamining.JDMException;
@@ -20,15 +19,11 @@ import javax.datamining.resource.Connection;
 import javax.datamining.resource.ConnectionSpec;
 import javax.datamining.rule.Rule;
 import javax.datamining.task.BuildTask;
-
-import org.dmtools.clustering.CDMClusteringSettingsFactory;
-import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
-import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
-import org.dmtools.datamining.data.CDMPhysicalAttributeFactory;
-import org.dmtools.datamining.resource.CDMFileConnectionFactory;
-import org.dmtools.datamining.task.CDMBuildTaskFactory;
-import util.GenConstraints;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Scanner;
 
 /**
  * @author Piotr Lasek
@@ -41,13 +36,8 @@ public class Main {
 			// DATASET PREPARATION
 			// -----------------------------------------------------------------
 			
-			Path currentRelativePath = Paths.get("");
-			String cdmPath = currentRelativePath.toAbsolutePath().toString();
-			
-			///CD
-			
-			String current = new java.io.File( "." ).getCanonicalPath();
-			System.out.println("Current dir: " + current);
+			String cdmPath = Workspace.getWorkspacePath();
+			System.out.println("Current dir: " + cdmPath);
 	        
 			System.out.println("Start!");
 			
@@ -103,17 +93,8 @@ public class Main {
 			CDMClusteringSettingsFactory clusterintSettigsFactory = 
 					new CDMClusteringSettingsFactory();
 			
-			ClusteringSettings clusteringSettings = null;
-			clusteringSettings = clusterintSettigsFactory.create();
-//			clusteringSettings.setMinClusterCaseCount(25); // set parameter k
-			clusteringSettings.setMinClusterCaseCount(100); // set parameter k
 
-			clusteringSettings.setLogicalDataName("MyLogicalData");
-			clusteringSettings.setDescription("test description");
-			clusteringSettings.setAggregationFunction(
-					AggregationFunction.euclidean);
-			
-			/*KMeansAlgorithmSettings algorithmSettings = new KMeansAlgorithmSettings();
+			KMeansAlgorithmSettings algorithmSettings = new KMeansAlgorithmSettings();
 			/**/
 			
 //			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
@@ -136,18 +117,26 @@ public class Main {
 
 			/*DbScanSlicerAlgorithmSettings algorithmSettings =
 					new DbScanSlicerAlgorithmSettings();/**/
-			
+
+			ClusteringSettings clusteringSettings = null;
+			clusteringSettings = clusterintSettigsFactory.create();
+//			clusteringSettings.setMinClusterCaseCount(25); // set parameter k
+			//clusteringSettings.setMinClusterCaseCount(100); // set parameter k
+			clusteringSettings.setMinClusterCaseCount(6); // set parameter k
+
+			clusteringSettings.setLogicalDataName("MyLogicalData");
+			clusteringSettings.setDescription("test description");
+			clusteringSettings.setAggregationFunction(
+					AggregationFunction.euclidean);
+
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
-			CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
-//			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+			//CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
+			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
 
-			clusteringSettings.setAlgorithmSettings(algorithmSettings);
-			conn.saveObject("ClusteringSettings", clusteringSettings, true);
-	
-			// BUILD TASK			
+			// BUILD TASK
 			CDMBuildTaskFactory mbtf = new CDMBuildTaskFactory();
 			BuildTask bt = null;
 
@@ -167,14 +156,13 @@ public class Main {
 			rules = (Collection<Rule>) cm.getRules();
 			clusters = (Collection<Cluster>) cm.getClusters();
 			System.out.println("Mined clusters:");
-			 long time2 = new Date().getTime();
+			long time2 = new Date().getTime();
 			 
 			// THE END 
 			
 			// PRINT CLUSTER NAMES
 			
-			for (Cluster c : clusters)
-			{
+			for (Cluster c : clusters) {
 				String n = c.getName();
 				System.out.println(n);
 			}
@@ -183,8 +171,6 @@ public class Main {
 			long diff = time2-time1;
 			System.out.println("Time1= " + time1 + "; Time2= " + time2 + "; Diff= " + diff +  ".");
 		} catch (JDMException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -1,16 +1,15 @@
 package org.dmtools.clustering.algorithm.NBC.DM;
 
-import java.lang.Math;
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
+
 import java.util.ArrayList;
 
 //import org.dmtools.clustering.algorithm.NBC.DM.NBCRTreePoint;
 
-import Jama.*;
 
 
-
-public class DimensionsMatrix 
-{
+public class DimensionsMatrix {
 	
 	private Matrix D;
 	private Matrix D_ML;

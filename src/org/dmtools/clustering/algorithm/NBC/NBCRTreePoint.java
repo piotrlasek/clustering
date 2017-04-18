@@ -77,7 +77,7 @@ public class NBCRTreePoint extends Point implements ISpatialObject {
 
 	@Override
 	public void setValues(double[] values) {
-
+		this.m_pCoords = values;
 	}
 
 	@Override

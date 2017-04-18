@@ -2,18 +2,22 @@ package org.dmtools.clustering.algorithm.NBC;
 
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.model.*;
-import spatialindex.spatialindex.*;
+import org.dmtools.clustering.old.*;
+import spatialindex.rtree.RTree;
+import spatialindex.spatialindex.IData;
+import spatialindex.spatialindex.INode;
 import spatialindex.spatialindex.ISpatialIndex;
-import spatialindex.storagemanager.*;
-import spatialindex.rtree.*;
+import spatialindex.spatialindex.IVisitor;
+import spatialindex.storagemanager.IBuffer;
+import spatialindex.storagemanager.MemoryStorageManager;
+import spatialindex.storagemanager.PropertySet;
+import spatialindex.storagemanager.RandomEvictionsBuffer;
+import util.Dump;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-
-import org.dmtools.clustering.old.*;
-import util.Dump;
 
 /**
  * 
@@ -277,7 +281,14 @@ public class NBCRTree implements IClusteringAlgorithm {
         for (Object o : Dataset) {
             NBCRTreePoint mp = (NBCRTreePoint) o;
             BasicClusteringObject bco = new BasicClusteringObject();
-            BasicSpatialObject rso = new BasicSpatialObject(mp.m_pCoords);
+
+            double[] coords = mp.m_pCoords;
+
+            for(int x = 0; x < coords.length; x++) {
+                coords[x] = coords[x] / 200;
+            }
+
+            BasicSpatialObject rso = new BasicSpatialObject(coords);
             bco.setSpatialObject(rso);
             BasicClusterInfo bci = new BasicClusterInfo();
             bci.setClusterId(mp.getClusterId());

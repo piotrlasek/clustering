@@ -1,9 +1,7 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
 import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.model.IClusteringObject;
 import org.dmtools.clustering.model.IConstraintObject;
-import org.dmtools.clustering.old.BasicClusteringObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,34 +9,33 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MyFrame extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener
+public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener
 {
-	Collection<IClusteringObject> result;
+	Collection<CNBCRTreePoint> result;
 	InstanceConstraints ic;
 	double zoom = 100;
 	int width = 1000;
 	int height = 800;
 	JScrollPane scrollPane;
-	
+
 	int pWidth = 4;
 	int defMargin = 2;
 	private ArrayList<double[]> fml;
 	private ArrayList<double[]> fcl;
-	
+
 	private ArrayList<double[]> frc;
-	
+
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
-	
+
 	public int getZoomed(double x)
 	{
 		return (int) (x * ((double) 100 / zoom));
 	}
-	
-	public MyFrame(Collection<IClusteringObject> result, InstanceConstraints ic,
-			ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
 
+	public MyFrame2(Collection<CNBCRTreePoint> result, InstanceConstraints ic,
+                    ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -51,6 +48,18 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+
+//        for (Object o : result) {
+//            CNBCRTreePoint mp = (CNBCRTreePoint) o;
+//
+//            double[] coords = mp.m_pCoords;
+//
+//            for (int x = 0; x < coords.length; x++) {
+//				coords[x] = coords[x] / 200;
+//			}
+//
+//            mp.setValues(coords);
+//		}
 
 		this.result = result;
 		this.ic = ic;
@@ -76,7 +85,7 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
             int r = c.getRed();
             int g = c.getGreen();
             int b = c.getBlue();
-            return new Color(r,g,b,0x66);
+            return new Color(r,g,b/*,0x66*/);
 		} else {
 		
 			Color[] cs = new Color[]{
@@ -107,6 +116,7 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 				cs[index] = new Color(r,g,b, 0x33);
 			}
 
+
 			return cs[i%cs.length];
 		}
 	}
@@ -116,30 +126,20 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		Stroke boldLine = new BasicStroke(2);
 		Stroke normalLine = new BasicStroke(1);
 
 		drawConstraints(g, g2);
 		
-		for(IClusteringObject o : result)
+		for(CNBCRTreePoint o : result)
 		{
-			BasicClusteringObject bco = (BasicClusteringObject) o;
-			
-			double[] coord = o.getSpatialObject().getValues();
-			int id = o.getClusterInfo().getClusterId();
+			double[] coord = o.getValues();
+			int id = o.getClusterId();
 			g.setColor(getColor(id));
-			
-			//g.drawLine((int) coord[0], (int) coord[1], (int) coord[0], (int) coord[1]);
-			//g.fillOval((int) coord[0],  (int) coord[1], 3,  3);
 			
 			if (id < 0) id = 0;
 			
 			Polygon p = new Polygon();
 			
-			//g2.setStroke(boldLine);
-
-//			g.fillRect(getZoomed(coord[0]),  getZoomed(coord[1]), pWidth, pWidth);
-
 			switch(id%8) {
 			case 0: g.fillRect(getZoomed(coord[0]),  getZoomed(coord[1]), pWidth, pWidth);
 				break;
@@ -185,12 +185,17 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 			
 			g2.setStroke(normalLine);
 			
-			if (bco.getParameter("wasDeferred") != null && bco.getParameter("wasDeferred").equals("true")) {
+			if (o.wasDeferred()) {
 				g.drawOval(getZoomed(coord[0])-defMargin,  getZoomed(coord[1])-defMargin, pWidth+2*defMargin,  pWidth+2*defMargin);
+				if (o.ndf < 1) {
+					g.setColor(Color.red);
+					g.drawLine(getZoomed(coord[0]), getZoomed(coord[1]), getZoomed(coord[0])+1, getZoomed(coord[1])+1);
+				}
 			}
-			
+
 			//g.drawOval((int) coord[0],  (int) coord[1], 2,  2);
-			//g.drawString("" + coord[0] + "," + coord[1], (int) coord[0],  (int) coord[1]);
+//			g.drawString("" + coord[0] + "," + coord[1], (int) coord[0],  (int) coord[1]);
+		//	g.drawString("" + o.getClusterId(), getZoomed(coord[0]),  getZoomed(coord[1]));
 		}
 		
 		
@@ -330,9 +335,9 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 		
 		//System.out.println(x + ", " + y);
 		
-		for(IClusteringObject o : result)
+		for(CNBCRTreePoint o : result)
 		{
-			double[] coord = o.getSpatialObject().getValues();
+			double[] coord = o.getValues();
 			if (Math.abs(coord[0] - x) < 5 && Math.abs(coord[1] - y) < 5) {
 				//System.out.println(">>>>>> " + coord[0] + ", " + coord[1]);
 			} else {
@@ -344,10 +349,7 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 
-		int scrollAmount = arg0.getScrollAmount();
 		double preciseWheelRotation = arg0.getPreciseWheelRotation();
-		
-		//System.out.println(scrollAmount + " " + preciseWheelRotation);
 		
 		zoom += 3 * preciseWheelRotation;
 		

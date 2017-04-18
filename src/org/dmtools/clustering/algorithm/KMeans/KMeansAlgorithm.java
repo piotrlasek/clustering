@@ -1,19 +1,17 @@
 package org.dmtools.clustering.algorithm.KMeans;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.CDMCluster;
+import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.datamining.base.ScatterAdd;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-
-import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.datamining.base.ScatterAdd;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import java.util.*;
 
 
 public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
@@ -25,19 +23,18 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	double[] max = null;
 	Collection<PhysicalAttribute> attributes;
 	ArrayList<double[]> tempPoints;
-	int maxRuns = 4;
+	int maxRuns = 20;
 	int[] clusterCount;
 	
 	public KMeansAlgorithm(ClusteringSettings clusteringSettings,
 			PhysicalDataSet physicalDataSet)
 	{
 		super(clusteringSettings, physicalDataSet);
-		
-		//k = ((KMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).getK();
 		k = (int) clusteringSettings.getMinClusterCaseCount();
+		System.out.println("k = " + k);
 		clusterCount = new int[k];
+
 		// get attributes
-		
 		try {
 			attributes = physicalDataSet.getAttributes();
 		} catch (JDMException e) {
@@ -54,16 +51,12 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	@Override
 	public MiningObject run() {
 		CDMClusteringModel ccm = new CDMClusteringModel();
-		
+
 		prepareData();
-		
 		initializeTemporaryPoints();
 		
-		for(int i = 0; i < maxRuns; i++)
-		{
-			
-			for(double[] point : data)
-			{
+		for(int i = 0; i < maxRuns; i++) {
+			for(double[] point : data) {
 				int indexOfClosestTempPoint = 0;
 				indexOfClosestTempPoint = getIndexOfClosestCluster(point);
 				point[numberOfDimensions] = indexOfClosestTempPoint; 
@@ -78,36 +71,35 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		}
 		
 		CDMCluster cluster = new CDMCluster();
-		
-		
 		return ccm;
 	}
 
 	/**
 	 * 
 	 * @param point
-	 * @param dists
 	 * @return
 	 */
 	private int getIndexOfClosestCluster(double[] point) {
 		
-		double[] dists = new double[k];
-		
+		ArrayList<Double> dists = new ArrayList();
+
 		int indexOfClosestTempPoint = 0;
 		
-		for(int i = 0; i < k; i++)
-		{
+		for(int i = 0; i < k; i++) {
 			double[] ti = tempPoints.get(i);
-			dists[i] = dist(point, ti);
+			dists.add(dist(point, ti));
 		}
-		
-		for(int i = 1; i < k; i++)
-		{
-			if (dists[i - 1] > dists[i])
-			{
+
+
+		Double minDist = Collections.min(dists);
+		indexOfClosestTempPoint = dists.indexOf(minDist);
+
+		/*
+		for(int i = 1; i < k; i++) {
+			if (dists[i - 1] > dists[i]) {
 				indexOfClosestTempPoint = i;
 			}
-		}
+		}*/
 		
 		return indexOfClosestTempPoint;
 	}
@@ -118,55 +110,46 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	 * @param b
 	 * @return
 	 */
-	public double dist(double[] a, double[] b)
-	{
-		double dist = 0;
+	public double dist(double[] a, double[] b) {
 		double temp = 0;
-		
-		
-		for(int i = 0; i < Math.min(a.length, b.length); i++)
-		{
+
+		for(int i = 0; i < Math.min(a.length, b.length); i++) {
 			temp += Math.pow(a[i] - b[i], 2);
 		}
 		
 		return Math.sqrt(temp);
 	}
-	
-	private void clearClusterCount()
-	{
-		for(int i  = 0; i < k; i++)
-		{
+
+	/**
+	 * Clears information about number of objects assigned to a cluster.
+	 */
+	private void clearClusterCount() {
+		for(int i  = 0; i < k; i++) {
 			clusterCount[i] = 0;
 		}
 	}
 	
 	/**
-	 * 
+	 * Recomputes centers of clusters as an average values of all coordinates
+	 * of points assigned to a given cluster.
 	 */
-	private void updateTemporaryPoints()
-	{
+	private void updateTemporaryPoints() {
 		updateClusterCount();
-		
 		zeroTemporaryPoints();
 		
-		for(double[] point : data)
-		{
+		for(double[] point : data) {
 			int clusterId = (int) point[numberOfDimensions];
 
-			for(int d  = 0; d < numberOfDimensions; d++)
-			{
+			for(int d  = 0; d < numberOfDimensions; d++) {
 				tempPoints.get(clusterId)[d] += point[d];
 			}
 		}
 		
-		for(int i = 0; i < k; i++)
-		{
+		for(int i = 0; i < k; i++) {
 			double[] point = tempPoints.get(i);
 			
-			if (clusterCount[i] > 0)
-			{
-				for(int j = 0; j < numberOfDimensions; j++)
-				{
+			if (clusterCount[i] > 0) {
+				for(int j = 0; j < numberOfDimensions; j++) {
 					point[j] = point[j] / clusterCount[i];
 				}
 			}
@@ -178,27 +161,26 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	 * 
 	 */
 	private void initializeTemporaryPoints() {
-		tempPoints = new ArrayList<double[]>();
+		tempPoints = new ArrayList<>();
 		
-		for(int i = 0; i < k; i++)
-		{
+		for(int i = 0; i < k; i++) {
 			double[] tempPoint = new double[numberOfDimensions];
 			
-			for (int j = 0; j < numberOfDimensions; j++)
-			{
+			for (int j = 0; j < numberOfDimensions; j++) {
 				tempPoint[j] = randomFromRange(j);
 			}
 			
 			tempPoints.add(tempPoint);
 		}
 	}
-	
-	private void updateClusterCount()
-	{
+
+	/**
+	 *
+	 */
+	private void updateClusterCount() {
 		clearClusterCount();
 		
-		for(double[] point : data)
-		{
+		for(double[] point : data) {
 			int clusterId = (int) point[numberOfDimensions];
 			clusterCount[clusterId] = clusterCount[clusterId] + 1;
 		}
@@ -209,14 +191,11 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	 */
 	private void zeroTemporaryPoints() {
 		
-		for(int i = 0; i < k; i++)
-		{
-			if (clusterCount[i] != 0)
-			{
+		for(int i = 0; i < k; i++) {
+			if (clusterCount[i] != 0) {
 				double[] tempPoint = tempPoints.get(i);
 				
-				for (int j = 0; j < numberOfDimensions; j++)
-				{
+				for (int j = 0; j < numberOfDimensions; j++) {
 					tempPoint[j] = 0;
 				}
 			}
@@ -242,17 +221,15 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		data = new ArrayList<double[]>();
 		
 		int i = 0;
-		for(Object[] rawRecord : rawData)
-		{
+		for(Object[] rawRecord : rawData) {
 			double[] record = new double[attributes.size() + 1];
 			int d = 0;
-			for(PhysicalAttribute attribute : attributes)
-			{
+			for(PhysicalAttribute attribute : attributes) {
 				record[d] = new Double(rawData.get(i)[d].toString());
 				if (min[d] == 0)
 					min[d] = record[d];
 				else							
-				if (min[d] > record[d]) min[d] = record[d];
+					if (min[d] > record[d]) min[d] = record[d];
 				if (max[d] < record[d]) max[d] = record[d];
 				d++;					
 			}

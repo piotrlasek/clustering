@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class Dump {
     public static void toFile(ArrayList Dataset) {
-        String fileName = "/home/user/workspace/edu/clustering/data/experiment/out.txt";
+        String fileName = Workspace.getWorkspacePath() + "/data/experiment/out.txt";
         ListIterator li = Dataset.listIterator();
         FileWriter writer = null;
         try {

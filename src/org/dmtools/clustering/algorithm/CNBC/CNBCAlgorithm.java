@@ -1,29 +1,23 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.CDMCluster;
+import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.old.BasicClusteringParameters;
+import org.dmtools.clustering.old.DataSourceManager;
+import org.dmtools.clustering.old.DataView2D;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.old.BasicClusteringParameters;
-import org.dmtools.clustering.old.DataSourceManager;
-import org.dmtools.clustering.old.DataView2D;
-import org.dmtools.clustering.model.IClusteringAlgorithm;
-import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringDataSource;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.model.IClusteringObserver;
-import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -32,15 +26,13 @@ import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
  *
  */
 public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClusteringObserver {
-	
-	
+
 	int k = 0;
 	ArrayList<double[]> data;
 	int numberOfDimensions; 
 	double[] min = null;
 	double[] max = null;
 	Collection<PhysicalAttribute> attributes;
-	ArrayList<double[]> tempPoints;
 
 	public CNBCAlgorithm(ClusteringSettings clusteringSettings,
 			PhysicalDataSet physicalDataSet)
@@ -94,13 +86,12 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 
 		nbc.run();
 
-		IClusteringData cd = nbc.getResult();
 		InstanceConstraints ic = nbc.getConstraints();
 
-		Collection<IClusteringObject> result = cd.get();
+		ArrayList<CNBCRTreePoint> result = nbc.getDataset();
 
 		// Show result
-		MyFrame mf = new MyFrame(result, ic, null, null, null);
+		MyFrame2 mf = new MyFrame2(result, ic, null, null, null);
 		mf.setPreferredSize(new Dimension(700,  600));
 		JFrame f = new JFrame();
 		JScrollPane scrollPane = new JScrollPane(mf);
@@ -110,7 +101,7 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 		f.pack();
 		f.setSize(new Dimension(700, 600));
 		f.setVisible(true);
-		
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		CDMCluster cluster = new CDMCluster();
 		return ccm;
 	}
@@ -131,8 +122,7 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 	}
 
 
-	public void prepareData()
-	{
+	public void prepareData() {
 		ArrayList<Object[]> rawData =
 				((CDMFilePhysicalDataSet) getPhysicalDataSet()).getData();
 		data = new ArrayList<double[]>();
@@ -141,6 +131,12 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 		for(Object[] rawRecord : rawData)
 		{
 			double[] record = new double[attributes.size() + 1];
+			if (record.length < 2) {
+				System.out.println("ERROR");
+			}
+			if (rawData.get(i).length < 2) {
+				System.out.println("ERROR 2");
+			}
 			int d = 0;
 			for(PhysicalAttribute attribute : attributes)
 			{
