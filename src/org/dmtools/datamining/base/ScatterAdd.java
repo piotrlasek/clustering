@@ -102,8 +102,11 @@ public class ScatterAdd extends JFrame {
         		if (!clusters.contains(point[point.length-1]))
         			clusters.add(point[point.length - 1]);
         }
-        
-        
+
+
+        tempSeries.add(new XYSeries("Noise"));
+        System.out.println("Noise");
+
         for(int i = 0; i < clusters.size(); i++)
         {
         	tempSeries.add(new XYSeries("Cluster " + i));
@@ -113,22 +116,12 @@ public class ScatterAdd extends JFrame {
         // ADD NOISE
 
         for(double[] point : data) {
-        	int id = (int) point[point.length-1];
+        	int id = (int) point[point.length-1] + 1;
 
             XYSeries s = tempSeries.get(id);
             s.add(new XYDataItem(point[0], point[1]));
 
         	System.out.println(Arrays.toString(point));
-        }
-        
-        if (tempPoints != null) {
-		    XYSeries ts = new XYSeries("Temp");
-		
-		    for(double[] point : tempPoints) {
-		    	ts.add(new XYDataItem(point[0], point[1]));
-		    }
-		    
-		    xySeriesCollection.addSeries(ts);
         }
         
         //
@@ -137,7 +130,6 @@ public class ScatterAdd extends JFrame {
         }
 	                
         //xySeriesCollection.addSeries(added);
-        
         
         return xySeriesCollection;
     }  

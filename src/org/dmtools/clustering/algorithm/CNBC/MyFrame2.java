@@ -31,7 +31,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 	public int getZoomed(double x)
 	{
-		return (int) (x * ((double) 100 / zoom));
+		return (int) (x * ((double) 1 / zoom));
 	}
 
 	public MyFrame2(Collection<CNBCRTreePoint> result, InstanceConstraints ic,
@@ -55,7 +55,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 //            double[] coords = mp.m_pCoords;
 //
 //            for (int x = 0; x < coords.length; x++) {
-//				coords[x] = coords[x] / 200;
+//				coords[x] = coords[x] / 1;
 //			}
 //
 //            mp.setValues(coords);
@@ -79,13 +79,13 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
             int r = c.getRed();
             int g = c.getGreen();
             int b = c.getBlue();
-			return new Color(r,g,b,0x33);
+			return new Color(r,g,b,0x80);
 		} else if (i == CDMCluster.DEFERRED) {
             Color c = Color.GRAY;
             int r = c.getRed();
             int g = c.getGreen();
             int b = c.getBlue();
-            return new Color(r,g,b/*,0x66*/);
+            return new Color(r,g,b,0x80);
 		} else {
 		
 			Color[] cs = new Color[]{
@@ -113,7 +113,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 				int r = c.getRed();
 				int g = c.getGreen();
 				int b = c.getBlue();
-				cs[index] = new Color(r,g,b, 0x33);
+				cs[index] = new Color(r,g,b/*, 0x33*/);
 			}
 
 
@@ -133,6 +133,10 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		for(CNBCRTreePoint o : result)
 		{
 			double[] coord = o.getValues();
+
+			coord[0] = coord[0] / 1;
+			coord[1] = coord[1] / 1;
+
 			int id = o.getClusterId();
 			g.setColor(getColor(id));
 			
@@ -211,16 +215,17 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 			g.setColor(Color.BLACK);
 			
 			IConstraintObject p0 = ic.ml1.get(i);
+			double[] p0v = p0.getValues(); p0v[0] = p0v[0] / 1; p0v[1] = p0v[1] / 1;
 			IConstraintObject p1 = ic.ml2.get(i);
-			g2.drawRect(getZoomed(p0.getValues()[0])-2*defMargin, getZoomed(p0.getValues()[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
-			g2.drawRect(getZoomed(p1.getValues()[0])-2*defMargin, getZoomed(p1.getValues()[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
-			g2.drawLine(getZoomed(p0.getValues()[0]), getZoomed(p0.getValues()[1]), getZoomed(p1.getValues()[0]), getZoomed(p1.getValues()[1]));
-			
-			
+			double[] p1v = p1.getValues(); p1v[0] = p1v[0] / 1; p1v[1] = p1v[1] / 1;
+
+			g2.drawRect(getZoomed(p0v[0])-2*defMargin, getZoomed(p0v[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
+			g2.drawRect(getZoomed(p1v[0])-2*defMargin, getZoomed(p1v[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
+			g2.drawLine(getZoomed(p0v[0]), getZoomed(p0v[1]), getZoomed(p1v[0]), getZoomed(p1v[1]));
 			
 			g.setColor(Color.WHITE);
-			g2.fillRect(getZoomed(p0.getValues()[0])-2*defMargin+1, getZoomed(p0.getValues()[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
-			g2.fillRect(getZoomed(p1.getValues()[0])-2*defMargin+1, getZoomed(p1.getValues()[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
+			g2.fillRect(getZoomed(p0v[0])-2*defMargin+1, getZoomed(p0v[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
+			g2.fillRect(getZoomed(p1v[0])-2*defMargin+1, getZoomed(p1v[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
 			
 		}
 		
@@ -229,9 +234,11 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		
 		for(int i = 0; i < ic.cl1.size(); i++) {
 			IConstraintObject p0 = ic.cl1.get(i);
+			double[] p0v = p0.getValues(); p0v[0] = p0v[0] / 1; p0v[1] = p0v[1] / 1;
 			IConstraintObject p1 = ic.cl2.get(i);
-			g2.drawRect(getZoomed(p0.getValues()[0])-2*defMargin, getZoomed(p0.getValues()[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
-			g2.drawRect(getZoomed(p1.getValues()[0])-2*defMargin, getZoomed(p1.getValues()[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
+			double[] p1v = p1.getValues(); p1v[0] = p1v[0] / 1; p1v[1] = p1v[1] / 1;
+			g2.drawRect(getZoomed(p0v[0])-2*defMargin, getZoomed(p0v[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
+			g2.drawRect(getZoomed(p1v[0])-2*defMargin, getZoomed(p1v[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin);
 		}
 		
 		Stroke dotted = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {8,3}, 0);
@@ -239,23 +246,29 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		
 		for(int i = 0; i < ic.cl1.size(); i++) {
 			IConstraintObject p0 = ic.cl1.get(i);
+			double[] p0v = p0.getValues(); p0v[0] = p0v[0] / 1; p0v[1] = p0v[1] / 1;
 			IConstraintObject p1 = ic.cl2.get(i);
-			g2.drawLine(getZoomed(p0.getValues()[0]), getZoomed(p0.getValues()[1]), getZoomed(p1.getValues()[0]), getZoomed(p1.getValues()[1]));
+			double[] p1v = p1.getValues(); p1v[0] = p1v[0] / 1; p1v[1] = p1v[1] / 1;
+			g2.drawLine(getZoomed(p0v[0]), getZoomed(p0v[1]), getZoomed(p1v[0]), getZoomed(p1v[1]));
 		}
 		
 		g.setColor(Color.WHITE);
 		
 		for(int i = 0; i < ic.cl1.size(); i++) {
 			IConstraintObject p0 = ic.cl1.get(i);
+			double[] p0v = p0.getValues(); p0v[0] = p0v[0] / 1; p0v[1] = p0v[1] / 1;
 			IConstraintObject p1 = ic.cl2.get(i);
-			g2.fillRect(getZoomed(p0.getValues()[0])-2*defMargin+1, getZoomed(p0.getValues()[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
-			g2.fillRect(getZoomed(p1.getValues()[0])-2*defMargin+1, getZoomed(p1.getValues()[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
+			double[] p1v = p1.getValues(); p1v[0] = p1v[0] / 1; p1v[1] = p1v[1] / 1;
+			g2.fillRect(getZoomed(p0v[0])-2*defMargin+1, getZoomed(p0v[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
+			g2.fillRect(getZoomed(p1v[0])-2*defMargin+1, getZoomed(p1v[1])-2*defMargin+1, pWidth + 4*defMargin-2, pWidth + 4*defMargin-2);
 		}
 		}
 		
 		if (fcl != null) {
 			for(int i = 0; i < fcl.size(); i++) {
 				double[] p = fcl.get(i);
+				p[0] = p[0] / 1;
+				p[1] = p[1] / 1;
 				g2.drawOval(getZoomed(p[0])-3*defMargin, getZoomed(p[1])-3*defMargin, pWidth + 6*defMargin, pWidth + 6*defMargin);
 			}
 			
@@ -264,6 +277,8 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		if (fml != null) {
 			for(int i = 0; i < fml.size(); i++) {
 				double[] p = fml.get(i);
+				p[0] = p[0] / 1;
+				p[1] = p[1] / 1;
 				g2.drawRect(getZoomed(p[0])-3*defMargin, getZoomed(p[1])-3*defMargin, pWidth + 6*defMargin, pWidth + 6*defMargin);
 			}
 			
@@ -273,21 +288,20 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		{
 			for(int i = 0; i < frc.size(); i++) {
 				g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-				double[] p1 = frc.get(i);
+				double[] p1 = frc.get(i); p1[0] = p1[0] / 1; p1[1] = p1[1] / 1;
 				g2.setColor(Color.BLACK);
 				g2.drawRoundRect(getZoomed(p1[0])-2*defMargin, getZoomed(p1[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin, 3*defMargin, 3*defMargin);
 				 
 				i++;
-				double[] p2 = frc.get(i);
+				double[] p2 = frc.get(i); p2[0] = p2[0] / 1; p2[1] = p2[1] / 1;
 				g2.setColor(Color.BLUE);
 				g2.drawRoundRect(getZoomed(p2[0])-2*defMargin, getZoomed(p2[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin, 3*defMargin, 3*defMargin);
 				
 				g2.setColor(Color.BLACK);
 				g2.drawLine(getZoomed(p2[0]), getZoomed(p2[1]), getZoomed(p1[0]), getZoomed(p1[1]));
-				
-				
+
 				i++;
-				double[] p3 = frc.get(i);
+				double[] p3 = frc.get(i); p3[0] = p3[0] / 1; p3[1] = p3[1] / 1;
 				g2.setColor(Color.RED);
 				g2.drawRoundRect(getZoomed(p3[0])-2*defMargin, getZoomed(p3[1])-2*defMargin, pWidth + 4*defMargin, pWidth + 4*defMargin, 3*defMargin, 3*defMargin);
 				

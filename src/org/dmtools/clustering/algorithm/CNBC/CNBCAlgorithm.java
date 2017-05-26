@@ -3,7 +3,10 @@ package org.dmtools.clustering.algorithm.CNBC;
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.model.IClusteringAlgorithm;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringDataSource;
+import org.dmtools.clustering.model.IClusteringObserver;
 import org.dmtools.clustering.old.BasicClusteringParameters;
 import org.dmtools.clustering.old.DataSourceManager;
 import org.dmtools.clustering.old.DataView2D;
@@ -90,6 +93,20 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 
 		ArrayList<CNBCRTreePoint> result = nbc.getDataset();
 
+//		ArrayList<double[]> dataToPlot = new ArrayList();
+//
+//        for(CNBCRTreePoint p : result) {
+//            double[] point = new double[p.getValues().length + 1];
+//            point[0] = p.getValues()[0];
+//			point[1] = p.getValues()[1];
+//            point[point.length-1] = p.getClusterId();
+//            dataToPlot.add(point);
+//        }
+//
+//        ScatterAdd sa = new ScatterAdd("C-NBC", dataToPlot, null);
+//        sa.setSize(400, 500);
+//        sa.setVisible(true);
+
 		// Show result
 		MyFrame2 mf = new MyFrame2(result, ic, null, null, null);
 		mf.setPreferredSize(new Dimension(700,  600));
@@ -99,7 +116,7 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 		scrollPane.setAutoscrolls(true);
 		f.add(scrollPane);
 		f.pack();
-		f.setSize(new Dimension(700, 600));
+        f.setSize(new Dimension(700, 600));
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		CDMCluster cluster = new CDMCluster();

@@ -22,12 +22,10 @@ public class CNBCAlgorithmSettings implements AlgorithmSettings {
 	
 	@Override
 	public MiningAlgorithm getMiningAlgorithm() {
-		// TODO Auto-generated method stub
 		MiningAlgorithm ma = null;
 		try {
 			ma = MiningAlgorithm.valueOf("C-NBC");
 		} catch (JDMException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		return ma;

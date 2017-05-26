@@ -1,5 +1,5 @@
 import org.dmtools.clustering.CDMClusteringSettingsFactory;
-import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithmSettings;
+import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
 import org.dmtools.datamining.data.CDMPhysicalAttributeFactory;
 import org.dmtools.datamining.resource.CDMFileConnectionFactory;
@@ -72,8 +72,8 @@ public class Main {
 	        // cs.setURI(cdmPath + "/data/net-traffic/sample24_1000000.csv");
 			//cs.setURI("/Users/piotr/Desktop/plik.txt");
 	        //cs.setURI(cdmPath + "\\data\\new-data\\t7.10k-002.txt"); //~6 000 elements
-			cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
-//	        cs.setURI(cdmPath + "/data/experiment/birch1.txt"); //brich1
+//			cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
+	        cs.setURI(cdmPath + "/data/experiment/birch1.txt"); //brich1
 //	        cs.setURI(cdmPath + "/data/experiment/birch2.txt"); //brich2
 //	        cs.setURI(cdmPath + "/data/experiment/birch3.txt"); //brich3
 
@@ -92,9 +92,8 @@ public class Main {
 						
 			CDMClusteringSettingsFactory clusterintSettigsFactory = 
 					new CDMClusteringSettingsFactory();
-			
 
-			KMeansAlgorithmSettings algorithmSettings = new KMeansAlgorithmSettings();
+			/*KMeansAlgorithmSettings algorithmSettings = new KMeansAlgorithmSettings();
 			/**/
 			
 //			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
@@ -122,7 +121,7 @@ public class Main {
 			clusteringSettings = clusterintSettigsFactory.create();
 //			clusteringSettings.setMinClusterCaseCount(25); // set parameter k
 			//clusteringSettings.setMinClusterCaseCount(100); // set parameter k
-			clusteringSettings.setMinClusterCaseCount(6); // set parameter k
+			clusteringSettings.setMinClusterCaseCount(100); // set parameter k
 
 			clusteringSettings.setLogicalDataName("MyLogicalData");
 			clusteringSettings.setDescription("test description");
@@ -131,7 +130,7 @@ public class Main {
 
 			// NBCDMAlgorithmSettings algorithmSettings = new NBCDMAlgorithmSettings();
 			//CNBCAlgorithmSettings algorithmSettings = new CNBCAlgorithmSettings();
-			//NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
+			NBCAlgorithmSettings algorithmSettings = new NBCAlgorithmSettings();
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/

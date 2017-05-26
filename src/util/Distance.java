@@ -51,9 +51,11 @@ public class Distance {
     }
     
     public static double Distance2(ISpatialObject a, ISpatialObject b) {
+        return Distance2(a.getValues(), b.getValues());
+    }
+
+    public static double Distance2(double[] ac, double[] bc) {
         double dist = 0;
-        double[] ac = a.getValues();
-        double[] bc = b.getValues();
         for(int i = 0; i < ac.length; i++) {
             dist += Math.pow(ac[i] - bc[i], 2);
         }

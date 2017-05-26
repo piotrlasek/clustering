@@ -2,18 +2,22 @@ package org.dmtools.clustering.algorithm.CNBC;
 
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.model.*;
-import spatialindex.spatialindex.*;
+import org.dmtools.clustering.old.*;
+import spatialindex.rtree.RTree;
+import spatialindex.spatialindex.IData;
+import spatialindex.spatialindex.INode;
 import spatialindex.spatialindex.ISpatialIndex;
-import spatialindex.storagemanager.*;
-import spatialindex.rtree.*;
+import spatialindex.spatialindex.IVisitor;
+import spatialindex.storagemanager.IBuffer;
+import spatialindex.storagemanager.MemoryStorageManager;
+import spatialindex.storagemanager.PropertySet;
+import spatialindex.storagemanager.RandomEvictionsBuffer;
+import util.Dump;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-
-import org.dmtools.clustering.old.*;
-import util.Dump;
 
 
 /**
@@ -245,9 +249,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
     }
 
     /**
-     * 
      * The implementation of the IVisitor interface.
-     *
      */
     class MyVisitor implements IVisitor {
         public int m_indexIO = 0;
@@ -276,13 +278,19 @@ public class CNBCRTree implements IClusteringAlgorithm {
             n.add(d);
         }
     }
-    
-    public InstanceConstraints getConstraints()
-    {
+
+    /**
+     *
+     * @return
+     */
+    public InstanceConstraints getConstraints() {
     	return ic;
     }
 
     @Override
+    /**
+     *
+     */
     public IClusteringData getResult() {
         BasicClusteringData bcd = new BasicClusteringData();
         ArrayList<IClusteringObject> al = new ArrayList<IClusteringObject>();
