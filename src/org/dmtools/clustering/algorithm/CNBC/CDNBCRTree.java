@@ -43,6 +43,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
 
     int nDim = 0;
     int k;
+    private double maxx;
 
     /**
      * The algorithm.
@@ -682,9 +683,10 @@ public class CDNBCRTree implements IClusteringAlgorithm {
 
             double[] coords = mp.m_pCoords;
 
-            for (int x = 0; x < coords.length; x++) {
-                coords[x] = coords[x] / 200;
+            for(int x = 0; x < coords.length; x++) {
+                coords[x] = coords[x] / maxx * 800;
             }
+
 
             BasicSpatialObject rso = new BasicSpatialObject(coords);
             bco.setSpatialObject(rso);
@@ -720,6 +722,8 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         // building R-Tree
         byte[] d = new byte[]{CDMCluster.UNCLASSIFIED};
         for (IClusteringObject ico : tmp) {
+            double[] values = ico.getSpatialObject().getValues();
+            if (values[0] > maxx) maxx = values[0];
             CNBCRTreePoint mp = new CNBCRTreePoint(ico.getSpatialObject()
                     .getValues(), CDMCluster.UNCLASSIFIED);
             Dataset.add(id, mp);

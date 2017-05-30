@@ -12,28 +12,42 @@ import javax.datamining.base.AlgorithmSettings;
  */
 public class CNBCAlgorithmSettings implements AlgorithmSettings {
 
+	private int k;
+	private static String name = "C-NBC";
+
 	static {
 		try {
-			MiningAlgorithm.addExtension("C-NBC");
+			MiningAlgorithm.addExtension(name);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void setK(int k) {
+		this.k = k;
+	}
+
+	public int getK() {
+		return k;
+	}
+
 	@Override
-	public MiningAlgorithm getMiningAlgorithm() {
-		MiningAlgorithm ma = null;
-		try {
-			ma = MiningAlgorithm.valueOf("C-NBC");
-		} catch (JDMException e) {
-			e.printStackTrace();
-		} 
-		return ma;
+	public String toString() {
+		return name + ", k = " + k;
 	}
 
 	@Override
 	public VerificationReport verify() {
-		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MiningAlgorithm getMiningAlgorithm() {
+		try {
+			return MiningAlgorithm.valueOf(name);
+		} catch (JDMException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

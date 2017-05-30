@@ -12,7 +12,6 @@ import spatialindex.storagemanager.IBuffer;
 import spatialindex.storagemanager.MemoryStorageManager;
 import spatialindex.storagemanager.PropertySet;
 import spatialindex.storagemanager.RandomEvictionsBuffer;
-import util.Dump;
 
 import java.awt.*;
 import java.io.IOException;
@@ -307,7 +306,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
         }
         
         bcd.set(al);
-        Dump.toFile(Dataset); //data to dump
+        // Dump.toFile(Dataset, "cnbc-rtree.csv", true); //data to dump
 
         return bcd;
     }

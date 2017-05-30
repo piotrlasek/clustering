@@ -1,32 +1,29 @@
 package util;
 
-import org.dmtools.clustering.algorithm.NBC.NBCRTreePoint;
+import org.dmtools.clustering.model.IClusteringObject;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 public class Dump {
-    public static void toFile(ArrayList Dataset) {
-        String fileName = Workspace.getWorkspacePath() + "/data/experiment/out.txt";
-        ListIterator li = Dataset.listIterator();
+    public static void toFile(Collection<IClusteringObject> Dataset, String fName, boolean ignoreNoise) {
+        String filePath = Workspace.getWorkspacePath() + "/data/experiment/" + fName;
         FileWriter writer = null;
         try {
-            writer = new FileWriter(fileName);
-            while (li.hasNext()) {
-                NBCRTreePoint p = (NBCRTreePoint) li.next();
-                String line = p.toString();
-                
-                ArrayList<String> result = new ArrayList<String>();
-                StringTokenizer t = new StringTokenizer(line, "(): group,", true);
-                while (t.hasMoreTokens()) {
-                    String token = t.nextToken();
-                    result.add(token);
+            writer = new FileWriter(filePath);
+            for (IClusteringObject ico : Dataset) {
+                double[] coord = ico.getSpatialObject().getValues();
+                int clusterId = ico.getClusterInfo().getClusterId();
 
-                }
-                String toSave = (result.get(1)+","+result.get(4)+"\t"+result.get(17));
+                if (ignoreNoise && clusterId < 0)
+                    continue;
+
+                String toSave = Arrays.toString(coord);
+                toSave = toSave.replace("[", "").replace("]", "");
+                toSave += ", " + clusterId;
                 writer.write(toSave+"\n");
             }
             writer.close();

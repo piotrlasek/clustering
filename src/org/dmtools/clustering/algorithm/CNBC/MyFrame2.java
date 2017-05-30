@@ -31,7 +31,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 	public int getZoomed(double x)
 	{
-		return (int) (x * ((double) 1 / zoom));
+		return (int) (x * ((double) 100 / zoom));
 	}
 
 	public MyFrame2(Collection<CNBCRTreePoint> result, InstanceConstraints ic,

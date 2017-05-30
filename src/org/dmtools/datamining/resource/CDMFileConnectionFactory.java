@@ -1,12 +1,13 @@
 package org.dmtools.datamining.resource;
 
-import java.util.HashMap;
-
+import javax.datamining.JDMErrorCodes;
 import javax.datamining.JDMException;
 import javax.datamining.resource.Connection;
 import javax.datamining.resource.ConnectionCapability;
 import javax.datamining.resource.ConnectionFactory;
 import javax.datamining.resource.ConnectionSpec;
+import java.io.File;
+import java.util.HashMap;
 
 public class CDMFileConnectionFactory implements ConnectionFactory {
 
@@ -23,13 +24,15 @@ public class CDMFileConnectionFactory implements ConnectionFactory {
 		// TODO Auto-generated method stub
 		CDMFileConnection fc = null;
 		
-		try {
-			fc = new CDMFileConnection(this, cs);
-			
+        fc = new CDMFileConnection(this, cs);
+
+		File f = new File(cs.getURI());
+
+		if(!f.exists() || f.isDirectory()) {
+			throw new JDMException(JDMErrorCodes.JDM_CONNECTION_FAILURE,
+					"File " + cs.getURI() + " does not exist!");
 		}
-		catch (Exception e)	{
-			e.printStackTrace();
-		}
+
 		return fc;
 	}
 

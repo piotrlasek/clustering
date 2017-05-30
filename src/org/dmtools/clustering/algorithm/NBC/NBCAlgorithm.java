@@ -1,30 +1,24 @@
 package org.dmtools.clustering.algorithm.NBC;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.algorithm.CNBC.MyFrame;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringDataSource;
+import org.dmtools.clustering.model.IClusteringObject;
+import org.dmtools.clustering.old.BasicClusteringParameters;
+import org.dmtools.clustering.old.DataSourceManager;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import util.Dump;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame;
-import org.dmtools.clustering.old.BasicClusteringParameters;
-import org.dmtools.clustering.old.DataSourceManager;
-import org.dmtools.clustering.old.DataView2D;
-import org.dmtools.clustering.model.IClusteringAlgorithm;
-import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringDataSource;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.model.IClusteringObserver;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
-import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -32,7 +26,7 @@ import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
  * @author Piotr Lasek
  *
  */
-public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClusteringObserver {
+public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 	
 	int k = 0;
 	ArrayList<double[]> data;
@@ -40,9 +34,7 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 	double[] min = null;
 	double[] max = null;
 	Collection<PhysicalAttribute> attributes;
-	ArrayList<double[]> tempPoints;
-	int maxRuns = 4;
-	int[] clusterCount;
+	NBCAlgorithmSettings algorithmSettings;
 	
 	public NBCAlgorithm(ClusteringSettings clusteringSettings,
 			PhysicalDataSet physicalDataSet) {
@@ -51,16 +43,16 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 		try {
 			attributes = physicalDataSet.getAttributes();
 		} catch (JDMException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		k = (int) clusteringSettings.getMinClusterCaseCount();
-		
+
 		numberOfDimensions = attributes.size();
 		
 		min = new double[numberOfDimensions];
 		max = new double[numberOfDimensions];
+
+		algorithmSettings = (NBCAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
+		k = algorithmSettings.getK();
 	}
 
 	@Override
@@ -68,33 +60,15 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 
 		prepareData();
 
-		CDMClusteringModel ccm = new CDMClusteringModel();
-
-		IClusteringAlgorithm ca = null;
-
 		 // wstawiamy NBC do JDM
 
-		DataView2D dv = new DataView2D();
-
 		NBCRTree nbc = new NBCRTree();
-		nbc.setObserver(dv);
 
 		BasicClusteringParameters params = new BasicClusteringParameters();
 		DataSourceManager dsm = new DataSourceManager();
 
 		dsm.readData("abc", data);
 		dsm.setActiveDataSource("abc");
-
-		 /*String id="";
-         try {
-             id = dsm.readFromFile(
-            		 "C:\\Users\\Piotr\\Filr\\Moje pliki\\UNIWERSYTET\\"
-            		 + "PROJEKTY\\DMEngine\\data\\my-file-2d.txt",
-            		 "2D"); // wczytac plik do data source managera
-             dsm.setActiveDataSource(id);
-         } catch (Exception e) {
-             e.printStackTrace();
-         }*/
 
         IClusteringDataSource cds = dsm.getActiveDataSource();
 
@@ -104,14 +78,17 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 		nbc.setData(cds.getData());
 
 		nbc.run();
-
 		IClusteringData cd = nbc.getResult();
+		String uri= getPhysicalDataSet().getURI();
+
+		String dumpFileName = "nbc-rtree-" + getPhysicalDataSet().getDescription() + ".csv";
+		Dump.toFile(cd.get(), dumpFileName, true); //data to dump
 
 		Collection<IClusteringObject> result = cd.get();
 		ArrayList<double[]> data2 = new ArrayList<double[]>(result.size());
 		int i =0;
-		for(IClusteringObject o : result)
-		{
+
+		for(IClusteringObject o : result) {
 			double[] coord = o.getSpatialObject().getValues();
 			double[] r = new double[coord.length + 1];
 			System.arraycopy(coord, 0, r, 0, coord.length);
@@ -120,14 +97,6 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 			i++;
 		}
 		
-		/*dv.setData(cd);
-		dv.showDataSource();*/
-
-//		ScatterAdd sa = new ScatterAdd("NBC", data2, null);
-//		sa.setSize(400, 500);
-//		sa.setVisible(true);
-//		sa.toFront();
-
 		// Show result
 		MyFrame mf = new MyFrame(result, null, null, null, null);
 		mf.setPreferredSize(new Dimension(700,  600));
@@ -140,23 +109,7 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm implements ICluste
 		f.setSize(new Dimension(700, 600));
 		f.setVisible(true);
 
-		CDMCluster cluster = new CDMCluster();
-		return ccm;
-	}
-
-	@Override
-	public void handleNotify(Object object) {
-		if (object != null) System.out.println(object.toString());
-	}
-
-	@Override
-	public void handleNotify(IClusteringData data) {
-		if (data != null) System.out.println(data.toString());
-	}
-
-	@Override
-	public void handleNotify(String message) {
-		if (message != null) System.out.println(message.toString());
+		return null;
 	}
 
 	public void prepareData()

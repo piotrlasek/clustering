@@ -11,6 +11,7 @@ import org.dmtools.clustering.old.BasicClusteringParameters;
 import org.dmtools.clustering.old.DataSourceManager;
 import org.dmtools.clustering.old.DataView2D;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import util.Dump;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
@@ -48,10 +49,12 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		k = (int) clusteringSettings.getMinClusterCaseCount();
-		//k = 10;
-		
+
+		CNBCAlgorithmSettings nbcSettings =
+            (CNBCAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
+
+		k = nbcSettings.getK();
+
 		numberOfDimensions = attributes.size();
 		
 		min = new double[numberOfDimensions];
@@ -89,9 +92,14 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 
 		nbc.run();
 
+		IClusteringData cd = nbc.getResult();
+
 		InstanceConstraints ic = nbc.getConstraints();
 
 		ArrayList<CNBCRTreePoint> result = nbc.getDataset();
+
+		String dumpFileName = "cnbc-rtree-" + getPhysicalDataSet().getDescription() + ".csv";
+		Dump.toFile(cd.get(), dumpFileName, true); //data to dump
 
 //		ArrayList<double[]> dataToPlot = new ArrayList();
 //

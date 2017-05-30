@@ -11,11 +11,13 @@ import javax.datamining.base.AlgorithmSettings;
  */
 public class CDBSCANAlgorithmSettings implements AlgorithmSettings {
 
-	public static final String C_DBSCAN = "C-DBSCAN";
+	public static final String name = "C-DBSCAN";
+	private double Eps;
+	private double MinPts;
 
 	static {
 		try {
-			MiningAlgorithm.addExtension(C_DBSCAN);
+			MiningAlgorithm.addExtension(name);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +28,7 @@ public class CDBSCANAlgorithmSettings implements AlgorithmSettings {
 		// TODO Auto-generated method stub
 		MiningAlgorithm ma = null;
 		try {
-			ma = MiningAlgorithm.valueOf(C_DBSCAN);
+			ma = MiningAlgorithm.valueOf(name);
 		} catch (JDMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,9 +37,30 @@ public class CDBSCANAlgorithmSettings implements AlgorithmSettings {
 	}
 
 	@Override
+	public String toString() {
+		return name + ", Eps = " + Eps + ", MinPts = " + MinPts;
+	}
+
+	@Override
 	public VerificationReport verify() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public double getEps() {
+		return Eps;
+	}
+
+	public void setEps(double eps) {
+		Eps = eps;
+	}
+
+	public double getMinPts() {
+		return MinPts;
+	}
+
+	public void setMinPts(double minPts) {
+		MinPts = minPts;
 	}
 }
 

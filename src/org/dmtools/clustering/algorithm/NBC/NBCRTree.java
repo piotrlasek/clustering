@@ -2,7 +2,10 @@ package org.dmtools.clustering.algorithm.NBC;
 
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.model.*;
-import org.dmtools.clustering.old.*;
+import org.dmtools.clustering.old.BasicClusterInfo;
+import org.dmtools.clustering.old.BasicClusteringData;
+import org.dmtools.clustering.old.BasicClusteringObject;
+import org.dmtools.clustering.old.BasicSpatialObject;
 import spatialindex.rtree.RTree;
 import spatialindex.spatialindex.IData;
 import spatialindex.spatialindex.INode;
@@ -12,7 +15,6 @@ import spatialindex.storagemanager.IBuffer;
 import spatialindex.storagemanager.MemoryStorageManager;
 import spatialindex.storagemanager.PropertySet;
 import spatialindex.storagemanager.RandomEvictionsBuffer;
-import util.Dump;
 
 import java.awt.*;
 import java.io.IOException;
@@ -35,20 +37,18 @@ public class NBCRTree implements IClusteringAlgorithm {
 
     ArrayList<NBCRTreePoint> Dataset;
     
-    ClusteringLogger logger = new ClusteringLogger(getName());
-
     int nDim = 0;
     //int id = 0;
     int k;
     //String desc = "NBC (RTree): ";
 
+    double maxx = 0;
+
     /**
      * Creates a new instance of NBC.
      */
     public void run() {
-        logger.addDescription(this.getDescription());
         //long begin_time1 = System.currentTimeMillis();
-        logger.clusteringStart();
 
         ArrayList<NBCRTreePoint> NoiseSet = new ArrayList();
         int cluster_count = 0;
@@ -139,13 +139,9 @@ public class NBCRTree implements IClusteringAlgorithm {
         // observer.handleNotify("[size: " + Dataset.size() + ", time: " + (int)
         // (after - before) + " ms, k:"
         // + k + ", clusters:" + (cluster_count-1) + "]");
-        logger.clusteringEnd();
-        
-        System.out.println(logger.getLog());
-        
+
         //desc += ", Total = " + (end_time1 - begin_time1 - (time4 - time3))
         //        + " ms "  + parameters.toString();
-        observer.handleNotify(logger.getLog());
         addLines();
 
         //System.out.println("==>>> xy = " + xy + ", " + "XY = " + XY);
@@ -285,7 +281,7 @@ public class NBCRTree implements IClusteringAlgorithm {
             double[] coords = mp.m_pCoords;
 
             for(int x = 0; x < coords.length; x++) {
-                coords[x] = coords[x] / 200;
+                coords[x] = coords[x] / maxx * 800;
             }
 
             BasicSpatialObject rso = new BasicSpatialObject(coords);
@@ -296,14 +292,12 @@ public class NBCRTree implements IClusteringAlgorithm {
             al.add(bco);
         }
         bcd.set(al);
-        Dump.toFile(Dataset); //data to dump
 
         return bcd;
     }
 
     @Override
     public void setData(IClusteringData data) {
-        logger.indexStart();
         ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
                 .get();
         Dataset = new ArrayList();
@@ -316,9 +310,12 @@ public class NBCRTree implements IClusteringAlgorithm {
         }
         
         int id = 0;
-        
+
+
         // building R-Tree
         for (IClusteringObject ico : tmp) {
+            double[] values = ico.getSpatialObject().getValues();
+            if (values[0] > maxx) maxx = values[0];
             NBCRTreePoint mp = new NBCRTreePoint(ico.getSpatialObject()
                     .getValues(), -1);
             Dataset.add(id, mp);
@@ -326,7 +323,6 @@ public class NBCRTree implements IClusteringAlgorithm {
             tree.insertData(d, mp, id);
             id++;
         }
-        logger.indexEnd();
     }
 
     @Override
@@ -343,7 +339,6 @@ public class NBCRTree implements IClusteringAlgorithm {
          */
         this.parameters = parameters;
         k = new Integer(parameters.getValue("k")).intValue();
-        logger.setParameters(parameters.toString());
     }
 
     @Override

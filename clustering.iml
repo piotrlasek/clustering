@@ -10,5 +10,15 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="jdm" level="project" />
     <orderEntry type="library" name="LVA-Index" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/log4j-1.2.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="log4j-api-2.8.2" level="project" />
   </component>
 </module>

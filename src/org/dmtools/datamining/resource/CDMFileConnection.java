@@ -1,5 +1,27 @@
 package org.dmtools.datamining.resource;
 
+import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithm;
+import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithm;
+import org.dmtools.clustering.algorithm.DBSCAN.DBSCANAlgorithm;
+import org.dmtools.clustering.algorithm.DBSCAN.DbScanNetTraffic;
+import org.dmtools.clustering.algorithm.DBSCAN.DbScanSlicer;
+import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
+import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
+import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
+import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+
+import javax.datamining.Enum;
+import javax.datamining.*;
+import javax.datamining.base.AlgorithmSettings;
+import javax.datamining.base.Task;
+import javax.datamining.clustering.ClusteringSettings;
+import javax.datamining.resource.Connection;
+import javax.datamining.resource.ConnectionMetaData;
+import javax.datamining.resource.ConnectionSpec;
+import javax.datamining.resource.PersistenceOption;
+import javax.datamining.task.BuildTask;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,36 +33,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import javax.datamining.Enum;
-import javax.datamining.ExecutionHandle;
-import javax.datamining.ExecutionStatus;
-import javax.datamining.Factory;
-import javax.datamining.JDMException;
-import javax.datamining.MiningAlgorithm;
-import javax.datamining.MiningFunction;
-import javax.datamining.MiningObject;
-import javax.datamining.MiningTask;
-import javax.datamining.NamedObject;
-import javax.datamining.base.AlgorithmSettings;
-import javax.datamining.base.Task;
-import javax.datamining.resource.Connection;
-import javax.datamining.resource.ConnectionMetaData;
-import javax.datamining.resource.ConnectionSpec;
-import javax.datamining.resource.PersistenceOption;
-import javax.datamining.task.BuildTask;
-import javax.datamining.clustering.ClusteringSettings;
-
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithm;
-import org.dmtools.clustering.algorithm.DBSCAN.DbScanNetTraffic;
-import org.dmtools.clustering.algorithm.DBSCAN.DbScanSlicer;
-import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
-import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
-import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
-import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
-
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 /**
  * 
@@ -129,6 +121,14 @@ public class CDMFileConnection implements Connection {
 		} else if (ma.equals(MiningAlgorithm.valueOf("C-NBC"))) {
 			// NBC
 			CNBCAlgorithm kma = new CNBCAlgorithm(cs, pds); 
+			kma.run();
+		} else if (ma.equals(MiningAlgorithm.valueOf("DBSCAN"))) {
+			// NBC
+			DBSCANAlgorithm kma = new DBSCANAlgorithm(cs, pds);
+			kma.run();
+		} else if (ma.equals(MiningAlgorithm.valueOf("C-DBSCAN"))) {
+			// NBC
+			CDBSCANAlgorithm kma = new CDBSCANAlgorithm(cs, pds);
 			kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("DM-NBC"))) {
 			// DM-NBC

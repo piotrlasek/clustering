@@ -1,22 +1,13 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
-import java.awt.Graphics;
+import org.dmtools.clustering.CDMCluster;
+import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.old.*;
+import org.dmtools.clustering.old.BasicSpatialObject;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.old.BasicClusterInfo;
-import org.dmtools.clustering.old.BasicClusteringData;
-import org.dmtools.clustering.old.BasicClusteringObject;
-import org.dmtools.clustering.old.BasicSpatialObject;
-import org.dmtools.clustering.old.ClusteringLogger;
-import org.dmtools.clustering.model.IClusteringAlgorithm;
-import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.model.IClusteringParameters;
-import org.dmtools.clustering.model.IClusteringObserver;
-import org.dmtools.clustering.model.ISpatialIndex;
-import org.dmtools.clustering.model.ISpatialObject;
 
 
 /**
@@ -27,72 +18,21 @@ import org.dmtools.clustering.model.ISpatialObject;
  */
 public abstract class DBSCANBase implements IClusteringAlgorithm {
 
-    /**
-     * 
-     */
     ArrayList<ISpatialObject> SetOfPoints;
-    
-    /**
-     * 
-     */
     String description;
-
-
-    /**
-     * 
-     */
-    //String desc = getName();
-
-    /**
-     * Number of dimensions.
-     */
     int nDim = 0;
-
-    /**
-     * Number of bits per dimension.
-     */
     int b = 0;
-
-    /**
-     * A reference to the index.
-     */
     ISpatialIndex isp;
-
-    /**
-     * 
-     */
     Double Eps = 0.0;
-
-    /**
-     * 
-     */
     Integer MinPts = 0;
 
-    /**
-     * 
-     */
     protected IClusteringObserver observer;
 
-    /**
-     * 
-     */
     IClusteringParameters parameters;
-
-    /**
-     * 
-     */
     IClusteringData data;
-
-    /**
-     * 
-     */
     Graphics graphics = null;
-
-    /**
-     * 
-     */
     ClusteringLogger logger = new ClusteringLogger(getName());
-    
+
     /**
      * 
      */
@@ -119,15 +59,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
 
     @Override
     public void setParameters(IClusteringParameters parameters) {
-        this.parameters = parameters;
-        try {
-            b = new Integer(parameters.getValue("b")).intValue();
-        } catch (Exception e) {
-            b = -1;
-        }
-        Eps = new Double(new Integer(parameters.getValue("Eps")));
-        MinPts = new Integer(parameters.getValue("minPts"));
-        logger.setParameters(parameters.toString());
+        System.out.println("TO BE REMOVED");
     }
 
     /**
@@ -380,5 +312,13 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      */
     public String getDescription() {
         return description;
+    }
+
+    public void setEps(double eps) {
+        this.Eps = eps;
+    }
+
+    public void setMinPts(int minPts) {
+        this.MinPts = minPts;
     }
 }
