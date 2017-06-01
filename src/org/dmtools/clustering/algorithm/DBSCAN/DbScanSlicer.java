@@ -81,7 +81,7 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
      */
     @Override
 	public MiningObject run() {
-    	prepareData();
+    	prepareDataSlicer();
     	sortAllPointsInD(this.referencePoint);
     	TI_DBSCAN();
 		return null;
@@ -90,20 +90,20 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
     /**
      * 
      */
-	public void prepareData() {
+	public void prepareDataSlicer() {
 		ArrayList<Object[]> rawData =
 				((CDMFilePhysicalDataSet) getPhysicalDataSet()).getData();
-		
+
 		data = new ArrayList<double[]>();
-		
+
 		for(Object[] rawRecord : rawData) {
 			double[] record = new double[attributes.size() ];
-			
+
 			for(int d = 0; d < attributes.size(); d++) {
-				
+
 				double v = (Double) rawRecord[d];
 				record[d] = v;
-				
+
 				// set min and max values in in dimensions
 				if (min[d] == 0) {
 					min[d] = record[d];
@@ -256,14 +256,14 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
      * @param MinPts
      * @return
      */
-    // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
+    // ExpandCluster(Dataset, PointToRemove, ClId, Eps, MinPts) : Boolean;
     protected boolean TI_ExpandCluster(ArrayList<Point> D, Point p,
             Integer ClId, Double Eps, Integer MinPts) {
         // function TI-ExpandCluster(D, point p, ClId, Eps, MinPts)
         /* Assert: TI-Neighborhood does not include p */
         // seeds = TI-Neighborhood(D, p, Eps, MinPts);
         ArrayList<Point> seeds = TI_Neighborhood(D, p, Eps, MinPts);
-        // ArrayList<Point> seeds = TI_Neighborhood(D, p, Eps, MinPts);
+        // ArrayList<PointToRemove> seeds = TI_Neighborhood(D, p, Eps, MinPts);
         // p.NeighborsNo = p.NeighborsNo + |seeds|; // include p itself
         p.NeighborsNo = p.NeighborsNo + seeds.size();
         // if p.NeighborsNo < MinPts then
@@ -305,7 +305,7 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
                 // endfor
             }
             // move p from D to D�; // D� stores analyzed points
-            // Point p1 = D.remove(p.pos);
+            // PointToRemove p1 = D.remove(p.pos);
             Point p1 = D.get(p.pos);
             D.set(p1.pos, null);
             p1.pos = -1;
@@ -338,7 +338,7 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
                 } else {
                     // for each point q in curSeeds do
                     while (curSeeds.size() > 0) {
-                        // for(Point q:curSeeds) {
+                        // for(PointToRemove q:curSeeds) {
                         Point q = curSeeds.get(0);
                         // q.NeighborsNo = q.NeighborsNo + 1;
                         q.NeighborsNo = q.NeighborsNo + 1;
@@ -452,7 +452,7 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
             }
             else {
                 for (int i = 0; i < sortedData.size(); i++) {
-                    Point tip = sortedData.get(i);
+                    PointToRemove tip = sortedData.get(i);
 
                     if (distance <= tip.dist) {
                         // insert before the current point

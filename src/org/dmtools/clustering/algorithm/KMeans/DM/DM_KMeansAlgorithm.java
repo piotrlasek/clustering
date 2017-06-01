@@ -232,35 +232,6 @@ public class DM_KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		return min[j] + (Math.random() * (max[j] - min[j]));
 	}
 	
-	/**
-	 * 
-	 */
-	public void prepareData()
-	{
-		ArrayList<Object[]> rawData =
-				((CDMFilePhysicalDataSet) this.getPhysicalDataSet()).getData();
-		data = new ArrayList<double[]>();
-		
-		int i = 0;
-		for(Object[] rawRecord : rawData)
-		{
-			double[] record = new double[attributes.size() + 1];
-			int d = 0;
-			for(PhysicalAttribute attribute : attributes)
-			{
-				record[d] = new Double(rawData.get(i)[d].toString());
-				if (min[d] == 0)
-					min[d] = record[d];
-				else							
-				if (min[d] > record[d]) min[d] = record[d];
-				if (max[d] < record[d]) max[d] = record[d];
-				d++;					
-			}
-			record[d] = -1; // UNCLUSTERED
-			data.add(record);
-			i++;
-		}
-	}
 }
 
 

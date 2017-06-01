@@ -7,7 +7,6 @@ import org.dmtools.clustering.model.*;
 import org.dmtools.clustering.old.BasicClusteringParameters;
 import org.dmtools.clustering.old.DataSourceManager;
 import org.dmtools.clustering.old.DataView2D;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
@@ -216,40 +215,6 @@ public class NBCDMAlgorithm extends CDMBasicClusteringAlgorithm implements IClus
 	}
 
 
-	public void prepareData()
-	{
-		ArrayList<Object[]> rawData =
-				((CDMFilePhysicalDataSet) getPhysicalDataSet()).getData();
-		data = new ArrayList<double[]>();
-		
-		int i = 0;
-		for(Object[] rawRecord : rawData) {
-			
-			//if(i%2 == 0){
-			double[] record = new double[attributes.size() + 1];
-			int d = 0;
-			for(PhysicalAttribute attribute : attributes)
-			{
-				record[d] = new Double(rawData.get(i)[d].toString());
-				//System.out.println("i: " + i + ", rawData: " + record[d]);
-				record[d] = record[d]/10;
-				if (min[d] == 0)
-					min[d] = record[d];
-				else							
-				if (min[d] > record[d]) min[d] = record[d];
-				if (max[d] < record[d]) max[d] = record[d];
-				d++;					
-			}
-			record[d] = -1; // UNCLUSTERED
-			data.add(record);
-			//System.out.println("i: " + i + ", rawData: " + rawData);
-			//}
-			i++;
-		}
-		
-		//System.out.println("DimensionsMatrix");
-		
-	}
 }
 
 

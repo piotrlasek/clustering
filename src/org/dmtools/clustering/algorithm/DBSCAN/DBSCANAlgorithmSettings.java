@@ -1,19 +1,21 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
+import org.dmtools.clustering.CDMBaseAlgorithmSettings;
+
 import javax.datamining.JDMException;
 import javax.datamining.MiningAlgorithm;
 import javax.datamining.VerificationReport;
 import javax.datamining.base.AlgorithmSettings;
 
-public class DBSCANAlgorithmSettings implements AlgorithmSettings {
+public class DBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
-	private static String name = DBSCANAlgorithm.NAME;
+	public static String NAME = "DBSCAN";
 	private int minPts;
 	private double eps;
 
 	static {
 		try {
-			MiningAlgorithm.addExtension(name);
+			MiningAlgorithm.addExtension(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}
@@ -35,7 +37,7 @@ public class DBSCANAlgorithmSettings implements AlgorithmSettings {
 	@Override
 	public MiningAlgorithm getMiningAlgorithm() {
 		try {
-			return MiningAlgorithm.valueOf(name);
+			return MiningAlgorithm.valueOf(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}

@@ -3,7 +3,7 @@ package org.dmtools.clustering.old;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ClusteringLogger {
+public class ClusteringTimer {
     
     long indexCreationTime = 0;
     long clusteringTime = 0;
@@ -15,13 +15,18 @@ public class ClusteringLogger {
     String algorithmName = "<algorithm_name>";
     
     String parameters = "<algorithm_parameters>";
-    
-    public ClusteringLogger(String algorithmName) {
+
+    public ClusteringTimer(String algorithmName) {
         this.algorithmName = algorithmName;
         times = new HashMap<String, Long>();
         descriptions = new ArrayList<String>();
     }
-    
+
+    public ClusteringTimer() {
+        times = new HashMap<String, Long>();
+        descriptions = new ArrayList<String>();
+    }
+
     public void start(String s) {
         Long start = System.currentTimeMillis();
         times.put(s, start);

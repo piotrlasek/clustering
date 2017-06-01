@@ -1,5 +1,7 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
+import org.dmtools.clustering.CDMBaseAlgorithmSettings;
+
 import javax.datamining.JDMException;
 import javax.datamining.MiningAlgorithm;
 import javax.datamining.VerificationReport;
@@ -10,14 +12,15 @@ import javax.datamining.base.AlgorithmSettings;
  * @author Piotr Lasek
  *
  */
-public class CNBCAlgorithmSettings implements AlgorithmSettings {
+public class CNBCAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
+	public static String NAME = "C-NBC";
 	private int k;
-	private static String name = "C-NBC";
+	private String ic = null; // instance constraints
 
 	static {
 		try {
-			MiningAlgorithm.addExtension(name);
+			MiningAlgorithm.addExtension(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}
@@ -31,9 +34,17 @@ public class CNBCAlgorithmSettings implements AlgorithmSettings {
 		return k;
 	}
 
+	public String getIC() {
+		return ic;
+	}
+
+	public void setIC(String ic) {
+		this.ic = ic;
+	}
+
 	@Override
 	public String toString() {
-		return name + ", k = " + k;
+		return NAME + ", k = " + k;
 	}
 
 	@Override
@@ -44,7 +55,7 @@ public class CNBCAlgorithmSettings implements AlgorithmSettings {
 	@Override
 	public MiningAlgorithm getMiningAlgorithm() {
 		try {
-			return MiningAlgorithm.valueOf(name);
+			return MiningAlgorithm.valueOf(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}

@@ -16,7 +16,7 @@ import org.dmtools.clustering.old.*;
  */
 public abstract class NBCBase implements IClusteringAlgorithm {
 
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    ClusteringTimer logger = new ClusteringTimer(getName());
     
     //String desc = getName();
 

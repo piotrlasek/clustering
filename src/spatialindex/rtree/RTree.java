@@ -201,7 +201,7 @@ public class RTree implements ISpatialIndex
 		}
 		else
 		{
-			throw new IllegalArgumentException("pointLocationQuery: IShape can be Point or Region only.");
+			throw new IllegalArgumentException("pointLocationQuery: IShape can be PointToRemove or Region only.");
 		}
 
 		rangeQuery(SpatialIndex.IntersectionQuery, r, v);

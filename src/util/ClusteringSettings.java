@@ -2,6 +2,7 @@ package util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dmtools.clustering.CDMBaseAlgorithmSettings;
 import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithmSettings;
 import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
 import org.dmtools.clustering.algorithm.DBSCAN.DBSCANAlgorithmSettings;
@@ -30,11 +31,15 @@ public class ClusteringSettings {
      */
     public static AlgorithmSettings prepare(String algorithm, HashMap<String, String> parameters) {
         AlgorithmSettings algorithmSettings = null;
-        if (algorithm == null) {
+
+       if (algorithm == null) {
            log.warn("Using a hardcoded algorithm.");
            algorithm = "DBSCAN";
            parameters.put("Eps", "8000");
            parameters.put("MinPts", "4");
+           parameters.put("k", "50");
+           parameters.put("plot", "yes");
+           parameters.put("dump", "yes");
         }
         switch (algorithm) {
             case "NBC":
@@ -45,7 +50,9 @@ public class ClusteringSettings {
             case "C-NBC":
                 algorithmSettings = new CNBCAlgorithmSettings();
                 int kCNBC = new Integer(parameters.get("k"));
+                String icNBC = parameters.get("ic");
                 ((CNBCAlgorithmSettings) algorithmSettings).setK(kCNBC);
+                ((CNBCAlgorithmSettings) algorithmSettings).setIC(icNBC);
                 break;
             case "DBSCAN":
                 algorithmSettings = new DBSCANAlgorithmSettings();
@@ -58,8 +65,10 @@ public class ClusteringSettings {
                 algorithmSettings = new CDBSCANAlgorithmSettings();
                 double EpsCDB = new Double(parameters.get("Eps"));
                 int MinPtsCDB = new Integer(parameters.get("MinPts"));
+                String icCDB = parameters.get("ic");
                 ((CDBSCANAlgorithmSettings) algorithmSettings).setEps(EpsCDB);
                 ((CDBSCANAlgorithmSettings) algorithmSettings).setMinPts(MinPtsCDB);
+                ((CDBSCANAlgorithmSettings) algorithmSettings).setIC(icCDB);
                 break;
             case "NBCDMA":
                 algorithmSettings = new NBCDMAlgorithmSettings();
@@ -81,6 +90,16 @@ public class ClusteringSettings {
                 algorithmSettings = new DbScanSlicerAlgorithmSettings();
                 // TODO: Parameters
         }
+
+        CDMBaseAlgorithmSettings baseAlgorithmSettings = (CDMBaseAlgorithmSettings) algorithmSettings;
+
+        if (parameters.containsKey("plot")) {
+            baseAlgorithmSettings.setPlot(true);
+        }
+        if (parameters.containsKey("dump")) {
+            baseAlgorithmSettings.setDump(true);
+        }
+
         return algorithmSettings;
     }
 }

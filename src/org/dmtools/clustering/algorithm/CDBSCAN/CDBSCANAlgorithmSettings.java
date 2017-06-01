@@ -1,5 +1,7 @@
 package org.dmtools.clustering.algorithm.CDBSCAN;
 
+import org.dmtools.clustering.CDMBaseAlgorithmSettings;
+
 import javax.datamining.JDMException;
 import javax.datamining.MiningAlgorithm;
 import javax.datamining.VerificationReport;
@@ -8,14 +10,16 @@ import javax.datamining.base.AlgorithmSettings;
 /**
  * Created by Piotr Lasek on 30.05.2017.
  */
-public class CDBSCANAlgorithmSettings implements AlgorithmSettings{
-    private static String name = CDBSCANAlgorithm.NAME;
+public class CDBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
+    public static String NAME = "C-DBSCAN";
     private int minPts;
     private double eps;
 
+    private String ic = null; // instance constraints
+
     static {
         try {
-            MiningAlgorithm.addExtension(name);
+            MiningAlgorithm.addExtension(NAME);
         } catch (JDMException e) {
             e.printStackTrace();
         }
@@ -37,7 +41,7 @@ public class CDBSCANAlgorithmSettings implements AlgorithmSettings{
     @Override
     public MiningAlgorithm getMiningAlgorithm() {
         try {
-            return MiningAlgorithm.valueOf(name);
+            return MiningAlgorithm.valueOf(NAME);
         } catch (JDMException e) {
             e.printStackTrace();
         }
@@ -50,5 +54,13 @@ public class CDBSCANAlgorithmSettings implements AlgorithmSettings{
 
     public void setEps(double eps) {
         this.eps = eps;
+    }
+
+    public String getIC() {
+        return ic;
+    }
+
+    public void setIC(String ic) {
+        this.ic = ic;
     }
 }

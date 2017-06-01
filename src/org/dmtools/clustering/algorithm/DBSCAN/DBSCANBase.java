@@ -31,7 +31,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
     IClusteringParameters parameters;
     IClusteringData data;
     Graphics graphics = null;
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    ClusteringTimer logger = new ClusteringTimer();
 
     /**
      * 
@@ -46,6 +46,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
 
     @Override
     public void run() {
+        logger.setAlgorithmName(getName());
         logger.addDescription(this.getDescription());
         //long begin_time1 = System.currentTimeMillis();
         logger.clusteringStart();
@@ -72,7 +73,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
     // -----------------------------------------------------------------------
 
     protected void DBSCAN() {
-        // SetOfPoints is UNCLASSIFIED
+        // Dataset is UNCLASSIFIED
         Integer ClusterId = nextId(CDMCluster.NOISE);
         
         for (ISpatialObject point : SetOfPoints) {
@@ -82,14 +83,14 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
         }
 
         // ClusterId := nextId(NOISE);
-        // FOR i FROM 1 TO SetOfPoints.size DO
-        // Point := SetOfPoints.get(i);
+        // FOR i FROM 1 TO Dataset.size DO
+        // PointToRemove := Dataset.get(i);
         for (ISpatialObject Point : SetOfPoints) {
-            //DbscanSpatialObject Point = (DbscanSpatialObject) p;
-            // IF Point.ClId = UNCLASSIFIED THEN
-            ///if (Point.ClId == UNCLASSIFIED)
+            //DbscanSpatialObject PointToRemove = (DbscanSpatialObject) p;
+            // IF PointToRemove.ClId = UNCLASSIFIED THEN
+            ///if (PointToRemove.ClId == UNCLASSIFIED)
             if (getClId(Point) == CDMCluster.UNCLASSIFIED)
-            // IF ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts) THEN
+            // IF ExpandCluster(Dataset, PointToRemove, ClusterId, Eps, MinPts) THEN
             {
                 if (ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts)) {
                     // ClusterId := nextId(ClusterId)
@@ -107,32 +108,32 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * 
      * 
      */
-    // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
+    // ExpandCluster(Dataset, PointToRemove, ClId, Eps, MinPts) : Boolean;
     private boolean ExpandCluster(ArrayList<ISpatialObject> SetOfPoints,
             ISpatialObject Point, Integer ClId, Double Eps, Integer MinPts) {
-        // seeds :=SetOfPoints.regionQuery(Point,Eps);
+        // seeds :=Dataset.regionQuery(PointToRemove,Eps);
         ArrayList<ISpatialObject> seeds1 = regionQuery(Point, Eps);
         ArrayList<ISpatialObject> seeds = new ArrayList<ISpatialObject>();
         seeds.addAll(seeds1);
         // IF seeds.size<MinPts THEN // no core point
         if (seeds.size() < MinPts) {
-            // SetOfPoint.changeClId(Point,NOISE);
+            // SetOfPoint.changeClId(PointToRemove,NOISE);
             changeClId(Point, CDMCluster.NOISE);
             // RETURN False;
             return false;
         }
-        // ELSE // all points in seeds are density-reachable from Point
+        // ELSE // all points in seeds are density-reachable from PointToRemove
         else {
-            // SetOfPoints.changeClIds(seeds,ClId);
+            // Dataset.changeClIds(seeds,ClId);
             changeClId(seeds, ClId);
-            // seeds.delete(Point);
-            //seeds.remove(Point);
+            // seeds.delete(PointToRemove);
+            //seeds.remove(PointToRemove);
             changeClId(Point, ClId);
             // WHILE seeds <> Empty DO
             while (seeds.size() > 0) {
                 // currentP := seeds.first();
                 ISpatialObject currentP = seeds.get(0);
-                // result := SetOfPoints.regionQuery(currentP, Eps);
+                // result := Dataset.regionQuery(currentP, Eps);
                 ArrayList<ISpatialObject> result = regionQuery(currentP, Eps);
                 // IF result.size >= MinPts THEN
                 if (result.size() >= MinPts) {
@@ -151,7 +152,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
                                 seeds.add(resultP);
                                 // END IF;
                             }
-                            // SetOfPoints.changeClId(resultP,ClId);
+                            // Dataset.changeClId(resultP,ClId);
                             changeClId(resultP, ClId);
                             // END IF; // UNCLASSIFIED or NOISE
                         }
@@ -197,7 +198,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * 
      */
     public void changeClId(ISpatialObject Point, int ClId) {
-        //DbscanSpatialObject o = (DbscanSpatialObject) Point;
+        //DbscanSpatialObject o = (DbscanSpatialObject) PointToRemove;
         //o.ClId = ClId;
         setClId(Point, ClId);
     }

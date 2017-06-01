@@ -9,7 +9,7 @@ import org.dmtools.clustering.model.IClusteringObject;
 import org.dmtools.clustering.model.IConstraintObject;
 import org.dmtools.clustering.model.ISpatialObject;
 import org.dmtools.clustering.old.BasicSpatialObject;
-import org.dmtools.clustering.old.ClusteringLogger;
+import org.dmtools.clustering.old.ClusteringTimer;
 import org.dmtools.clustering.old.rtree.CustomRTree;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 import util.SetConstraints;
@@ -38,7 +38,7 @@ public class CDBSCAN extends DBSCANBase {
 	int numberOfDimensions;
 	double[] min = null;
 	double[] max = null;
-	ClusteringLogger logger = new ClusteringLogger(getName());
+	ClusteringTimer logger = new ClusteringTimer(getName());
 	InstanceConstraints ic = new InstanceConstraints();
 
 	/**
@@ -438,7 +438,7 @@ public class CDBSCAN extends DBSCANBase {
 					cc[1] = pp.getValues()[1];
 					cc[2] = -1;
 					pp.setValues(cc);
-					pp.setClusterId(Point.getClusterId());
+					pp.setClusterId(PointToRemove.getClusterId());
 					BasicSpatialObject bp = new BasicSpatialObject();*/
 
 					seeds.add(pp);

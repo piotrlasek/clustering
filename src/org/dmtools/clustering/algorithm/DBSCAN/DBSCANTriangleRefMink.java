@@ -80,9 +80,9 @@ public class DBSCANTriangleRefMink extends DBSCANTriangle {
 // -------------------------------------------------------------
 //        for (int i = 0; i < nDim; i++) {
 //            int j = 0;
-//            Point minPoint = null;
+//            PointToRemove minPoint = null;
 //            for (IClusteringObject co : input) {
-//                Point point = new Point(co.getSpatialObject().getValues().clone());
+//                PointToRemove point = new PointToRemove(co.getSpatialObject().getValues().clone());
 //                if (j == 0) {
 //                    minCoord = point.getValues()[i];
 //                }
@@ -108,7 +108,7 @@ public class DBSCANTriangleRefMink extends DBSCANTriangle {
 //            double r = Math.random() * input.size();
 //            ArrayList<IClusteringObject> in = (ArrayList<IClusteringObject>) input;
 //            IClusteringObject ob = in.get((int) r);
-//            Point p = new Point(ob.getSpatialObject().getValues().clone());
+//            PointToRemove p = new PointToRemove(ob.getSpatialObject().getValues().clone());
 //            RefPoints.add(p);
 //        }
         

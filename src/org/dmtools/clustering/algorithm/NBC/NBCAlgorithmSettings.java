@@ -1,6 +1,8 @@
 package org.dmtools.clustering.algorithm.NBC;
 
 
+import org.dmtools.clustering.CDMBaseAlgorithmSettings;
+
 import javax.datamining.JDMException;
 import javax.datamining.MiningAlgorithm;
 import javax.datamining.VerificationReport;
@@ -11,14 +13,14 @@ import javax.datamining.base.AlgorithmSettings;
  * @author Piotr Lasek
  *
  */
-public class NBCAlgorithmSettings implements AlgorithmSettings {
+public class NBCAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
 	private int k;
-	private static String name = "NBC";
+	public static String NAME = "NBC";
 
 	static {
 		try {
-			MiningAlgorithm.addExtension(name);
+			MiningAlgorithm.addExtension(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}
@@ -34,7 +36,7 @@ public class NBCAlgorithmSettings implements AlgorithmSettings {
 
 	@Override
 	public String toString() {
-		return name + ", k = " + k;
+		return NAME + ", k = " + k;
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class NBCAlgorithmSettings implements AlgorithmSettings {
 	@Override
 	public MiningAlgorithm getMiningAlgorithm() {
 		try {
-			return MiningAlgorithm.valueOf(name);
+			return MiningAlgorithm.valueOf(NAME);
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}

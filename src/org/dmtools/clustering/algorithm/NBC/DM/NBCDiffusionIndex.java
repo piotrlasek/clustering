@@ -1,15 +1,13 @@
 package org.dmtools.clustering.algorithm.NBC.DM;
 
+import Jama.Matrix;
 import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.old.*;
 import spatialindex.spatialindex.ISpatialIndex;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.ListIterator;
-
-import org.dmtools.clustering.old.*;
-
-import Jama.Matrix;
 
 
 /**
@@ -28,7 +26,7 @@ public class NBCDiffusionIndex implements IClusteringAlgorithm {
 
     ArrayList<DiffusionObject> Dataset;
     
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    ClusteringTimer logger = new ClusteringTimer();
 
     int nDim = 0;
     //int id = 0;

@@ -162,14 +162,14 @@ public class DBSCANTriangle extends DBSCANBase {
      * 
      * 
      */
-    // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
+    // ExpandCluster(Dataset, PointToRemove, ClId, Eps, MinPts) : Boolean;
     protected boolean TI_ExpandCluster(ArrayList<Point> D, Point p,
             Integer ClId, Double Eps, Integer MinPts) {
         // function TI-ExpandCluster(D, point p, ClId, Eps, MinPts)
         /* Assert: TI-Neighborhood does not include p */
         // seeds = TI-Neighborhood(D, p, Eps, MinPts);
         ArrayList<Point> seeds = TI_Neighborhood(D, p, Eps, MinPts);
-        // ArrayList<Point> seeds = TI_Neighborhood(D, p, Eps, MinPts);
+        // ArrayList<PointToRemove> seeds = TI_Neighborhood(D, p, Eps, MinPts);
         // p.NeighborsNo = p.NeighborsNo + |seeds|; // include p itself
         p.NeighborsNo = p.NeighborsNo + seeds.size();
         // if p.NeighborsNo < MinPts then
@@ -211,7 +211,7 @@ public class DBSCANTriangle extends DBSCANBase {
                 // endfor
             }
             // move p from D to D�; // D� stores analyzed points
-            // Point p1 = D.remove(p.pos);
+            // PointToRemove p1 = D.remove(p.pos);
             Point p1 = D.get(p.pos);
             D.set(p1.pos, null);
             p1.pos = -1;
@@ -244,7 +244,7 @@ public class DBSCANTriangle extends DBSCANBase {
                 } else {
                     // for each point q in curSeeds do
                     while (curSeeds.size() > 0) {
-                        // for(Point q:curSeeds) {
+                        // for(PointToRemove q:curSeeds) {
                         Point q = curSeeds.get(0);
                         // q.NeighborsNo = q.NeighborsNo + 1;
                         q.NeighborsNo = q.NeighborsNo + 1;
@@ -316,7 +316,7 @@ public class DBSCANTriangle extends DBSCANBase {
      * 
      */
     public void changeClId(ISpatialObject Point, int ClId) {
-        // DbscanSpatialObject o = (DbscanSpatialObject) Point;
+        // DbscanSpatialObject o = (DbscanSpatialObject) PointToRemove;
     }
 
     /**

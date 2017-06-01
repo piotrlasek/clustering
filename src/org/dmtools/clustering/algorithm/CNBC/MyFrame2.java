@@ -2,7 +2,7 @@ package org.dmtools.clustering.algorithm.CNBC;
 
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.model.IConstraintObject;
-
+import spatialindex.spatialindex.Point;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -34,8 +34,9 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		return (int) (x * zoom);
 	}
 
-	public MyFrame2(Collection<CNBCRTreePoint> result, double maxX, InstanceConstraints ic,
-                    ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
+	public MyFrame2(Collection<Point> result, double maxX, InstanceConstraints ic,
+
+					ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
 
 		zoom = (height*0.8) / maxX;
 
@@ -63,7 +64,10 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 //            mp.setValues(coords);
 //		}
 
-		this.result = result;
+		this.result = new ArrayList<>();
+		for (Point p : result) {
+			this.result.add((CNBCRTreePoint) p);
+		}
 		this.ic = ic;
 		this.setBackground(Color.WHITE);
 		this.addMouseListener(this);
@@ -416,9 +420,9 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		
 	}
 
-	public static void plotResult(Collection<CNBCRTreePoint> result, double maxX, InstanceConstraints ic,
+	public static void plotResult(Collection<Point> result, double maxX, InstanceConstraints ic,
 								  ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
-		MyFrame2 mf = new MyFrame2(result, maxX, null, null, null, null);
+		MyFrame2 mf = new MyFrame2(result, maxX, ic, fml, fcl, frc);
 		mf.setPreferredSize(new Dimension(1200, 1000));
 		JFrame f = new JFrame();
 		JScrollPane scrollPane = new JScrollPane(mf);

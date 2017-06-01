@@ -24,7 +24,7 @@ import java.util.ListIterator;
  */
 public class CNBCRTree implements IClusteringAlgorithm {
     
-    public static final String NAME = "C-NBC-RTree                     ";
+    public static final String NAME = "C-NBC-RTree";
 
     
     String description;
@@ -35,7 +35,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
 
     ArrayList<CNBCRTreePoint> Dataset;
     
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    ClusteringTimer logger = new ClusteringTimer();
     
     InstanceConstraints ic = new InstanceConstraints();
 

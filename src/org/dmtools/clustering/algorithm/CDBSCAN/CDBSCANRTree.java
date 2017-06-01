@@ -5,21 +5,12 @@ import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
+import org.dmtools.clustering.algorithm.common.ClusteringAlgorithm;
 import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.old.*;
-import spatialindex.rtree.RTree;
-import spatialindex.spatialindex.IData;
-import spatialindex.spatialindex.INode;
-import spatialindex.spatialindex.IVisitor;
-import spatialindex.storagemanager.IBuffer;
-import spatialindex.storagemanager.MemoryStorageManager;
-import spatialindex.storagemanager.PropertySet;
-import spatialindex.storagemanager.RandomEvictionsBuffer;
+import spatialindex.spatialindex.Point;
+import util.SetConstraints;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
 
 /**
  * The C-DBSCAN algorithm base class.
@@ -27,28 +18,21 @@ import java.util.ArrayList;
  * @author Piotr Lasek
  * 
  */
-public class CDBSCANRTree {
+public class CDBSCANRTree extends ClusteringAlgorithm {
 
-    private final static Logger log = LogManager.getLogger("CDBSCANRTree");
+    private final static Logger log = LogManager.getLogger(CDBSCANRTree.class.getName());
 
-    ClusteringLogger logger = new ClusteringLogger(CDBSCANAlgorithm.NAME);
-
-    ArrayList<CNBCRTreePoint> SetOfPoints;
-    int nDim = 0;
     Double Eps = 0.0;
     Integer MinPts = 0;
-    IClusteringData data;
+    private InstanceConstraints ic = new InstanceConstraints();
 
-    private RTree tree;
-
+    /**
+     *
+     */
     public void run() {
-        logger.clusteringStart();
+        timer.clusteringStart();
         DBSCAN();
-        logger.clusteringEnd();
-    }
-
-    public ArrayList<CNBCRTreePoint> getDataset() {
-        return this.SetOfPoints;
+        timer.clusteringEnd();
     }
 
     /**
@@ -62,26 +46,27 @@ public class CDBSCANRTree {
     // -----------------------------------------------------------------------
 
     protected void DBSCAN() {
-        // SetOfPoints is UNCLASSIFIED
+        timer.setAlgorithmName(CDBSCANAlgorithmSettings.NAME);
+        // Dataset is UNCLASSIFIED
         Integer ClusterId = nextId(CDMCluster.NOISE);
         
-        for (CNBCRTreePoint point : SetOfPoints) {
+        for (Point point : Dataset) {
             //BasicSpatialObject point = (DbscanSpatialObject) p;
             //point.ClId = UNCLASSIFIED;
             setClId(point, CDMCluster.UNCLASSIFIED);
         }
 
         // ClusterId := nextId(NOISE);
-        // FOR i FROM 1 TO SetOfPoints.size DO
-        // Point := SetOfPoints.get(i);
-        for (CNBCRTreePoint Point : SetOfPoints) {
-            //DbscanSpatialObject Point = (DbscanSpatialObject) p;
-            // IF Point.ClId = UNCLASSIFIED THEN
-            ///if (Point.ClId == UNCLASSIFIED)
+        // FOR i FROM 1 TO Dataset.size DO
+        // PointToRemove := Dataset.get(i);
+        for (Point Point : Dataset) {
+            //DbscanSpatialObject PointToRemove = (DbscanSpatialObject) p;
+            // IF PointToRemove.ClId = UNCLASSIFIED THEN
+            ///if (PointToRemove.ClId == UNCLASSIFIED)
             if (getClId(Point) == CDMCluster.UNCLASSIFIED)
-            // IF ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts) THEN
+            // IF ExpandCluster(Dataset, PointToRemove, ClusterId, Eps, MinPts) THEN
             {
-                if (ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts)) {
+                if (ExpandCluster(Dataset, Point, ClusterId, Eps, MinPts)) {
                     // ClusterId := nextId(ClusterId)
                     ClusterId = nextId(ClusterId);
                     // END IF
@@ -97,33 +82,33 @@ public class CDBSCANRTree {
      * 
      * 
      */
-    // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
-    private boolean ExpandCluster(ArrayList<CNBCRTreePoint> SetOfPoints,
-            CNBCRTreePoint Point, Integer ClId, Double Eps, Integer MinPts) {
-        // seeds :=SetOfPoints.regionQuery(Point,Eps);
-        ArrayList<CNBCRTreePoint> seeds1 = regionQuery(Point, Eps);
-        ArrayList<CNBCRTreePoint> seeds = new ArrayList<CNBCRTreePoint>();
+    // ExpandCluster(Dataset, PointToRemove, ClId, Eps, MinPts) : Boolean;
+    private boolean ExpandCluster(ArrayList<Point> SetOfPoints,
+            Point Point, Integer ClId, Double Eps, Integer MinPts) {
+        // seeds :=Dataset.regionQuery(PointToRemove,Eps);
+        ArrayList<Point> seeds1 = tree.regionQuery(Point, Eps);
+        ArrayList<Point> seeds = new ArrayList<Point>();
         seeds.addAll(seeds1);
         // IF seeds.size<MinPts THEN // no core point
         if (seeds.size() < MinPts) {
-            // SetOfPoint.changeClId(Point,NOISE);
+            // SetOfPoint.changeClId(PointToRemove,NOISE);
             changeClId(Point, CDMCluster.NOISE);
             // RETURN False;
             return false;
         }
-        // ELSE // all points in seeds are density-reachable from Point
+        // ELSE // all points in seeds are density-reachable from PointToRemove
         else {
-            // SetOfPoints.changeClIds(seeds,ClId);
+            // Dataset.changeClIds(seeds,ClId);
             changeClId(seeds, ClId);
-            // seeds.delete(Point);
-            //seeds.remove(Point);
+            // seeds.delete(PointToRemove);
+            //seeds.remove(PointToRemove);
             changeClId(Point, ClId);
             // WHILE seeds <> Empty DO
             while (seeds.size() > 0) {
                 // currentP := seeds.first();
-                CNBCRTreePoint currentP = seeds.get(0);
-                // result := SetOfPoints.regionQuery(currentP, Eps);
-                ArrayList<CNBCRTreePoint> result = regionQuery(currentP, Eps);
+                CNBCRTreePoint currentP = (CNBCRTreePoint) seeds.get(0);
+                // result := Dataset.regionQuery(currentP, Eps);
+                ArrayList<Point> result = tree.regionQuery(currentP, Eps);
                 // IF result.size >= MinPts THEN
                 if (result.size() >= MinPts) {
                     // FOR i FROM 1 TO result.size DO
@@ -131,7 +116,7 @@ public class CDBSCANRTree {
                         // resultP := result.get(i);
                         //DbscanSpatialObject resultP = (DbscanSpatialObject) result
                         //        .get(i);
-                        CNBCRTreePoint resultP = result.get(i);
+                        CNBCRTreePoint resultP = (CNBCRTreePoint) result.get(i);
                         // IF resultP.ClId IN {UNCLASSIFIED, NOISE} THEN
                         if (getClId(resultP) == CDMCluster.UNCLASSIFIED
                                 || getClId(resultP) == CDMCluster.NOISE) {
@@ -141,7 +126,7 @@ public class CDBSCANRTree {
                                 seeds.add(resultP);
                                 // END IF;
                             }
-                            // SetOfPoints.changeClId(resultP,ClId);
+                            // Dataset.changeClId(resultP,ClId);
                             changeClId(resultP, ClId);
                             // END IF; // UNCLASSIFIED or NOISE
                         }
@@ -162,36 +147,22 @@ public class CDBSCANRTree {
 
     /**
      * 
-     * @param Point
-     * @param Eps
-     * @return
-     */
-    private ArrayList<CNBCRTreePoint> regionQuery(CNBCRTreePoint Point,
-            double Eps) {
-        ArrayList<CNBCRTreePoint> neibhgours = new ArrayList();
-        MyVisitor kNN = new MyVisitor();
-        tree.nearestNeighborQuery(Eps, Point, kNN, SetOfPoints.size());
-        return kNN.neighbours;
-    }
-
-    /**
-     * 
      * @param Points
      * @param ClId
      * @return
      */
-    public void changeClId(ArrayList<CNBCRTreePoint> Points, int ClId) {
-        for (CNBCRTreePoint p : Points)
+    public void changeClId(ArrayList<Point> Points, int ClId) {
+        for (Point p : Points) {
             changeClId(p, ClId);
+        }
     }
 
     /**
      * 
      */
-    public void changeClId(CNBCRTreePoint Point, int ClId) {
-        //DbscanSpatialObject o = (DbscanSpatialObject) Point;
-        //o.ClId = ClId;
-        setClId(Point, ClId);
+    public void changeClId(Point Point, int ClId) {
+        CNBCRTreePoint cnrtp = (CNBCRTreePoint) Point;
+        setClId(cnrtp, ClId);
     }
 
     /**
@@ -199,9 +170,8 @@ public class CDBSCANRTree {
      * @param Point
      * @return
      */
-    public int getClId(CNBCRTreePoint Point)
-    {
-        return Point.getClusterId();
+    public int getClId(Point Point) {
+        return ((CNBCRTreePoint) Point).getClusterId();
     }
 
     /**
@@ -209,125 +179,9 @@ public class CDBSCANRTree {
      * @param Point
      * @param ClId
      */
-    public void setClId(CNBCRTreePoint Point, int ClId)
-    {
-        Point.setClusterId(ClId);
-    }
-
-
-    /**
-     *
-     * @param Points
-     * @param ClId
-     */
-    public void setClId(ArrayList<CNBCRTreePoint> Points, int ClId) {
-        for (CNBCRTreePoint o : Points) {
-            setClId(o, ClId);
-        }
-    }
-
-    /**
-     *
-     * @throws IOException
-     */
-    public void initRTree() throws IOException {
-        PropertySet ps = new PropertySet();
-        ps.setProperty("FileName", "nbc-rtree");
-        ps.setProperty("FillFactor", 0.1);
-        ps.setProperty("IndexCapacity", 32);
-        ps.setProperty("LeafCapacity", 32);
-        ps.setProperty("Dimension", nDim);
-
-        MemoryStorageManager memmanag = new MemoryStorageManager();
-        IBuffer mem = new RandomEvictionsBuffer(memmanag, 40000, false);
-
-        tree = new RTree(ps, mem);
-    }
-
-    /**
-     * The implementation of the IVisitor interface.
-     */
-    class MyVisitor implements IVisitor {
-        public int m_indexIO = 0;
-        public int m_leafIO = 0;
-        public int kNB = 0;
-
-        ArrayList<CNBCRTreePoint> neighbours = new ArrayList<CNBCRTreePoint>();
-        ArrayList<IData> n = new ArrayList<IData>();
-
-        public void reset() {
-            kNB = 0;
-            neighbours.clear();
-        }
-
-        public void visitNode(final INode n) {
-            if (n.isLeaf())
-                m_leafIO++;
-            else
-                m_indexIO++;
-        }
-
-        public void visitData(final IData d) {
-            kNB++;
-            int id = d.getIdentifier();
-            neighbours.add(SetOfPoints.get(id));
-            n.add(d);
-        }
-    }
-
-    /**
-     *
-     */
-    public IClusteringData getResult() {
-        BasicClusteringData bcd = new BasicClusteringData();
-        ArrayList<IClusteringObject> al = new ArrayList<IClusteringObject>();
-
-        for (Object o : SetOfPoints) {
-            CNBCRTreePoint mp = (CNBCRTreePoint) o;
-            BasicClusteringObject bco = new BasicClusteringObject();
-            BasicSpatialObject rso = new BasicSpatialObject(mp.m_pCoords);
-            bco.setSpatialObject(rso);
-            BasicClusterInfo bci = new BasicClusterInfo();
-            bci.setClusterId(mp.getClusterId());
-            bco.setClusterInfo(bci);
-            al.add(bco);
-        }
-
-        bcd.set(al);
-
-        return bcd;
-    }
-
-    /**
-     *
-     * @param data
-     */
-    public void setData(IClusteringData data) {
-        logger.indexStart();
-        ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
-                .get();
-        SetOfPoints = new ArrayList();
-        nDim = data.get().iterator().next().getSpatialObject().getValues().length;
-
-        try {
-            initRTree();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return;
-        }
-
-        int id = 0;
-
-        // building R-Tree
-        for (IClusteringObject ico : tmp) {
-            CNBCRTreePoint mp = new CNBCRTreePoint(ico.getSpatialObject()
-                    .getValues(), CDMCluster.UNCLASSIFIED);
-            SetOfPoints.add(id, mp);
-            byte[] d = new byte[]{CDMCluster.UNCLASSIFIED};
-            tree.insertData(d, mp, id);
-            id++;
-        }
-        logger.indexEnd();
+    public void setClId(Point Point, int ClId) {
+        CNBCRTreePoint point = (CNBCRTreePoint) Point;
+        point.setClusterId(ClId);
     }
 
     public void setEps(double eps) {
@@ -339,6 +193,70 @@ public class CDBSCANRTree {
     }
 
     public InstanceConstraints getConstraints() {
-        return null;
+        return ic;
+    }
+
+    @Override
+    public void setData(IClusteringData data) {
+        super.setData(data);
+    }
+
+    public void setConstraints(String icInfo) {
+        if (icInfo == "birch1") {
+            log.info("Loading constraints for birch1");
+            SetConstraints.forCNBC(Dataset, ic);
+        } else if (icInfo.startsWith("random")) {
+            log.info("Setting random constraints.");
+            randomConstraints(3, 3, this.Dataset.size());
+        } else {
+            log.warn("No constraints set.");
+        }
+    }
+
+    /**
+     *
+     * @param mlCount
+     * @param clCount
+     * @param datasetSize
+     */
+    private void randomConstraints(int mlCount, int clCount, int datasetSize) {
+
+        int index = 0;
+
+        for (int i = 0; i < mlCount; i++) {
+            index = drawIndex(datasetSize);
+            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
+            index = drawIndex(datasetSize);
+            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
+            ic.addMustLinkPoints(p0, p1);
+        }
+
+        for (int i = 0; i < clCount; i++) {
+            index = drawIndex(datasetSize);
+            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
+            index = drawIndex(datasetSize);
+            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
+            ic.addCannotLinkPoints(p0, p1);
+        }
+    }
+
+    ArrayList<Integer> indexes = new ArrayList<Integer>();
+
+    /**
+     *
+     * @param datasetSize
+     * @return
+     */
+    public int drawIndex(int datasetSize) {
+
+        int index = -1;
+
+        do {
+            index = (int) (Math.random() * datasetSize);
+        } while (indexes.contains(index));
+
+        indexes.add(index);
+
+        return index;
     }
 }

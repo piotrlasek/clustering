@@ -64,13 +64,13 @@ public class DBSCANTextIndex extends ClusteringTextIndex {
 
         // ClusterId := nextId(NOISE);
         // FOR i FROM 1 TO SetOfPoints.size DO
-        // Point := SetOfPoints.get(i);
+        // PointToRemove := SetOfPoints.get(i);
         for (TextObject Point : ti.dataset) {
-            //DbscanSpatialObject Point = (DbscanSpatialObject) p;
-            // IF Point.ClId = UNCLASSIFIED THEN
-            ///if (Point.ClId == UNCLASSIFIED)
+            //DbscanSpatialObject PointToRemove = (DbscanSpatialObject) p;
+            // IF PointToRemove.ClId = UNCLASSIFIED THEN
+            ///if (PointToRemove.ClId == UNCLASSIFIED)
             if (Point.clst_no == UNCLASSIFIED)
-            // IF ExpandCluster(SetOfPoints, Point, ClusterId, Eps, MinPts) THEN
+            // IF ExpandCluster(SetOfPoints, PointToRemove, ClusterId, Eps, MinPts) THEN
             {
                 if (ExpandCluster(Point, ClusterId, Eps, MinPts)) {
                     // ClusterId := nextId(ClusterId)
@@ -140,25 +140,25 @@ public class DBSCANTextIndex extends ClusteringTextIndex {
 		return region;
 	}
 	
-    // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
+    // ExpandCluster(SetOfPoints, PointToRemove, ClId, Eps, MinPts) : Boolean;
     private boolean ExpandCluster(
             TextObject Point, Integer ClId, Double Eps, Integer MinPts) {
-        // seeds :=SetOfPoints.regionQuery(Point,Eps);
+        // seeds :=SetOfPoints.regionQuery(PointToRemove,Eps);
         ArrayList<TextObject> seeds = regionQuery(Point, Eps);
         // IF seeds.size<MinPts THEN // no core point
 
         if (seeds.size() < MinPts) {
-            // SetOfPoint.changeClId(Point,NOISE);
+            // SetOfPoint.changeClId(PointToRemove,NOISE);
             changeClId(Point, NOISE);
             // RETURN False;
             return false;
         }
-        // ELSE // all points in seeds are density-reachable from Point
+        // ELSE // all points in seeds are density-reachable from PointToRemove
         else {
             // SetOfPoints.changeClIds(seeds,ClId);
             changeClId(seeds, ClId);
-            // seeds.delete(Point);
-            //seeds.remove(Point);
+            // seeds.delete(PointToRemove);
+            //seeds.remove(PointToRemove);
             changeClId(Point, ClId);
             // WHILE seeds <> Empty DO
             while (seeds.size() > 0) {

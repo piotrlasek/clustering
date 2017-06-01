@@ -1,10 +1,18 @@
 package org.dmtools.clustering;
 
-import javax.datamining.MiningObject;
-import javax.datamining.clustering.ClusteringSettings;
-import javax.datamining.data.PhysicalDataSet;
-
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.old.DataSourceManager;
 import org.dmtools.datamining.data.CDMAlgorithm;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+
+import javax.datamining.JDMException;
+import javax.datamining.MiningObject;
+import javax.datamining.base.AlgorithmSettings;
+import javax.datamining.clustering.ClusteringSettings;
+import javax.datamining.data.PhysicalAttribute;
+import javax.datamining.data.PhysicalDataSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 
@@ -13,15 +21,38 @@ import org.dmtools.datamining.data.CDMAlgorithm;
  */
 public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 
-	MiningObject result;
-	ClusteringSettings clusteringSettings;
-	PhysicalDataSet physicalDataSet;
-	
+	protected MiningObject result;
+	protected AlgorithmSettings algorithmSettings;
+	private ArrayList<double[]> data;
+	protected double[] min = null;
+	protected double[] max = null;
+	protected Collection<PhysicalAttribute> attributes;
+
+	protected ClusteringSettings clusteringSettings;
+	protected PhysicalDataSet physicalDataSet;
+
+	protected int numberOfDimensions;
+
+	/**
+	 *
+	 * @param clusteringSettings
+	 * @param physicalDataSet
+	 */
 	public CDMBasicClusteringAlgorithm(ClusteringSettings clusteringSettings,
 			PhysicalDataSet physicalDataSet)
 	{
+		try {
+			attributes = physicalDataSet.getAttributes();
+		} catch (JDMException e) {
+			e.printStackTrace();
+		}
+
+		numberOfDimensions = attributes.size();
 		this.clusteringSettings = clusteringSettings;
 		this.physicalDataSet = physicalDataSet;
+
+		min = new double[numberOfDimensions];
+		max = new double[numberOfDimensions];
 	}
 	
 	@Override
@@ -38,5 +69,70 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	 */
 	public PhysicalDataSet getPhysicalDataSet() {
 		return physicalDataSet;
+	}
+
+	/**
+     *
+     */
+    public IClusteringData prepareData() {
+		ArrayList<Object[]> rawData =
+				((CDMFilePhysicalDataSet) getPhysicalDataSet()).getData();
+
+		Collection<PhysicalAttribute> attributes = null;
+
+		data = new ArrayList();
+
+		try {
+			attributes = getPhysicalDataSet().getAttributes();
+		} catch (JDMException e) {
+			e.printStackTrace();
+		}
+
+		int i = 0;
+		for(Object[] rawRecord : rawData) {
+			double[] record = new double[attributes.size() + 1];
+			int d = 0;
+			for(PhysicalAttribute attribute : attributes) {
+				record[d] = new Double(rawData.get(i)[d].toString());
+				if (min[d] == 0)
+					min[d] = record[d];
+				else
+				if (min[d] > record[d]) min[d] = record[d];
+				if (max[d] < record[d]) max[d] = record[d];
+				d++;
+			}
+			record[d] = -1; // UNCLUSTERED
+			data.add(record);
+			i++;
+		}
+
+		DataSourceManager dsm = new DataSourceManager();
+
+		dsm.readData("abc", data);
+		dsm.setActiveDataSource("abc");
+
+		return dsm.getActiveDataSource().getData();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean dump() {
+		if (((CDMBaseAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).dump())
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean plot() {
+		if (((CDMBaseAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).plot())
+			return true;
+		else
+			return false;
 	}
 }

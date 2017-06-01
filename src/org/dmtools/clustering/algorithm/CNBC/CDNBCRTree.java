@@ -1,20 +1,18 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.algorithm.NBC.NBCRTreePoint;
-import org.dmtools.clustering.model.*;
-import org.dmtools.clustering.old.*;
-import spatialindex.rtree.RTree;
-import spatialindex.spatialindex.*;
-import spatialindex.spatialindex.ISpatialIndex;
-import spatialindex.storagemanager.IBuffer;
-import spatialindex.storagemanager.MemoryStorageManager;
-import spatialindex.storagemanager.PropertySet;
-import spatialindex.storagemanager.RandomEvictionsBuffer;
+import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithmSettings;
+import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANRTree;
+import org.dmtools.clustering.algorithm.common.ClusteringAlgorithm;
+import org.dmtools.clustering.algorithm.common.MyVisitor;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IConstraintObject;
+import spatialindex.spatialindex.IShape;
+import spatialindex.spatialindex.Point;
 import util.SetConstraints;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -23,36 +21,29 @@ import java.util.ListIterator;
  * 
  * @author Piotr Lasek
  */
-public class CDNBCRTree implements IClusteringAlgorithm {
+public class CDNBCRTree extends ClusteringAlgorithm {
 
-    public static final String NAME = "CD-NBC-RTree                     ";
-
-    String description;
-
-    IClusteringObserver observer;
-    ISpatialIndex tree;
-    IClusteringParameters parameters;
-
-    ArrayList<CNBCRTreePoint> Dataset;
-
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    private final static Logger log = LogManager.getLogger(CDBSCANRTree.class.getName());
 
     InstanceConstraints ic = new InstanceConstraints();
-
     ArrayList<IConstraintObject> deferred = new ArrayList<>();
 
-    int nDim = 0;
-    int k;
-    private double maxx;
+    private int k;
+
+    /**
+     *
+     * @param k
+     */
+    public void setK(int k) {
+        this.k = k;
+    }
 
     /**
      * The algorithm.
      */
     public void run() {
-
-        logger.addDescription(this.getDescription());
-        //long begin_time1 = System.currentTimeMillis();
-        logger.clusteringStart();
+        timer.setAlgorithmName(CDBSCANAlgorithmSettings.NAME);
+        timer.clusteringStart();
 
         ArrayList<CNBCRTreePoint> NoiseSet = new ArrayList();
         int cluster_count = 0;
@@ -87,7 +78,10 @@ public class CDNBCRTree implements IClusteringAlgorithm {
             tree.nearestNeighborQuery(k, p, kNN);
 
             // applying cannot-link constraints
-            boolean existsCannotLink = ic.existsCannotLink(kNN.neighbours);
+            ArrayList<CNBCRTreePoint> knNNeighbours = new ArrayList();
+            for(Point pic : knNNeighbours) knNNeighbours.add((CNBCRTreePoint) pic);
+
+            boolean existsCannotLink = ic.existsCannotLink(knNNeighbours);
             // CANNOT-LINK
             if (existsCannotLink) {
                 for (int i = 0; i < kNN.neighbours.size(); i++) {
@@ -128,7 +122,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
                 MyVisitor kNNpD = new MyVisitor();
                 tree.nearestNeighborQuery(k, pD, kNNpD);
 
-                ListIterator<CNBCRTreePoint> liKNNpD =
+                ListIterator<Point> liKNNpD =
                         kNNpD.neighbours.listIterator();
 
                 while (liKNNpD.hasNext()) {
@@ -187,7 +181,8 @@ public class CDNBCRTree implements IClusteringAlgorithm {
             CNBCRTreePoint icoTreePoint = new CNBCRTreePoint(ico.getValues());
             if (Dataset.contains(icoTreePoint)) {
                 int i = Dataset.indexOf(icoTreePoint);
-                NBCRTreePoint nrtp = Dataset.get(i);
+                CNBCRTreePoint nrtp;
+                nrtp = (CNBCRTreePoint) Dataset.get(i);
                 nrtp.setClusterId(ico.getClusterId());
             }
         }
@@ -201,9 +196,9 @@ public class CDNBCRTree implements IClusteringAlgorithm {
                 p.setClusterId(CDMCluster.NOISE);
         }
 
-        logger.clusteringEnd();
+        timer.clusteringEnd();
 
-        System.out.println(logger.getLog());
+        System.out.println(timer.getLog());
     }
 
     /**
@@ -299,7 +294,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
      */
     private void recluster3(ArrayList<IConstraintObject> Rd) throws Exception {
 
-        logger.addDescription("recluster3");
+        timer.addDescription("recluster3");
 
         int deferredSize = Rd.size();
         int iteration = 0;
@@ -553,7 +548,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         MyVisitor $1NN = new MyVisitor();
         tree.nearestNeighborQuery(k + 1, p, $1NN);
 
-        ListIterator<CNBCRTreePoint> n =
+        ListIterator<Point> n =
                 $1NN.neighbours.listIterator();
 
         ArrayList<CNBCRTreePoint> neighbors = new ArrayList<CNBCRTreePoint>();
@@ -564,7 +559,7 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         if (n.hasNext()) n.next();
 
         while (n.hasNext()) {
-            neighbors.add(n.next());
+            neighbors.add((CNBCRTreePoint) n.next());
         }
 
 
@@ -610,135 +605,38 @@ public class CDNBCRTree implements IClusteringAlgorithm {
     }
 
     /**
-     * @throws IOException
+     *
+     * @return
      */
-    public void initRTree() throws IOException {
-        /*PropertySet ps = new PropertySet();
-        Boolean b = new Boolean(true);
-        ps.setProperty("Overwrite", b);
-        ps.setProperty("FileName", "nbc-rtree");
-        Integer i = new Integer(128);
-        ps.setProperty("PageSize", i);*/
-
-        PropertySet ps = new PropertySet();
-        ps.setProperty("FileName", "nbc-rtree");
-        ps.setProperty("FillFactor", 0.1);
-        ps.setProperty("IndexCapacity", 32);
-        ps.setProperty("LeafCapacity", 32);
-        ps.setProperty("Dimension", nDim);
-
-        MemoryStorageManager memmanag = new MemoryStorageManager();
-        IBuffer mem = new RandomEvictionsBuffer(memmanag, 40000, false);
-
-        tree = new RTree(ps, mem);
-    }
-
-    /**
-     * The implementation of the IVisitor interface.
-     */
-    class MyVisitor implements IVisitor {
-        public int m_indexIO = 0;
-        public int m_leafIO = 0;
-        public int kNB = 0;
-
-        ArrayList<CNBCRTreePoint> neighbours = new ArrayList<CNBCRTreePoint>();
-        ArrayList<IData> n = new ArrayList<IData>();
-
-        public void reset() {
-            kNB = 0;
-            neighbours.clear();
-        }
-
-        public void visitNode(final INode n) {
-            if (n.isLeaf())
-                m_leafIO++;
-            else
-                m_indexIO++;
-        }
-
-        public void visitData(final IData d) {
-            kNB++;
-            int id = d.getIdentifier();
-            neighbours.add(Dataset.get(id));
-            n.add(d);
-        }
-    }
-
     public InstanceConstraints getConstraints() {
         return ic;
     }
 
-    @Override
-    public IClusteringData getResult() {
-        System.out.println("getResult");
-        BasicClusteringData bcd = new BasicClusteringData();
-        ArrayList<IClusteringObject> al = new ArrayList<IClusteringObject>();
-
-        for (Object o : Dataset) {
-            CNBCRTreePoint mp = (CNBCRTreePoint) o;
-            BasicClusteringObject bco = new BasicClusteringObject();
-            if (mp.wasDeferred()) {
-                bco.addParameter("wasDeferred", "true");
-            }
-
-            double[] coords = mp.m_pCoords;
-
-            for(int x = 0; x < coords.length; x++) {
-                coords[x] = coords[x] / maxx * 800;
-            }
-
-
-            BasicSpatialObject rso = new BasicSpatialObject(coords);
-            bco.setSpatialObject(rso);
-            BasicClusterInfo bci = new BasicClusterInfo();
-            bci.setClusterId(mp.getClusterId());
-            bco.setClusterInfo(bci);
-            bco.addParameter("wasDeferred", mp.wasDeferred() ? "true" : "false");
-            al.add(bco);
-        }
-
-        bcd.set(al);
-
-        return bcd;
-    }
-
+    /**
+     *
+     * @return
+     */
     @Override
     public void setData(IClusteringData data) {
-        logger.indexStart();
-        ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
-                .get();
-        Dataset = new ArrayList();
-        nDim = data.get().iterator().next().getSpatialObject().getValues().length;
+        super.setData(data);
 
-        try {
-            initRTree();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return;
-        }
-
-        int id = 0;
-
-        // building R-Tree
-        byte[] d = new byte[]{CDMCluster.UNCLASSIFIED};
-        for (IClusteringObject ico : tmp) {
-            double[] values = ico.getSpatialObject().getValues();
-            if (values[0] > maxx) maxx = values[0];
-            CNBCRTreePoint mp = new CNBCRTreePoint(ico.getSpatialObject()
-                    .getValues(), CDMCluster.UNCLASSIFIED);
-            Dataset.add(id, mp);
-            tree.insertData(d, mp, id);
-            id++;
-        }
-        logger.indexEnd();
-
-        // SETTING NUMBER OF CONSTRAINTS
-
-        //randomConstraints(2, 2, Dataset.size());
-        // setConstraints();
-        SetConstraints.forCNBC(Dataset, ic);
     }
 
+    /**
+     *
+     * @param icInfo
+     */
+    public void setConstraints(String icInfo) {
+        if (icInfo == "birch1") {
+            log.info("Loading constraints for birch1");
+            SetConstraints.forCNBC(Dataset, ic);
+        } else if (icInfo.startsWith("random")) {
+            log.info("Setting random constraints.");
+            randomConstraints(3, 3, this.Dataset.size());
+        } else {
+            log.warn("No constraints set.");
+        }
+    }
 
     /**
      *
@@ -752,17 +650,17 @@ public class CDNBCRTree implements IClusteringAlgorithm {
 
         for (int i = 0; i < mlCount; i++) {
             index = drawIndex(datasetSize);
-            CNBCRTreePoint p0 = Dataset.get(index);
+            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
             index = drawIndex(datasetSize);
-            CNBCRTreePoint p1 = Dataset.get(index);
+            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
             ic.addMustLinkPoints(p0, p1);
         }
 
         for (int i = 0; i < clCount; i++) {
             index = drawIndex(datasetSize);
-            CNBCRTreePoint p0 = Dataset.get(index);
+            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
             index = drawIndex(datasetSize);
-            CNBCRTreePoint p1 = Dataset.get(index);
+            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
             ic.addCannotLinkPoints(p0, p1);
         }
     }
@@ -785,14 +683,13 @@ public class CDNBCRTree implements IClusteringAlgorithm {
         indexes.add(index);
 
         return index;
-
     }
 
     /**
      *
      */
     private void setConstraints() {
-        logger.addDescription("Setting constraints...");
+        timer.addDescription("Setting constraints...");
         // SetConstraints.forCNBC(Dataset, ic);
 
  		CNBCRTreePoint p0 = new CNBCRTreePoint(new double[]{438.0, 259.0}, CDMCluster.UNCLASSIFIED);
@@ -800,15 +697,15 @@ public class CDNBCRTree implements IClusteringAlgorithm {
  		CNBCRTreePoint p2, p3, p4;
 
  		p0 = new CNBCRTreePoint(new double[]{443.0, 271.0}, CDMCluster.UNCLASSIFIED);
- 		p0 = Dataset.get(2730);
+ 		p0 = (CNBCRTreePoint) Dataset.get(2730);
  		p1 = new CNBCRTreePoint(new double[]{448.0, 278.0}, CDMCluster.UNCLASSIFIED);
  		p2 = new CNBCRTreePoint(new double[]{421.0,333.0}, CDMCluster.UNCLASSIFIED);
  		p3 = new CNBCRTreePoint(new double[]{433.0,325.0}, CDMCluster.UNCLASSIFIED);
 
- 		p0 = Dataset.get(Dataset.indexOf(p0));
- 		p1 = Dataset.get(Dataset.indexOf(p1));
- 		p2 = Dataset.get(Dataset.indexOf(p2));
- 		p3 = Dataset.get(Dataset.indexOf(p3));
+ 		p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+ 		p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+ 		p2 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p2));
+ 		p3 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p3));
 
  		ic.addCannotLinkPoints(p0,  p1);
  		ic.addCannotLinkPoints(p2,  p3);
@@ -819,11 +716,11 @@ public class CDNBCRTree implements IClusteringAlgorithm {
  		p3 = new CNBCRTreePoint(new double[]{478.0, 356.0}, CDMCluster.UNCLASSIFIED);
  		p4 = new CNBCRTreePoint(new double[]{508.0, 373.0}, CDMCluster.UNCLASSIFIED);
 
- 		p0 = Dataset.get(Dataset.indexOf(p0));
- 		p1 = Dataset.get(Dataset.indexOf(p1));
- 		p2 = Dataset.get(Dataset.indexOf(p2));
- 		p3 = Dataset.get(Dataset.indexOf(p3));
- 		p4 = Dataset.get(Dataset.indexOf(p4));
+ 		p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+ 		p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+ 		p2 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p2));
+ 		p3 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p3));
+ 		p4 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p4));
 
  		ic.addCannotLinkPoints(p0, p1);
  		ic.addCannotLinkPoints(p1, p2);
@@ -832,61 +729,16 @@ public class CDNBCRTree implements IClusteringAlgorithm {
 
  		p0 = new CNBCRTreePoint(new double[]{326.0, 314.0}, CDMCluster.UNCLASSIFIED);
  		p1 = new CNBCRTreePoint(new double[]{359.0, 369.0}, CDMCluster.UNCLASSIFIED);
- 		p0 = Dataset.get(Dataset.indexOf(p0));
- 		p1 = Dataset.get(Dataset.indexOf(p1));
+ 		p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+ 		p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
  		ic.addMustLinkPoints(p0, p1);
-    }
-
-    @Override
-    public IClusteringParameters getParameters() {
-        return parameters;
-    }
-
-    @Override
-    public void setParameters(IClusteringParameters parameters) {
-        this.parameters = parameters;
-        k = new Integer(parameters.getValue("k")).intValue();
-        logger.setParameters(parameters.toString());
-    }
-
-    @Override
-    public void setObserver(IClusteringObserver observer) {
-        // TODO Auto-generated method stub
-        this.observer = observer;
-    }
-
-    public void setGraphics(Graphics g) {
-
-    }
-
-    public void addLines() {
-        this.observer.handleNotify((Object) null);
-    }
-
-    @Override
-    public String getName() {
-        return CDNBCRTree.NAME;
-    }
-
-    /**
-     *
-     */
-    public void addDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     *
-     */
-    public String getDescription() {
-        return description;
     }
 
     /**
      *
      * @return
      */
-    public ArrayList<CNBCRTreePoint> getDataset() {
+    public ArrayList<Point> getDataset() {
         return Dataset;
     }
 }

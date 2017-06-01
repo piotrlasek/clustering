@@ -1,15 +1,15 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
-import java.util.ArrayList;
-
 import org.dmtools.clustering.model.ISpatialObject;
 
-public class Point extends NbcSpatialObject {
+import java.util.ArrayList;
+
+public class PointToRemove extends NbcSpatialObject {
 
     public double dist;
     public double dist2;
     public double Eps2;
-    public ArrayList<Point> Border;
+    public ArrayList<PointToRemove> Border;
     public int pos;
     public int pos2;
     public int NeighborsNo;
@@ -18,10 +18,10 @@ public class Point extends NbcSpatialObject {
     public double tmpDist;
     public ArrayList<Integer> neighbors;
     
-    public Point(ISpatialObject o) {
+    public PointToRemove(ISpatialObject o) {
         super(o);
         dist = -1;
-        Border = new ArrayList<Point>();
+        Border = new ArrayList<PointToRemove>();
         Dists = new ArrayList<Double>();
         pos = -1;
         pos2 = -1;
@@ -30,10 +30,10 @@ public class Point extends NbcSpatialObject {
         neighbors = new ArrayList<Integer>();
     }
 
-    public Point(double[] coordinates) {
+    public PointToRemove(double[] coordinates) {
         super(coordinates);
         dist = -1;
-        Border = new ArrayList<Point>();
+        Border = new ArrayList<PointToRemove>();
         Dists = new ArrayList<Double>();
         pos = -1;
         pos2 = -1;

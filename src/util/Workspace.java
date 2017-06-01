@@ -74,6 +74,7 @@ public class Workspace {
             for (String kvPairString : kvPairStrings) {
                 String[] kvPair = kvPairString.split(":");
                 parameters.put(kvPair[0], kvPair[1]);
+                logger.info(">>>> " + kvPair[0]);
             }
         }
         return parameters;

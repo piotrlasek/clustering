@@ -1,13 +1,12 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
-import java.awt.Graphics;
+import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.old.*;
+
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-
-import org.dmtools.clustering.model.*;
-import org.dmtools.clustering.old.*;
 
 /**
  * 
@@ -16,7 +15,7 @@ import org.dmtools.clustering.old.*;
  */
 public abstract class CNBCBase implements IClusteringAlgorithm {
 
-    ClusteringLogger logger = new ClusteringLogger(getName());
+    ClusteringTimer logger = new ClusteringTimer();
     
     //String desc = getName();
 

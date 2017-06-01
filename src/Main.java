@@ -51,8 +51,8 @@ public class Main {
 			String dataFilePath = Workspace.getDataFilePath();
 
 			if (dataFilePath == null) {
-				dataFilePath = "/data/experiment/birch1.txt";
-				//dataFilePath = "/data/my-file-2d.txt";
+				//dataFilePath = "/data/experiment/birch1.txt";
+				dataFilePath = "/data/my-file-2d.txt";
                 //cs.setURI(cdmPath + "/data/experiment/birch2.txt"); //brich2
                 //cs.setURI(cdmPath + "/data/experiment/birch3.txt"); //brich3
 				//cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
