@@ -14,8 +14,8 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 	Collection<CNBCRTreePoint> result;
 	InstanceConstraints ic;
 	double zoom = 100;
-	int width = 1000;
-	int height = 800;
+	int width = 1200;
+	int height = 1000;
 	JScrollPane scrollPane;
 
 	int pWidth = 4;
@@ -31,11 +31,13 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 	public int getZoomed(double x)
 	{
-		return (int) (x * ((double) 100 / zoom));
+		return (int) (x * zoom);
 	}
 
-	public MyFrame2(Collection<CNBCRTreePoint> result, InstanceConstraints ic,
+	public MyFrame2(Collection<CNBCRTreePoint> result, double maxX, InstanceConstraints ic,
                     ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
+
+		zoom = (height*0.8) / maxX;
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -79,13 +81,13 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
             int r = c.getRed();
             int g = c.getGreen();
             int b = c.getBlue();
-			return new Color(r,g,b,0x80);
+			return new Color(r,g,b,0x33);
 		} else if (i == CDMCluster.DEFERRED) {
             Color c = Color.GRAY;
             int r = c.getRed();
             int g = c.getGreen();
             int b = c.getBlue();
-            return new Color(r,g,b,0x80);
+            return new Color(r,g,b,0x66);
 		} else {
 		
 			Color[] cs = new Color[]{
@@ -113,7 +115,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 				int r = c.getRed();
 				int g = c.getGreen();
 				int b = c.getBlue();
-				cs[index] = new Color(r,g,b/*, 0x33*/);
+				cs[index] = new Color(r,g,b, 0x33);
 			}
 
 
@@ -188,7 +190,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 			}
 			
 			g2.setStroke(normalLine);
-			
+
 			if (o.wasDeferred()) {
 				g.drawOval(getZoomed(coord[0])-defMargin,  getZoomed(coord[1])-defMargin, pWidth+2*defMargin,  pWidth+2*defMargin);
 				if (o.ndf < 1) {
@@ -412,5 +414,20 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static void plotResult(Collection<CNBCRTreePoint> result, double maxX, InstanceConstraints ic,
+								  ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
+		MyFrame2 mf = new MyFrame2(result, maxX, null, null, null, null);
+		mf.setPreferredSize(new Dimension(1200, 1000));
+		JFrame f = new JFrame();
+		JScrollPane scrollPane = new JScrollPane(mf);
+		mf.setScrollPane(scrollPane);
+		scrollPane.setAutoscrolls(true);
+		f.add(scrollPane);
+		f.pack();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(new Dimension(1200, 1000));
+		f.setVisible(true);
 	}
 }

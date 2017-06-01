@@ -16,8 +16,8 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 	Collection<IClusteringObject> result;
 	InstanceConstraints ic;
 	double zoom = 100;
-	int width = 1000;
-	int height = 800;
+	int width = 1200;
+	int height = 1000;
 	JScrollPane scrollPane;
 	
 	int pWidth = 4;
@@ -33,12 +33,13 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 	
 	public int getZoomed(double x)
 	{
-		return (int) (x * ((double) 100 / zoom));
+		return (int) (x * zoom);
 	}
 	
-	public MyFrame(Collection<IClusteringObject> result, InstanceConstraints ic,
+	public MyFrame(Collection<IClusteringObject> result, double maxX, InstanceConstraints ic,
 			ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
 
+		zoom = (height*0.8) / maxX;
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -397,4 +398,20 @@ public class MyFrame extends JPanel implements MouseListener, MouseWheelListener
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static void plotResult(Collection<IClusteringObject> result, double maxX, InstanceConstraints ic,
+								  ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc) {
+		MyFrame mf = new MyFrame(result, maxX, null, null, null, null);
+		mf.setPreferredSize(new Dimension(1200, 1000));
+		JFrame f = new JFrame();
+		JScrollPane scrollPane = new JScrollPane(mf);
+		mf.setScrollPane(scrollPane);
+		scrollPane.setAutoscrolls(true);
+		f.add(scrollPane);
+		f.pack();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(new Dimension(1200, 1000));
+		f.setVisible(true);
+	}
+
 }

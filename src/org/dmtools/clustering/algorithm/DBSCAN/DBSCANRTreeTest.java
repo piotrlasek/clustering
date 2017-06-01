@@ -1,15 +1,14 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+import junit.framework.TestCase;
+import org.dmtools.clustering.model.IClusteringObject;
+import org.dmtools.clustering.model.ISpatialObject;
 import org.dmtools.clustering.old.BasicClusteringData;
 import org.dmtools.clustering.old.BasicClusteringObject;
 import org.dmtools.clustering.old.BasicClusteringParameters;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.model.ISpatialObject;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class DBSCANRTreeTest extends TestCase {
 
@@ -23,7 +22,7 @@ public class DBSCANRTreeTest extends TestCase {
         BasicClusteringParameters bcp = new BasicClusteringParameters();
         bcp.setValue("Eps", "12");
         bcp.setValue("minPts", "4");
-        dbscantree.setParameters(bcp);
+//        dbscantree.setParameters(bcp);
         dbscantree.run();
         assert(true);
     }

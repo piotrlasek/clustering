@@ -1,18 +1,15 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
 import org.dmtools.clustering.algorithm.CNBC.MyFrame;
-import org.dmtools.clustering.model.IConstraintObject;
-import org.dmtools.clustering.old.BasicSpatialObject;
-import org.dmtools.clustering.old.ClusteringLogger;
 import org.dmtools.clustering.model.IClusteringData;
 import org.dmtools.clustering.model.IClusteringObject;
+import org.dmtools.clustering.model.IConstraintObject;
 import org.dmtools.clustering.model.ISpatialObject;
+import org.dmtools.clustering.old.BasicSpatialObject;
+import org.dmtools.clustering.old.ClusteringLogger;
 import org.dmtools.clustering.old.rtree.CustomRTree;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 import util.SetConstraints;
@@ -21,9 +18,10 @@ import javax.datamining.JDMException;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 
@@ -90,7 +88,7 @@ public class CDBSCAN extends DBSCANBase {
      */
 	private void visualizeResult(Collection<IClusteringObject> result) {
 		// Show result
-		MyFrame mf = new MyFrame(result, ic, null, null, null);
+		MyFrame mf = new MyFrame(result, max[0], ic, null, null, null);
 		mf.setPreferredSize(new Dimension(700, 600));
 		JFrame f = new JFrame();
 		JScrollPane scrollPane = new JScrollPane(mf);

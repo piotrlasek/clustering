@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="spatialindex-x">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/spatialindex-x.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/spatialindex-x.jar!/" />
+    </SOURCES>
+  </library>
+</component>

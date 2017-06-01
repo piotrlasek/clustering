@@ -31,10 +31,10 @@ public class ClusteringSettings {
     public static AlgorithmSettings prepare(String algorithm, HashMap<String, String> parameters) {
         AlgorithmSettings algorithmSettings = null;
         if (algorithm == null) {
-            log.warn("Using a hardcoded algorithm");
+           log.warn("Using a hardcoded algorithm.");
            algorithm = "DBSCAN";
-           parameters.put("Eps", "20");
-           parameters.put("MinPts", "10");
+           parameters.put("Eps", "8000");
+           parameters.put("MinPts", "4");
         }
         switch (algorithm) {
             case "NBC":

@@ -16,8 +16,6 @@ import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -84,29 +82,9 @@ public class DBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         Dump.toFile(cd.get(), dumpFileName, true); //data to dump
 
         Collection<IClusteringObject> result = cd.get();
-        ArrayList<double[]> data2 = new ArrayList<double[]>(result.size());
-        int i = 0;
-
-        for (IClusteringObject o : result) {
-            double[] coord = o.getSpatialObject().getValues();
-            double[] r = new double[coord.length + 1];
-            System.arraycopy(coord, 0, r, 0, coord.length);
-            r[r.length - 1] = o.getClusterInfo().getClusterId();
-            data2.add(r);
-            i++;
-        }
 
         // Show result
-        MyFrame mf = new MyFrame(result, null, null, null, null);
-        mf.setPreferredSize(new Dimension(700, 600));
-        JFrame f = new JFrame();
-        JScrollPane scrollPane = new JScrollPane(mf);
-        mf.setScrollPane(scrollPane);
-        scrollPane.setAutoscrolls(true);
-        f.add(scrollPane);
-        f.pack();
-        f.setSize(new Dimension(700, 600));
-        f.setVisible(true);
+        MyFrame.plotResult(result, max[0], null, null, null, null);
 
         return null;
     }

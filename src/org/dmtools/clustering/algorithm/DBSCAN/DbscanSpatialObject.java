@@ -1,6 +1,7 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
 import lvaindex.vafile.ISpatialObject;
+import org.dmtools.clustering.old.BasicSpatialObject;
 
 public class DbscanSpatialObject extends BasicSpatialObject
 {

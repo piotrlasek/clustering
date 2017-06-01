@@ -12,7 +12,6 @@ import spatialindex.storagemanager.IBuffer;
 import spatialindex.storagemanager.MemoryStorageManager;
 import spatialindex.storagemanager.PropertySet;
 import spatialindex.storagemanager.RandomEvictionsBuffer;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;

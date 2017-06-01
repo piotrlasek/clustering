@@ -1,17 +1,16 @@
 package org.dmtools.clustering.old.rtree;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.dmtools.clustering.model.ISpatialIndex;
 import org.dmtools.clustering.model.ISpatialObject;
-
 import spatialindex.rtree.RTree;
 import spatialindex.storagemanager.IBuffer;
 import spatialindex.storagemanager.MemoryStorageManager;
 import spatialindex.storagemanager.PropertySet;
 import spatialindex.storagemanager.RandomEvictionsBuffer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class CustomRTree implements ISpatialIndex {
@@ -29,7 +28,6 @@ public class CustomRTree implements ISpatialIndex {
         return CustomRTree.NAME;
     }
 
-    
     @Override
     public void add(Collection<ISpatialObject> objectsList) {
         
@@ -70,7 +68,7 @@ public class CustomRTree implements ISpatialIndex {
             double max) {
         CustomRTreePoint ctp = new CustomRTreePoint(object.getValues());
         visitor.clear();
-        tree.nearestNeighborQuery(max, ctp, visitor, Dataset.size());        
+        tree.nearestNeighborQuery((int) max, ctp, visitor, Dataset.size());
         return visitor.getNeighbors();
     }
     

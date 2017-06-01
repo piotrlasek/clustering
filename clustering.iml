@@ -20,5 +20,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="log4j-api-2.8.2" level="project" />
+    <orderEntry type="library" name="spatialindex" level="project" />
+    <orderEntry type="library" name="spatialindex-x" level="project" />
   </component>
 </module>

@@ -116,7 +116,7 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm implements IClust
 //        sa.setVisible(true);
 
 		// Show result
-		MyFrame2 mf = new MyFrame2(result, ic, null, null, null);
+		MyFrame2 mf = new MyFrame2(result, max[0], ic, null, null, null);
 		mf.setPreferredSize(new Dimension(700,  600));
 		JFrame f = new JFrame();
 		JScrollPane scrollPane = new JScrollPane(mf);

@@ -177,13 +177,13 @@ public class NBCRTree implements IClusteringAlgorithm {
         while (li.hasNext()) {
             NBCRTreePoint p = (NBCRTreePoint) li.next();
             p.ndf = (double) p.numberOfRkNB / p.numberOfkNB;
-            
-            System.out.println("p.SizeOfRkNB= " + p.numberOfRkNB + 
-        			"; p.SizeOfkNB= " + p.numberOfkNB + 
-        			"; p.ndf= " + p.ndf);
+
+//            System.out.println("p.SizeOfRkNB= " + p.numberOfRkNB +
+//        			"; p.SizeOfkNB= " + p.numberOfkNB +
+//        			"; p.ndf= " + p.ndf);
         }
 
-               
+
         // printing
         // li = Dataset.listIterator();
         // while ( li.hasNext() )
@@ -277,14 +277,7 @@ public class NBCRTree implements IClusteringAlgorithm {
         for (Object o : Dataset) {
             NBCRTreePoint mp = (NBCRTreePoint) o;
             BasicClusteringObject bco = new BasicClusteringObject();
-
-            double[] coords = mp.m_pCoords;
-
-            for(int x = 0; x < coords.length; x++) {
-                coords[x] = coords[x] / maxx * 800;
-            }
-
-            BasicSpatialObject rso = new BasicSpatialObject(coords);
+            BasicSpatialObject rso = new BasicSpatialObject(mp.m_pCoords);
             bco.setSpatialObject(rso);
             BasicClusterInfo bci = new BasicClusterInfo();
             bci.setClusterId(mp.getClusterId());
@@ -355,7 +348,7 @@ public class NBCRTree implements IClusteringAlgorithm {
      *
      */
     public void addLines() {
-        this.observer.handleNotify((Object) null);
+        //this.observer.handleNotify((Object) null);
     }
 
     @Override

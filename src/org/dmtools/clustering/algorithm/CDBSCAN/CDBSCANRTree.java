@@ -1,64 +1,54 @@
-package org.dmtools.clustering.algorithm.DBSCAN;
+package org.dmtools.clustering.algorithm.CDBSCAN;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
+import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.model.IClusteringObject;
 import org.dmtools.clustering.old.*;
-import org.dmtools.clustering.old.BasicSpatialObject;
+import spatialindex.rtree.RTree;
+import spatialindex.spatialindex.IData;
+import spatialindex.spatialindex.INode;
+import spatialindex.spatialindex.IVisitor;
+import spatialindex.storagemanager.IBuffer;
+import spatialindex.storagemanager.MemoryStorageManager;
+import spatialindex.storagemanager.PropertySet;
+import spatialindex.storagemanager.RandomEvictionsBuffer;
 
-import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**
- * The DBSCAN algorithm base class.
+ * The C-DBSCAN algorithm base class.
  * 
  * @author Piotr Lasek
  * 
  */
-public abstract class DBSCANBase implements IClusteringAlgorithm {
+public class CDBSCANRTree {
 
-    ArrayList<ISpatialObject> SetOfPoints;
-    String description;
+    private final static Logger log = LogManager.getLogger("CDBSCANRTree");
+
+    ClusteringLogger logger = new ClusteringLogger(CDBSCANAlgorithm.NAME);
+
+    ArrayList<CNBCRTreePoint> SetOfPoints;
     int nDim = 0;
-    int b = 0;
-    ISpatialIndex isp;
     Double Eps = 0.0;
     Integer MinPts = 0;
-
-    protected IClusteringObserver observer;
-
-    IClusteringParameters parameters;
     IClusteringData data;
-    Graphics graphics = null;
-    ClusteringLogger logger = new ClusteringLogger(getName());
 
-    /**
-     * 
-     */
-    protected abstract void createIndex();
+    private RTree tree;
 
-    @Override
-    public IClusteringParameters getParameters() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void run() {
-        logger.addDescription(this.getDescription());
-        //long begin_time1 = System.currentTimeMillis();
         logger.clusteringStart();
         DBSCAN();
-        long end_time1 = System.currentTimeMillis();
         logger.clusteringEnd();
-        try { addLines(); } catch (Exception e) {e.printStackTrace();}
-        //desc += " Total = " + (end_time1 - begin_time1) + " ms " + parameters.toString();
     }
 
-    @Override
-    public void setParameters(IClusteringParameters parameters) {
-        System.out.println("TO BE REMOVED");
+    public ArrayList<CNBCRTreePoint> getDataset() {
+        return this.SetOfPoints;
     }
 
     /**
@@ -68,14 +58,14 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
         return ++id;
     }
      
-    // DBSCAN specific methods
+    // DBSCAN
     // -----------------------------------------------------------------------
 
     protected void DBSCAN() {
         // SetOfPoints is UNCLASSIFIED
         Integer ClusterId = nextId(CDMCluster.NOISE);
         
-        for (ISpatialObject point : SetOfPoints) {
+        for (CNBCRTreePoint point : SetOfPoints) {
             //BasicSpatialObject point = (DbscanSpatialObject) p;
             //point.ClId = UNCLASSIFIED;
             setClId(point, CDMCluster.UNCLASSIFIED);
@@ -84,7 +74,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
         // ClusterId := nextId(NOISE);
         // FOR i FROM 1 TO SetOfPoints.size DO
         // Point := SetOfPoints.get(i);
-        for (ISpatialObject Point : SetOfPoints) {
+        for (CNBCRTreePoint Point : SetOfPoints) {
             //DbscanSpatialObject Point = (DbscanSpatialObject) p;
             // IF Point.ClId = UNCLASSIFIED THEN
             ///if (Point.ClId == UNCLASSIFIED)
@@ -108,11 +98,11 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * 
      */
     // ExpandCluster(SetOfPoints, Point, ClId, Eps, MinPts) : Boolean;
-    private boolean ExpandCluster(ArrayList<ISpatialObject> SetOfPoints,
-            ISpatialObject Point, Integer ClId, Double Eps, Integer MinPts) {
+    private boolean ExpandCluster(ArrayList<CNBCRTreePoint> SetOfPoints,
+            CNBCRTreePoint Point, Integer ClId, Double Eps, Integer MinPts) {
         // seeds :=SetOfPoints.regionQuery(Point,Eps);
-        ArrayList<ISpatialObject> seeds1 = regionQuery(Point, Eps);
-        ArrayList<ISpatialObject> seeds = new ArrayList<ISpatialObject>();
+        ArrayList<CNBCRTreePoint> seeds1 = regionQuery(Point, Eps);
+        ArrayList<CNBCRTreePoint> seeds = new ArrayList<CNBCRTreePoint>();
         seeds.addAll(seeds1);
         // IF seeds.size<MinPts THEN // no core point
         if (seeds.size() < MinPts) {
@@ -131,9 +121,9 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
             // WHILE seeds <> Empty DO
             while (seeds.size() > 0) {
                 // currentP := seeds.first();
-                ISpatialObject currentP = seeds.get(0);
+                CNBCRTreePoint currentP = seeds.get(0);
                 // result := SetOfPoints.regionQuery(currentP, Eps);
-                ArrayList<ISpatialObject> result = regionQuery(currentP, Eps);
+                ArrayList<CNBCRTreePoint> result = regionQuery(currentP, Eps);
                 // IF result.size >= MinPts THEN
                 if (result.size() >= MinPts) {
                     // FOR i FROM 1 TO result.size DO
@@ -141,7 +131,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
                         // resultP := result.get(i);
                         //DbscanSpatialObject resultP = (DbscanSpatialObject) result
                         //        .get(i);
-                        ISpatialObject resultP = result.get(i);
+                        CNBCRTreePoint resultP = result.get(i);
                         // IF resultP.ClId IN {UNCLASSIFIED, NOISE} THEN
                         if (getClId(resultP) == CDMCluster.UNCLASSIFIED
                                 || getClId(resultP) == CDMCluster.NOISE) {
@@ -176,10 +166,12 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * @param Eps
      * @return
      */
-    private ArrayList<ISpatialObject> regionQuery(ISpatialObject Point,
+    private ArrayList<CNBCRTreePoint> regionQuery(CNBCRTreePoint Point,
             double Eps) {
-        ArrayList<ISpatialObject> neighbors = (ArrayList<ISpatialObject>) isp.getNeighbors(Point, Eps);
-        return neighbors;
+        ArrayList<CNBCRTreePoint> neibhgours = new ArrayList();
+        MyVisitor kNN = new MyVisitor();
+        tree.nearestNeighborQuery(Eps, Point, kNN, SetOfPoints.size());
+        return kNN.neighbours;
     }
 
     /**
@@ -188,15 +180,15 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * @param ClId
      * @return
      */
-    public void changeClId(ArrayList<ISpatialObject> Points, int ClId) {
-        for (ISpatialObject p : Points)
+    public void changeClId(ArrayList<CNBCRTreePoint> Points, int ClId) {
+        for (CNBCRTreePoint p : Points)
             changeClId(p, ClId);
     }
 
     /**
      * 
      */
-    public void changeClId(ISpatialObject Point, int ClId) {
+    public void changeClId(CNBCRTreePoint Point, int ClId) {
         //DbscanSpatialObject o = (DbscanSpatialObject) Point;
         //o.ClId = ClId;
         setClId(Point, ClId);
@@ -207,7 +199,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * @param Point
      * @return
      */
-    public int getClId(ISpatialObject Point)
+    public int getClId(CNBCRTreePoint Point)
     {
         return Point.getClusterId();
     }
@@ -217,7 +209,7 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * @param Point
      * @param ClId
      */
-    public void setClId(ISpatialObject Point, int ClId)
+    public void setClId(CNBCRTreePoint Point, int ClId)
     {
         Point.setClusterId(ClId);
     }
@@ -228,89 +220,114 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
      * @param Points
      * @param ClId
      */
-    public void setClId(ArrayList<ISpatialObject> Points, int ClId) {
-        for (ISpatialObject o : Points) {
+    public void setClId(ArrayList<CNBCRTreePoint> Points, int ClId) {
+        for (CNBCRTreePoint o : Points) {
             setClId(o, ClId);
         }
     }
-    
-    @Override
+
+    /**
+     *
+     * @throws IOException
+     */
+    public void initRTree() throws IOException {
+        PropertySet ps = new PropertySet();
+        ps.setProperty("FileName", "nbc-rtree");
+        ps.setProperty("FillFactor", 0.1);
+        ps.setProperty("IndexCapacity", 32);
+        ps.setProperty("LeafCapacity", 32);
+        ps.setProperty("Dimension", nDim);
+
+        MemoryStorageManager memmanag = new MemoryStorageManager();
+        IBuffer mem = new RandomEvictionsBuffer(memmanag, 40000, false);
+
+        tree = new RTree(ps, mem);
+    }
+
+    /**
+     * The implementation of the IVisitor interface.
+     */
+    class MyVisitor implements IVisitor {
+        public int m_indexIO = 0;
+        public int m_leafIO = 0;
+        public int kNB = 0;
+
+        ArrayList<CNBCRTreePoint> neighbours = new ArrayList<CNBCRTreePoint>();
+        ArrayList<IData> n = new ArrayList<IData>();
+
+        public void reset() {
+            kNB = 0;
+            neighbours.clear();
+        }
+
+        public void visitNode(final INode n) {
+            if (n.isLeaf())
+                m_leafIO++;
+            else
+                m_indexIO++;
+        }
+
+        public void visitData(final IData d) {
+            kNB++;
+            int id = d.getIdentifier();
+            neighbours.add(SetOfPoints.get(id));
+            n.add(d);
+        }
+    }
+
+    /**
+     *
+     */
     public IClusteringData getResult() {
         BasicClusteringData bcd = new BasicClusteringData();
         ArrayList<IClusteringObject> al = new ArrayList<IClusteringObject>();
+
         for (Object o : SetOfPoints) {
-            BasicSpatialObject mp = (BasicSpatialObject) o;
-            // observer.handleNotify(mp.excell());
+            CNBCRTreePoint mp = (CNBCRTreePoint) o;
             BasicClusteringObject bco = new BasicClusteringObject();
-            //BasicSpatialObject rso = new BasicSpatialObject(mp.getValues());
-            bco.setSpatialObject(mp);
+            BasicSpatialObject rso = new BasicSpatialObject(mp.m_pCoords);
+            bco.setSpatialObject(rso);
             BasicClusterInfo bci = new BasicClusterInfo();
-            bci.setClusterId(getClId(mp));
+            bci.setClusterId(mp.getClusterId());
             bco.setClusterInfo(bci);
             al.add(bco);
         }
+
         bcd.set(al);
+
         return bcd;
     }
 
-    @Override
+    /**
+     *
+     * @param data
+     */
     public void setData(IClusteringData data) {
-        
+        logger.indexStart();
+        ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
+                .get();
+        SetOfPoints = new ArrayList();
         nDim = data.get().iterator().next().getSpatialObject().getValues().length;
 
-        this.data = (BasicClusteringData) data;
-
-        Collection<IClusteringObject> input = data.get();
-        SetOfPoints = new ArrayList<ISpatialObject>();
-
-        for (IClusteringObject co : input) {
-            SetOfPoints.add(new BasicSpatialObject(co.getSpatialObject().getValues()));
+        try {
+            initRTree();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return;
         }
 
-        logger.indexStart();
-        createIndex();
-        isp.add((ArrayList<ISpatialObject>) SetOfPoints);
+        int id = 0;
+
+        // building R-Tree
+        for (IClusteringObject ico : tmp) {
+            CNBCRTreePoint mp = new CNBCRTreePoint(ico.getSpatialObject()
+                    .getValues(), CDMCluster.UNCLASSIFIED);
+            SetOfPoints.add(id, mp);
+            byte[] d = new byte[]{CDMCluster.UNCLASSIFIED};
+            tree.insertData(d, mp, id);
+            id++;
+        }
         logger.indexEnd();
-    }
-
-    @Override
-    public void setGraphics(Graphics g) {
-        this.graphics = g;
-    }
-
-    @Override
-    public void setObserver(IClusteringObserver observer) {
-        this.observer = observer;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double[] getCellSizes() {
-        //return ((BasicVAFile) isp).getCellSizes();
-    	return null;
-    }
-
-    /**
-     * 
-     */
-    public void addLines() {
-        this.observer.handleNotify(getCellSizes());
-    }
-    
-    /**
-     * 
-     */
-    public void addDescription(String description) {
-        this.description = description;
-    }
-    
-    /**
-     * 
-     */
-    public String getDescription() {
-        return description;
     }
 
     public void setEps(double eps) {
@@ -319,5 +336,9 @@ public abstract class DBSCANBase implements IClusteringAlgorithm {
 
     public void setMinPts(int minPts) {
         this.MinPts = minPts;
+    }
+
+    public InstanceConstraints getConstraints() {
+        return null;
     }
 }

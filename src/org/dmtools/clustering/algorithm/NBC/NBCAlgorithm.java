@@ -98,7 +98,7 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 		}
 		
 		// Show result
-		MyFrame mf = new MyFrame(result, null, null, null, null);
+		MyFrame mf = new MyFrame(result, max[0], null, null, null, null);
 		mf.setPreferredSize(new Dimension(700,  600));
 		JFrame f = new JFrame();
 		JScrollPane scrollPane = new JScrollPane(mf);
@@ -106,6 +106,7 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 		scrollPane.setAutoscrolls(true);
 		f.add(scrollPane);
 		f.pack();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(new Dimension(700, 600));
 		f.setVisible(true);
 

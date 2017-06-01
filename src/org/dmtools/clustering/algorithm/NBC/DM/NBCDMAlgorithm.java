@@ -1,30 +1,21 @@
 package org.dmtools.clustering.algorithm.NBC.DM;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.clustering.algorithm.CNBC.MyFrame;
+import org.dmtools.clustering.model.*;
+import org.dmtools.clustering.old.BasicClusteringParameters;
+import org.dmtools.clustering.old.DataSourceManager;
+import org.dmtools.clustering.old.DataView2D;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame;
-import org.dmtools.clustering.old.BasicClusteringParameters;
-import org.dmtools.clustering.old.DataSourceManager;
-import org.dmtools.clustering.old.DataView2D;
-import org.dmtools.clustering.model.IClusteringAlgorithm;
-import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringDataSource;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.model.IClusteringObserver;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
-import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -126,17 +117,6 @@ public class NBCDMAlgorithm extends CDMBasicClusteringAlgorithm implements IClus
 		IClusteringData cd = nbc.getResult();
 		Collection<IClusteringObject> result = cd.get();
 		
-		MyFrame mf = new MyFrame(result, null, null, null, null);
-		mf.setPreferredSize(new Dimension(700,  600));
-		JFrame f = new JFrame();
-		JScrollPane scrollPane = new JScrollPane(mf);
-		mf.setScrollPane(scrollPane);
-		scrollPane.setAutoscrolls(true);
-		f.add(scrollPane);
-		f.pack();
-		f.setSize(new Dimension(700, 600));
-		f.setVisible(true);
-		
 		RelativeMatrix rel = new RelativeMatrix(data, constraints, numberOfDimensions);
 		
 		//nbc.setDM(dim.D_Distance);
@@ -192,22 +172,9 @@ public class NBCDMAlgorithm extends CDMBasicClusteringAlgorithm implements IClus
 			frc.add(data.get(constraints.r3.get(ii)));
 		}
 		
-		System.out.print("1_");
-		mf = new MyFrame(result, null, fml, fcl, frc);
-		mf.setPreferredSize(new Dimension(700,  600));
-		scrollPane = new JScrollPane(mf);
-		mf.setScrollPane(scrollPane);
-		scrollPane.setAutoscrolls(true);
-		f.add(scrollPane);
-		f.pack();
-		f.setSize(new Dimension(700, 600));
-		f.setVisible(true);
-		
-		CDMCluster cluster = new CDMCluster();
-		System.out.println("2");
-		return ccm;
+		MyFrame.plotResult(result, max[0], null, null, null, null);
 
-
+		return null;
 	}
 
 	@Override
