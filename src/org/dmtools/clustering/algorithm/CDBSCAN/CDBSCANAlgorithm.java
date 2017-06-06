@@ -6,6 +6,7 @@ import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
 import org.dmtools.clustering.algorithm.CNBC.MyFrame2;
 import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.datamining.resource.CDMBasicMiningObject;
 import spatialindex.spatialindex.Point;
 import util.Dump;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  */
 public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
 
-    private final static Logger log = LogManager.getLogger(CDBSCANAlgorithm.class.getName());
+    private final static Logger log = LogManager.getLogger("CDBSCANAlgorithm");
 
     private double Eps;
     private int MinPts;
@@ -52,13 +53,24 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         log.info(CDBSCANAlgorithmSettings.NAME + " preparing data.");
         IClusteringData data = prepareData();
 
+        timer.setAlgorithmName(CDBSCANAlgorithmSettings.NAME);
+        timer.setParameters("Eps=" + Eps + ", MinPts=" + MinPts);
+
+        timer.indexStart();
         dbscan.setData(data);
+        timer.indexEnd();
+
         dbscan.setConstraints(ic);
         dbscan.setEps(Eps);
         dbscan.setMinPts(MinPts);
 
         log.info(CDBSCANAlgorithmSettings.NAME + " run");
+        timer.clusteringStart();
         dbscan.run();
+        timer.clusteringEnd();
+
+        // merging with internal measurements
+        timer.merge(dbscan.getInternalTimer());
 
         log.info(CDBSCANAlgorithmSettings.NAME + " finished.");
 
@@ -66,17 +78,21 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
 
         if (dump()) {
             String dumpFileName = Dump.getDumpFileName(CDBSCANAlgorithmSettings.NAME, getPhysicalDataSet().getDescription(),
-                    "(Eps="+ Eps + ", minPts=" + MinPts);
+                    "(Eps="+ Eps + ", minPts=" + MinPts + ")");
             Dump.toFile(resultToDump.get(), dumpFileName, true);
         }
 
-        if (plot()){
+        if (plot()) {
             // Show result
             ArrayList<Point> result = dbscan.getDataset();
             InstanceConstraints constraints = dbscan.getConstraints();
             MyFrame2.plotResult(result, max[0], constraints, null, null, null);
         }
-        return null;
+
+        CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
+        basicMiningObject.setDescription(timer.getLog());
+
+        return basicMiningObject;
     }
 
 }

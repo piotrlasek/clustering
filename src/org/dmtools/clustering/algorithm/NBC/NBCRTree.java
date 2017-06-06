@@ -30,8 +30,6 @@ public class NBCRTree {
 
     ArrayList<Point> Dataset;
 
-    ClusteringTimer timer = new ClusteringTimer(NBCAlgorithmSettings.NAME);
-
     int nDim = 0;
     //int id = 0;
     int k;
@@ -47,10 +45,6 @@ public class NBCRTree {
      * Creates a new instance of NBC.
      */
     public void run() {
-        //long begin_time1 = System.currentTimeMillis();
-
-        timer.clusteringStart();
-
         ArrayList<NBCRTreePoint> NoiseSet = new ArrayList();
         int cluster_count = 0;
 
@@ -128,8 +122,6 @@ public class NBCRTree {
             if (p.getClusterId() == CDMCluster.UNCLASSIFIED)
                 p.setClusterId(CDMCluster.NOISE);
         }
-
-        timer.clusteringEnd();
     }
 
     private void CalcNDF() {
@@ -206,8 +198,6 @@ public class NBCRTree {
     }
 
     public void setData(IClusteringData data) {
-        timer.indexStart();
-
         ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
                 .get();
         Dataset = new ArrayList();
@@ -232,8 +222,5 @@ public class NBCRTree {
             tree.insertData(d, mp, id);
             id++;
         }
-
-        timer.indexEnd();
     }
-
 }

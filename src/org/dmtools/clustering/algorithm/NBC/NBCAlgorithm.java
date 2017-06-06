@@ -1,8 +1,10 @@
 package org.dmtools.clustering.algorithm.NBC;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
 import org.dmtools.clustering.algorithm.CNBC.MyFrame;
 import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.datamining.resource.CDMExecutionStatus;
 import util.Dump;
 
 import javax.datamining.MiningObject;
@@ -38,13 +40,22 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 	@Override
 	public MiningObject run() {
 
+		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
+
 		IClusteringData data = prepareData();
 
 		NBCRTree nbc = new NBCRTree();
 
+        timer.setAlgorithmName(NBCAlgorithmSettings.NAME);
+        timer.setParameters("k=" + k);
+
 		nbc.setK(k);
+		timer.indexStart();
 		nbc.setData(data);
+		timer.indexEnd();
+		timer.clusteringStart();
 		nbc.run();
+		timer.clusteringEnd();
 
 		IClusteringData result = nbc.getResult();
 
@@ -58,7 +69,8 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 			MyFrame.plotResult(result.get(), max[0], null, null, null, null);
 		}
 
-		return null;
+		basicMiningObject.setDescription(timer.getLog());
+		return basicMiningObject;
 	}
 
 }

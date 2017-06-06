@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class DataSet {
 
-    private final static Logger log = LogManager.getLogger("DataSet");
+    private final static Logger log = LogManager.getLogger(DataSet.class.getSimpleName());
 
     /**
      *
@@ -64,7 +64,6 @@ public class DataSet {
         // Try to determine number of attributes
         if (numberOfAttributes == null) {
             try {
-                log.info("Determining the number of attributes...");
 
                 String[] attributes = null;
 
@@ -82,6 +81,7 @@ public class DataSet {
                         fpds.addAttribute(pa);
                     }
                 }
+                log.info("Number of attributes: " + fpds.getAttributeCount());
             } catch (Exception e) {
                 log.warn("WARNING: Number of attributes not determined (2).");
             }

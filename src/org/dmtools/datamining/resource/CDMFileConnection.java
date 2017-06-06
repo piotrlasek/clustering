@@ -104,12 +104,14 @@ public class CDMFileConnection implements Connection {
 		AlgorithmSettings as = cs.getAlgorithmSettings();
 		
 		MiningAlgorithm ma = as.getMiningAlgorithm();
-		
-		// Determine algorithm to be run.		
+
+		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
+		MiningObject miningObject;
+
 		if (ma.equals(MiningAlgorithm.kMeans)) {
 			// kMeans
 			KMeansAlgorithm kma = new KMeansAlgorithm(cs, pds); 
-			kma.run();
+			miningObject = kma.run();
 			/* //DM kMeans
 			DM_KMeansAlgorithm kma = new DM_KMeansAlgorithm(cs, pds); 
 			kma.run();
@@ -117,43 +119,45 @@ public class CDMFileConnection implements Connection {
 		} else if (ma.equals(MiningAlgorithm.valueOf("NBC"))) {
 			// NBC
 			NBCAlgorithm kma = new NBCAlgorithm(cs, pds); 
-			kma.run();
+			miningObject = kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("C-NBC"))) {
 			// NBC
 			CNBCAlgorithm kma = new CNBCAlgorithm(cs, pds); 
-			kma.run();
+			miningObject = kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("DBSCAN"))) {
 			// NBC
 			DBSCANAlgorithm kma = new DBSCANAlgorithm(cs, pds);
-			kma.run();
+			miningObject = kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("C-DBSCAN"))) {
 			// NBC
 			CDBSCANAlgorithm kma = new CDBSCANAlgorithm(cs, pds);
-			kma.run();
+			miningObject = kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("DM-NBC"))) {
 			// DM-NBC
 			NBCDMAlgorithm kma = new NBCDMAlgorithm(cs, pds); 
-			kma.run();
+			miningObject = kma.run();
 		}
 		else if (ma.equals(MiningAlgorithm.valueOf("K-Means_DM"))) {
 			// K-Means_DM
 			DM_KMeansAlgorithm kma = new DM_KMeansAlgorithm(cs, pds); 
-			kma.run();
+			miningObject = kma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("DBSCAN-NET"))) {
 			// DBSCAN-NET
 			DbScanNetTraffic dbScanNetTraffic = new DbScanNetTraffic(cs,  pds);
-			dbScanNetTraffic.run();
+			miningObject = dbScanNetTraffic.run();
 		}  else if (ma.equals(MiningAlgorithm.valueOf("DBSCAN-SLI"))) {
 			// DBSCAN-NET
 			DbScanSlicer mbScanSlicer = new DbScanSlicer(cs,  pds);
-			mbScanSlicer.run();
+			miningObject = mbScanSlicer.run();
 		} else {
 			throw new JDMException(0, "Not supported.");
 		}
 
+		executionStatus.setDescription(miningObject.getDescription());
+
 		saveObject(outputModelName, mcm, true);
 
-		return null;
+		return executionStatus;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package org.dmtools.clustering.old;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class ClusteringTimer {
     
@@ -36,6 +37,18 @@ public class ClusteringTimer {
         Long end = System.currentTimeMillis();
         Long start = times.get(s);
         times.put(s, end - start);
+    }
+
+    public void merge(ClusteringTimer timerToMerge) {
+        Iterator<String> keys = timerToMerge.times.keySet().iterator();
+        while(keys.hasNext()) {
+            String k = keys.next();
+
+            if (!this.times.keySet().contains(k)) {
+                Long time = timerToMerge.times.get(k);
+                this.times.put(k, time);
+            }
+        }
     }
     
     public void setAlgorithmName(String name) {
@@ -92,8 +105,16 @@ public class ClusteringTimer {
             sb.append(sorting);
             sb.append("\t");
         }
+
         sb.append(times.get("clusteringTime"));
-        
+        sb.append("\t");
+
+        Object deferred = times.get("deferred");
+        if (deferred != null) {
+            sb.append(deferred);
+            sb.append("\t");
+        }
+
         int size = descriptions.size();
         for(int i = 0; i < size; i++) {
             String s = descriptions.get(i);

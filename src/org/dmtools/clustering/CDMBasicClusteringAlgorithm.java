@@ -1,9 +1,11 @@
 package org.dmtools.clustering;
 
 import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.old.ClusteringTimer;
 import org.dmtools.clustering.old.DataSourceManager;
 import org.dmtools.datamining.data.CDMAlgorithm;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import org.dmtools.datamining.resource.CDMBasicMiningObject;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
@@ -32,6 +34,12 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	protected PhysicalDataSet physicalDataSet;
 
 	protected int numberOfDimensions;
+
+	protected ClusteringTimer timer = new ClusteringTimer();
+
+    protected CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
+
+
 
 	/**
 	 *
@@ -134,5 +142,9 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 			return true;
 		else
 			return false;
+	}
+
+	public ClusteringTimer getInternalTimer() {
+		return timer;
 	}
 }

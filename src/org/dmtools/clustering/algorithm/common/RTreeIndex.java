@@ -57,7 +57,7 @@ public class RTreeIndex {
      * @param Eps
      * @return
      */
-    public ArrayList<Point> regionQuery(Point point,
+    public ArrayList<Point> regionQuery(IShape point,
                                                   double Eps) {
         MyVisitor kNN = new MyVisitor();
         treeIndex.nearestNeighborQuery(Eps, point, kNN, internalSetOfPoints.size());

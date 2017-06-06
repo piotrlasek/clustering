@@ -130,33 +130,4 @@ public class NBCRTreePoint extends Point implements ISpatialObject {
 		return null;
 	}
 
-	/*public String excell() {
-		String s = "";
-
-		if (this.m_pCoords == null)
-			return s;
-
-		for (int i = 0; i < this.m_pCoords.length; i++) {
-			s += ( i == 0 ) ? this.m_pCoords[i] : "\t" + this.m_pCoords[i];
-		}
-		s += "\t" + this.clst_no;
-		s += "\t" + this.ndf;
-
-		return s;
-	}
-
-	public String toLine() {
-		String s = "";
-
-		if (this.m_pCoords == null)
-			return s;
-
-		for (int i = 0; i < this.m_pCoords.length; i++) {
-			s += this.m_pCoords[i] + ";";
-		}
-
-		s += this.clst_no + ";\r\n";
-
-		return s;
-	} */
 }

@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class Dump {
 
-    private final static Logger log = LogManager.getLogger(Dump.class.getName());
+    private final static Logger log = LogManager.getLogger(Dump.class.getSimpleName());
 
     /**
      *

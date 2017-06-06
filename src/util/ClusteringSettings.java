@@ -32,16 +32,7 @@ public class ClusteringSettings {
     public static AlgorithmSettings prepare(String algorithm, HashMap<String, String> parameters) {
         AlgorithmSettings algorithmSettings = null;
 
-       if (algorithm == null) {
-           log.warn("Using a hardcoded algorithm.");
-           algorithm = "DBSCAN";
-           parameters.put("Eps", "8000");
-           parameters.put("MinPts", "4");
-           parameters.put("k", "50");
-           parameters.put("plot", "yes");
-           parameters.put("dump", "yes");
-        }
-        switch (algorithm) {
+       switch (algorithm) {
             case "NBC":
                 algorithmSettings = new NBCAlgorithmSettings();
                 int kNBC = new Integer(parameters.get("k"));

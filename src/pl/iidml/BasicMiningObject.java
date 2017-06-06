@@ -3,11 +3,8 @@
  */
 package pl.iidml;
 
-import java.util.Date;
-
-import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
-import javax.datamining.NamedObject;
+import java.util.Date;
 
 /**
  * @author Piotrek
@@ -47,7 +44,7 @@ public abstract class BasicMiningObject implements MiningObject {
 	}
 
 	@Override
-	public void setDescription(String description) throws JDMException {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

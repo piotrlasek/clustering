@@ -1,14 +1,11 @@
 package org.dmtools.clustering.algorithm.CDBSCAN;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
-import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
-import org.dmtools.clustering.algorithm.common.ClusteringAlgorithm;
-import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.algorithm.common.InstanceConstraintsAlgorithm;
+import org.dmtools.clustering.model.IConstraintObject;
+import spatialindex.spatialindex.IShape;
 import spatialindex.spatialindex.Point;
-import util.SetConstraints;
 
 import java.util.ArrayList;
 
@@ -18,21 +15,18 @@ import java.util.ArrayList;
  * @author Piotr Lasek
  * 
  */
-public class CDBSCANRTree extends ClusteringAlgorithm {
-
-    private final static Logger log = LogManager.getLogger(CDBSCANRTree.class.getName());
+public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
 
     Double Eps = 0.0;
     Integer MinPts = 0;
-    private InstanceConstraints ic = new InstanceConstraints();
+
+    int delta = 5;
 
     /**
      *
      */
     public void run() {
-        timer.clusteringStart();
         DBSCAN();
-        timer.clusteringEnd();
     }
 
     /**
@@ -41,20 +35,55 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
     protected int nextId(int id) {
         return ++id;
     }
-     
+
+
+    /**
+     * @param def
+     */
+    private void markDeferred(ArrayList<IConstraintObject> def) {
+        for (IConstraintObject p : def) {
+            ArrayList<Point> epsNN = tree.regionQuery((IShape) p, 2*Eps);
+
+            p.setClusterId(CDMCluster.DEFERRED);
+            p.setParentCannotLinkPoint(p);
+            p.wasDeferred(true);
+            deferred.add(p);
+
+            if (!deferred.contains(p)) {
+                deferred.add(p);
+            }
+
+            for (int i = 0; i < epsNN.size(); i++) {
+                CNBCRTreePoint pcl1 = (CNBCRTreePoint) epsNN.get(i);
+                pcl1.setClusterId(CDMCluster.DEFERRED);
+                pcl1.setParentCannotLinkPoint(p);
+                pcl1.wasDeferred(true);
+                if (!deferred.contains(pcl1)) {
+                    deferred.add(pcl1);
+                }
+            }
+        }
+    }
+
     // DBSCAN
     // -----------------------------------------------------------------------
 
     protected void DBSCAN() {
-        timer.setAlgorithmName(CDBSCANAlgorithmSettings.NAME);
         // Dataset is UNCLASSIFIED
         Integer ClusterId = nextId(CDMCluster.NOISE);
         
         for (Point point : Dataset) {
-            //BasicSpatialObject point = (DbscanSpatialObject) p;
-            //point.ClId = UNCLASSIFIED;
-            setClId(point, CDMCluster.UNCLASSIFIED);
+            CNBCRTreePoint p = (CNBCRTreePoint) point;
+            setClId(p, CDMCluster.UNCLASSIFIED);
+            p.ndf = 1;
         }
+
+        // Setting cannot-link points to DEFERRED
+        ArrayList<IConstraintObject> def = new ArrayList<>();
+        def.addAll(ic.cl1);
+        def.addAll(ic.cl2);
+
+        markDeferred(def);
 
         // ClusterId := nextId(NOISE);
         // FOR i FROM 1 TO Dataset.size DO
@@ -76,8 +105,125 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
         }
         // END FOR
         // END;
+
+        deferred.addAll(ic.cl1);
+        deferred.addAll(ic.cl2);
+
+        try {
+            internalTimer.start("deferred");
+            recluster3(deferred);
+            internalTimer.end("deferred");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+
     } // DBSCAN
 
+    private void recluster3(ArrayList<IConstraintObject> Rd) throws Exception {
+        for (IConstraintObject q : Rd) {
+            if (q.getClusterId() > CDMCluster.NOISE) {
+                System.out.println("Cluster id: " + q.getClusterId());
+                throw new Exception("At this point cluster id should be equal to DEFERRED or to NOISE");
+            }
+        }
+
+        // Cloning
+        ArrayList<IConstraintObject> Rdc = (ArrayList<IConstraintObject>) Rd.clone();
+
+        for (IConstraintObject tq : Rdc) {
+            CNBCRTreePoint q = (CNBCRTreePoint) tq;
+
+            if (q.getClusterId() >= CDMCluster.NOISE) {
+                continue;
+            }
+
+            CNBCRTreePoint nearestClusterPoint = getNearestClusterPointND(q, delta * Eps);
+
+            if (nearestClusterPoint != null) {
+                int clusterId_nq = nearestClusterPoint.getClusterId();
+
+                IConstraintObject p = q.getParentCannotLinkPoint();
+
+                ArrayList<IConstraintObject> P_ = ic.getCannotLinkObjects(p);
+
+                boolean assigned = false;
+
+                for (IConstraintObject tp_ : P_) {
+                    CNBCRTreePoint p_ = (CNBCRTreePoint) tp_;
+                    CNBCRTreePoint point_gp_ = getNearestClusterPointND(p_, delta * Eps);
+                    // TODO: What if no clusters were created?
+
+                    if (point_gp_ != null) {
+                        int clusterId_gp_ = point_gp_.getClusterId();
+
+                        if (clusterId_nq != clusterId_gp_) {
+                            // Clusters are different so q can be assigned to clusterId_nq (nearest cluster)
+                            // however, we have to check whether the point is density reachable from the nearest
+                            // cluster.
+
+                            // UPDATE: q.ndf does not have to be >= 1
+                            // if (q.ndf >= 1) {
+                            // We also have to check whether the point is dense.
+                            ArrayList<Point> reverseNeighbours =
+                                    getNeighbors(nearestClusterPoint, Eps);
+                            if (reverseNeighbours.size() > MinPts && reverseNeighbours.contains(q)) {
+                                // Here, we're checking the reachability.
+                                q.setClusterId(clusterId_nq);
+
+                                //log.info("Assigning point " + q.toString() + " to cluster " + clusterId_nq);
+                                assigned = true;
+                            } /*else {
+                            q.setClusterId(CDMCluster.NOISE);
+                            assigned = true;
+                        }*/
+                            //}
+                        }
+                    }
+                }
+                if (!assigned) {
+                    q.setClusterId(CDMCluster.NOISE);
+                }
+            } else {
+                log.warn("Nearest cluster point not found.");
+            }
+
+        }
+    }
+
+    /**
+     * ND - Not deferred
+     */
+    private CNBCRTreePoint getNearestClusterPointND(CNBCRTreePoint p, double radius) {
+        CNBCRTreePoint nearestPoint = null;
+
+        ArrayList<Point> neighbors = getNeighbors(p, radius);
+
+        for (Point n : neighbors) {
+            CNBCRTreePoint nb = (CNBCRTreePoint) n;
+            if (nb.getClusterId() > CDMCluster.NOISE && !nb.wasDeferred()) {
+                nearestPoint = nb;
+                break;
+            }
+        }
+
+        return nearestPoint;
+    }
+
+    /**
+     * @param p
+     * @param radius
+     * @return
+     */
+    public ArrayList<Point> getNeighbors(CNBCRTreePoint p, double radius) {
+        ArrayList<Point> neighbours = tree.regionQuery(p, radius);
+
+        // returning the same point
+        neighbours.add(p);
+
+        return neighbours;
+    }
     /**
      * 
      * 
@@ -89,6 +235,22 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
         ArrayList<Point> seeds1 = tree.regionQuery(Point, Eps);
         ArrayList<Point> seeds = new ArrayList<Point>();
         seeds.addAll(seeds1);
+
+        // adding must-link points
+        ArrayList<Point> tmp = new ArrayList<>();
+        for(Point q : seeds) {
+            ArrayList<IConstraintObject> mls = ic.getMustLinkObjects((IConstraintObject) q);
+            for (IConstraintObject ico : mls) {
+                tmp.add((CNBCRTreePoint) ico);
+            }
+        }
+
+        for (Point ico : tmp) {
+           if (!seeds.contains(ico)) {
+               seeds.add(ico);
+           }
+        }
+
         // IF seeds.size<MinPts THEN // no core point
         if (seeds.size() < MinPts) {
             // SetOfPoint.changeClId(PointToRemove,NOISE);
@@ -111,6 +273,7 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
                 ArrayList<Point> result = tree.regionQuery(currentP, Eps);
                 // IF result.size >= MinPts THEN
                 if (result.size() >= MinPts) {
+
                     // FOR i FROM 1 TO result.size DO
                     for (int i = 1; i < result.size(); i++) {
                         // resultP := result.get(i);
@@ -125,6 +288,12 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
                                 // seeds.append(resultP);
                                 seeds.add(resultP);
                                 // END IF;
+                                // adding must-link to seeds
+                                ArrayList<IConstraintObject> mls = ic.getMustLinkObjects(resultP);
+                                for (IConstraintObject ico : mls) {
+                                    if (!seeds.contains(ico))
+                                        seeds.add((CNBCRTreePoint) ico);
+                                }
                             }
                             // Dataset.changeClId(resultP,ClId);
                             changeClId(resultP, ClId);
@@ -162,7 +331,9 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
      */
     public void changeClId(Point Point, int ClId) {
         CNBCRTreePoint cnrtp = (CNBCRTreePoint) Point;
-        setClId(cnrtp, ClId);
+        if (!cnrtp.wasDeferred()) {
+            setClId(cnrtp, ClId);
+        }
     }
 
     /**
@@ -192,71 +363,4 @@ public class CDBSCANRTree extends ClusteringAlgorithm {
         this.MinPts = minPts;
     }
 
-    public InstanceConstraints getConstraints() {
-        return ic;
-    }
-
-    @Override
-    public void setData(IClusteringData data) {
-        super.setData(data);
-    }
-
-    public void setConstraints(String icInfo) {
-        if (icInfo == "birch1") {
-            log.info("Loading constraints for birch1");
-            SetConstraints.forCNBC(Dataset, ic);
-        } else if (icInfo.startsWith("random")) {
-            log.info("Setting random constraints.");
-            randomConstraints(3, 3, this.Dataset.size());
-        } else {
-            log.warn("No constraints set.");
-        }
-    }
-
-    /**
-     *
-     * @param mlCount
-     * @param clCount
-     * @param datasetSize
-     */
-    private void randomConstraints(int mlCount, int clCount, int datasetSize) {
-
-        int index = 0;
-
-        for (int i = 0; i < mlCount; i++) {
-            index = drawIndex(datasetSize);
-            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
-            index = drawIndex(datasetSize);
-            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
-            ic.addMustLinkPoints(p0, p1);
-        }
-
-        for (int i = 0; i < clCount; i++) {
-            index = drawIndex(datasetSize);
-            CNBCRTreePoint p0 = (CNBCRTreePoint) Dataset.get(index);
-            index = drawIndex(datasetSize);
-            CNBCRTreePoint p1 = (CNBCRTreePoint) Dataset.get(index);
-            ic.addCannotLinkPoints(p0, p1);
-        }
-    }
-
-    ArrayList<Integer> indexes = new ArrayList<Integer>();
-
-    /**
-     *
-     * @param datasetSize
-     * @return
-     */
-    public int drawIndex(int datasetSize) {
-
-        int index = -1;
-
-        do {
-            index = (int) (Math.random() * datasetSize);
-        } while (indexes.contains(index));
-
-        indexes.add(index);
-
-        return index;
-    }
 }

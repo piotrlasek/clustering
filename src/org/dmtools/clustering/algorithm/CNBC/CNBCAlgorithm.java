@@ -45,10 +45,19 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		CDNBCRTree nbc = new CDNBCRTree();
 
+		timer.setAlgorithmName(CNBCAlgorithmSettings.NAME);
+		timer.setParameters("k=" + k);
+
 		nbc.setK(k);
+		timer.indexStart();
 		nbc.setData(data);
+		timer.indexEnd();
 		nbc.setConstraints(ic);
+		timer.clusteringStart();
 		nbc.run();
+		timer.clusteringEnd();
+
+		timer.merge(nbc.getInternalTimer());
 
 		IClusteringData cd = nbc.getResult();
 
@@ -64,7 +73,9 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm {
 			InstanceConstraints constraints = nbc.getConstraints();
 			MyFrame2.plotResult(result, max[0], constraints, null, null, null);
 		}
-		return null;
+
+		basicMiningObject.setDescription(timer.getLog());
+		return basicMiningObject;
 	}
 
 }

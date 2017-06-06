@@ -1,5 +1,7 @@
 package org.dmtools.clustering.algorithm.common;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
 import org.dmtools.clustering.model.IClusteringData;
@@ -11,15 +13,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Piotr on 01.06.2017.
+ * Created by Piotr Lasek on 01.06.2017.
  */
 public class ClusteringAlgorithm {
+
+    protected final static Logger log = LogManager.getLogger(ClusteringAlgorithm.class.getSimpleName());
+
     public int nDim = 0;
     public ArrayList<Point> Dataset;
     public RTreeIndex tree;
     public double maxx;
+    protected ClusteringTimer internalTimer = new ClusteringTimer();
 
-    public ClusteringTimer timer = new ClusteringTimer();
     /**
      *
      * @throws IOException
@@ -35,7 +40,6 @@ public class ClusteringAlgorithm {
      * @param data
      */
     public void setData(IClusteringData data) {
-        timer.indexStart();
         ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
                 .get();
         Dataset = new ArrayList();
@@ -48,9 +52,10 @@ public class ClusteringAlgorithm {
             return;
         }
 
+        // building R-Tree
+
         int id = 0;
 
-        // building R-Tree
         for (IClusteringObject ico : tmp) {
             double[] values = ico.getSpatialObject().getValues();
             if (values[0] > maxx) maxx = values[0];
@@ -61,7 +66,6 @@ public class ClusteringAlgorithm {
             tree.insertData(d, mp, id);
             id++;
         }
-        timer.indexEnd();
     }
 
     /**
@@ -98,5 +102,13 @@ public class ClusteringAlgorithm {
      */
     public ArrayList<Point> getDataset() {
         return Dataset;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ClusteringTimer getInternalTimer() {
+        return internalTimer;
     }
 }

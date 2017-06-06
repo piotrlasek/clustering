@@ -4,6 +4,8 @@ package util;
  * @author Adam Konieczny
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
@@ -18,9 +20,11 @@ import java.util.Scanner;
  */
 public class SetConstraints {
 
-    private static ArrayList<ArrayList<String>> readConstraintsFromFile() {
+    protected final static Logger log = LogManager.getLogger(SetConstraints.class.getSimpleName());
 
-        String filePath = Workspace.getWorkspacePath() + "/data/experiment/constraintsBrich1.txt";
+    private static ArrayList<ArrayList<String>> readConstraintsFromFile(String fileName) {
+
+        String filePath = Workspace.getWorkspacePath() + "/" + fileName;
 
         Scanner s = null;
         try {
@@ -48,7 +52,7 @@ public class SetConstraints {
      * @param ic
      */
     public static void forCDBSCAN(InstanceConstraints ic){
-        ArrayList<ArrayList<String>> list = readConstraintsFromFile();
+        ArrayList<ArrayList<String>> list = readConstraintsFromFile("<TODO>");
         for(int i = 0; i < list.size(); i++) {
             ArrayList<String> currentLine = list.get(i);
 
@@ -74,9 +78,9 @@ public class SetConstraints {
     }
 
 
-    public static void forCNBC(ArrayList Dataset, InstanceConstraints ic) {
+    public static void birch1(ArrayList Dataset, InstanceConstraints ic, String fileName) {
         CNBCRTreePoint p0, p1;
-        ArrayList<ArrayList<String>> list = readConstraintsFromFile();
+        ArrayList<ArrayList<String>> list = readConstraintsFromFile(fileName);
         for(int i = 0; i < list.size(); i++){
             ArrayList<String> currentLine = list.get(i);
 

@@ -11,15 +11,11 @@ import javax.datamining.ExecutionStatus;
 import javax.datamining.JDMException;
 import javax.datamining.base.AlgorithmSettings;
 import javax.datamining.clustering.AggregationFunction;
-import javax.datamining.clustering.Cluster;
-import javax.datamining.clustering.ClusteringModel;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalDataSet;
 import javax.datamining.resource.Connection;
 import javax.datamining.resource.ConnectionSpec;
-import javax.datamining.rule.Rule;
 import javax.datamining.task.BuildTask;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -37,6 +33,16 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
+
+			if (args.length == 0) {
+				args = new String[]{
+						"algorithm=C-DBSCAN",
+						"data=\\data\\my-file-2d.txt",
+						"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_1000"
+						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
+					};
+			}
+
 			Workspace.readArgs(args);
 
 			// DATASET PREPARATION
@@ -49,14 +55,6 @@ public class Main {
 			long time1 = new Date().getTime();
 
 			String dataFilePath = Workspace.getDataFilePath();
-
-			if (dataFilePath == null) {
-				//dataFilePath = "/data/experiment/birch1.txt";
-				dataFilePath = "/data/my-file-2d.txt";
-                //cs.setURI(cdmPath + "/data/experiment/birch2.txt"); //brich2
-                //cs.setURI(cdmPath + "/data/experiment/birch3.txt"); //brich3
-				//cs.setURI(cdmPath + "/data/my-file-2d.txt"); //~10 000 elements
-			}
 
 			log.info("Preparing input data...");
 
@@ -100,7 +98,6 @@ public class Main {
 
 			algorithmSettings = util.ClusteringSettings.prepare(algorithm, parameters);
 
-			log.info("	" + algorithmSettings.toString());
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
 
@@ -112,34 +109,25 @@ public class Main {
 			bt = mbtf.create("MyPhysicalDataSet", "ClusteringSettings",
 					"ClusteringOutputModel");
 
-			log.info("Executing the algorithm...");
+
 			// EXECUTE
 			// -----------------------------------------------------------------
-			Long timeOut = null;
-			ExecutionStatus eh = null; 
-			Collection<Cluster> clusters = null;
-			Collection<Rule> rules = null;
-			ClusteringModel cm = null;
-		
-			eh = conn.execute(bt, timeOut);
-			cm = (ClusteringModel) conn.retrieveObject("ClusteringOutputModel");
-			rules = (Collection<Rule>) cm.getRules();
-			clusters = (Collection<Cluster>) cm.getClusters();
+			log.info("Executing the algorithm...");
+			ExecutionStatus executionStatus = conn.execute(bt, null); // null - time out
 
-			long time2 = new Date().getTime();
-			 
-			// THE END 
-			
-			// PRINT CLUSTER NAMES
-			log.info("Clusters:");
-			for (Cluster c : clusters) {
-				String n = c.getName();
-				log.info("	" + n);
-			}
-			
-			log.info("Processing finished.");
-			long diff = time2-time1;
-			log.info("Time1= " + time1 + "; Time2= " + time2 + "; Diff= " + diff +  ".");
+			// GET RESULTS
+			// -----------------------------------------------------------------
+			// clusteringModel = (ClusteringModel) conn.retrieveObject("ClusteringOutputModel");
+			// rules = (Collection<Rule>) cm.getRules();
+			// clusters = (Collection<Cluster>) cm.getClusters();
+
+			// print times
+			log.info(executionStatus.getDescription());
+
+			// THE END
+			// -----------------------------------------------------------------
+            log.info("Done.");
+
 		} catch (JDMException e) {
 			e.printStackTrace();
 		}

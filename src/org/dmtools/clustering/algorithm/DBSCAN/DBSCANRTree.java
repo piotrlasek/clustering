@@ -1,13 +1,8 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
-import org.dmtools.clustering.algorithm.common.RTreeIndex;
-import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.clustering.model.IClusteringObject;
-import org.dmtools.clustering.old.*;
+import org.dmtools.clustering.algorithm.common.ClusteringAlgorithm;
 import spatialindex.spatialindex.Point;
 
 import java.io.IOException;
@@ -18,15 +13,7 @@ import java.util.ArrayList;
  * @author Piotr Lasek
  *
  */
-public class DBSCANRTree {
-
-    private final static Logger log = LogManager.getLogger("DBSCANRTree");
-
-    ClusteringTimer logger = new ClusteringTimer();
-    ArrayList<Point> Dataset;
-    RTreeIndex tree;
-
-    int nDim = 0;
+public class DBSCANRTree extends ClusteringAlgorithm {
 
     Double Eps = 0.0;
     Integer MinPts = 0;
@@ -35,9 +22,7 @@ public class DBSCANRTree {
      *
      */
     public void run() {
-        logger.clusteringStart();
         DBSCAN();
-        logger.clusteringEnd();
     }
 
     public ArrayList<Point> getDataset() {
@@ -55,7 +40,6 @@ public class DBSCANRTree {
     // -----------------------------------------------------------------------
 
     protected void DBSCAN() {
-        logger.setAlgorithmName(DBSCANAlgorithmSettings.NAME);
         // Dataset is UNCLASSIFIED
         Integer ClusterId = nextId(CDMCluster.NOISE);
 
@@ -209,14 +193,15 @@ public class DBSCANRTree {
      *
      * @throws IOException
      */
-    public void initRTree() throws IOException {
+/*    public void initRTree() throws IOException {
         tree = new RTreeIndex();
         tree.initRTree(Dataset, nDim);
-    }
+    }*/
 
     /**
      *
      */
+    /*
     public IClusteringData getResult() {
         BasicClusteringData bcd = new BasicClusteringData();
         ArrayList<IClusteringObject> al = new ArrayList<IClusteringObject>();
@@ -235,10 +220,9 @@ public class DBSCANRTree {
         bcd.set(al);
 
         return bcd;
-    }
-
+    }*/
+/*
     public void setData(IClusteringData data) {
-        logger.indexStart();
         ArrayList<IClusteringObject> tmp = (ArrayList<IClusteringObject>) data
                 .get();
         Dataset = new ArrayList();
@@ -262,8 +246,7 @@ public class DBSCANRTree {
             tree.insertData(d, mp, id);
             id++;
         }
-        logger.indexEnd();
-    }
+    }*/
 
     public void setEps(double eps) {
         this.Eps = eps;

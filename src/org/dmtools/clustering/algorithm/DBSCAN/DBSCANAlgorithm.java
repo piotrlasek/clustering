@@ -37,13 +37,21 @@ public class DBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
 
         DBSCANRTree dbscan = new DBSCANRTree();
 
+        timer.setAlgorithmName(DBSCANAlgorithmSettings.NAME);
+        timer.setParameters("Eps=" + Eps + ", MinPts" + MinPts);
+
+        timer.indexStart();
         dbscan.setData(data);
+        timer.indexEnd();
+
         dbscan.setEps(Eps);
         dbscan.setMinPts(MinPts);
 
         log.info(DBSCANAlgorithmSettings.NAME + " run.");
 
+        timer.clusteringStart();
         dbscan.run();
+        timer.clusteringEnd();
 
         log.info(DBSCANAlgorithmSettings.NAME + " finished.");
 
@@ -61,7 +69,8 @@ public class DBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
             MyFrame.plotResult(result, max[0], null, null, null, null);
         }
 
-        return null;
+        basicMiningObject.setDescription(timer.getLog());
+        return basicMiningObject;
     }
 
 }
