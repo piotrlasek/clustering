@@ -67,6 +67,8 @@ public class DBSCANRTree extends ClusteringAlgorithm {
                 // END IF
             }
         }
+
+        clusterCount = ClusterId;
         // END FOR
         // END;
     } // DBSCAN

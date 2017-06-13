@@ -1,6 +1,7 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.algorithm.common.MyFrame2;
 import org.dmtools.clustering.model.IClusteringData;
 import spatialindex.spatialindex.Point;
 import util.Dump;
@@ -63,20 +64,27 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		ArrayList<Point> result = nbc.getDataset();
 
+		String logFileName = Dump.getLogFileName(CNBCAlgorithmSettings.NAME,
+				getPhysicalDataSet().getDescription(), getDescription() + " (clusters=" + nbc.clusterCount() + ")");
+
 		if (dump()) {
-		    String dumpFileName = Dump.getDumpFileName(CNBCAlgorithmSettings.NAME,
-					getPhysicalDataSet().getDescription(), "(k=" + k + ")");
-			Dump.toFile(cd.get(), dumpFileName, true);
+			Dump.toFile(cd.get(), logFileName + ".csv", true);
 		}
 
 		if (plot()) {
 			InstanceConstraints constraints = nbc.getConstraints();
-			MyFrame2.plotResult(result, max[0], constraints, null, null, null);
+			MyFrame2.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
 		}
 
-		basicMiningObject.setDescription(timer.getLog());
+		basicMiningObject.setDescription(timer.getLog() + "\t" + nbc.clusterCount());
 		return basicMiningObject;
 	}
+
+	@Override
+	public String getDescription() {
+		return "(k=" + k + ")";
+	}
+
 
 }
 

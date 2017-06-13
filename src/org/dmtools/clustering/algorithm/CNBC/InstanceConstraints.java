@@ -14,8 +14,8 @@ public class InstanceConstraints {
 	public ArrayList<IConstraintObject> cl1 = new ArrayList<IConstraintObject>();
 	public ArrayList<IConstraintObject> cl2 = new ArrayList<IConstraintObject>();
 
-	ArrayList<IConstraintObject> ml1 = new ArrayList<IConstraintObject>();
-	ArrayList<IConstraintObject> ml2 = new ArrayList<IConstraintObject>();
+	public ArrayList<IConstraintObject> ml1 = new ArrayList<IConstraintObject>();
+	public ArrayList<IConstraintObject> ml2 = new ArrayList<IConstraintObject>();
 
 	/**
 	 *

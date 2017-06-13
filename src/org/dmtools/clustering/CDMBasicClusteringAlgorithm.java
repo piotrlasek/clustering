@@ -1,5 +1,8 @@
 package org.dmtools.clustering;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.dmtools.clustering.algorithm.common.ClusteringAlgorithm;
 import org.dmtools.clustering.model.IClusteringData;
 import org.dmtools.clustering.old.ClusteringTimer;
 import org.dmtools.clustering.old.DataSourceManager;
@@ -29,17 +32,14 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	protected double[] min = null;
 	protected double[] max = null;
 	protected Collection<PhysicalAttribute> attributes;
-
 	protected ClusteringSettings clusteringSettings;
 	protected PhysicalDataSet physicalDataSet;
-
 	protected int numberOfDimensions;
-
 	protected ClusteringTimer timer = new ClusteringTimer();
+	protected ClusteringAlgorithm algorithm;
+	protected CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
 
-    protected CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
-
-
+	protected final static Logger log = LogManager.getLogger(CDMBasicClusteringAlgorithm.class.getSimpleName());
 
 	/**
 	 *
@@ -62,7 +62,8 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 		min = new double[numberOfDimensions];
 		max = new double[numberOfDimensions];
 	}
-	
+
+
 	@Override
 	/**
 	 * 
@@ -137,12 +138,25 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	 *
 	 * @return
 	 */
+	public boolean closePlot() {
+		if (((CDMBaseAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).closePlot())
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean plot() {
 		if (((CDMBaseAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).plot())
 			return true;
 		else
 			return false;
 	}
+
+	public abstract String getDescription();
 
 	public ClusteringTimer getInternalTimer() {
 		return timer;

@@ -5,6 +5,7 @@ import org.dmtools.datamining.data.CDMFilePhysicalDataSetFactory;
 import org.dmtools.datamining.resource.CDMFileConnectionFactory;
 import org.dmtools.datamining.task.CDMBuildTaskFactory;
 import util.DataSet;
+import util.Dump;
 import util.Workspace;
 
 import javax.datamining.ExecutionStatus;
@@ -36,9 +37,11 @@ public class Main {
 
 			if (args.length == 0) {
 				args = new String[]{
-						"algorithm=C-DBSCAN",
+						"algorithm=C-NBC",
 						"data=\\data\\my-file-2d.txt",
-						"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_1000"
+						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
+						//"parameters=k:10;dump;plot;close_plot;ic:random_4"
+						"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 					};
 			}
@@ -94,9 +97,7 @@ public class Main {
 
 			String algorithm = Workspace.getAlgorithm();
 			HashMap<String, String> parameters = Workspace.getParameters();
-			AlgorithmSettings algorithmSettings = null;
-
-			algorithmSettings = util.ClusteringSettings.prepare(algorithm, parameters);
+			AlgorithmSettings algorithmSettings = util.ClusteringSettings.prepare(algorithm, parameters);
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
@@ -104,11 +105,7 @@ public class Main {
 			// BUILD TASK
 			log.info("Preparing a build task...");
 			CDMBuildTaskFactory mbtf = new CDMBuildTaskFactory();
-			BuildTask bt = null;
-
-			bt = mbtf.create("MyPhysicalDataSet", "ClusteringSettings",
-					"ClusteringOutputModel");
-
+			BuildTask bt = mbtf.create("MyPhysicalDataSet", "ClusteringSettings", "ClusteringOutputModel");
 
 			// EXECUTE
 			// -----------------------------------------------------------------
@@ -123,6 +120,9 @@ public class Main {
 
 			// print times
 			log.info(executionStatus.getDescription());
+
+			// log description in file
+			Dump.saveTimes(executionStatus.getDescription());
 
 			// THE END
 			// -----------------------------------------------------------------

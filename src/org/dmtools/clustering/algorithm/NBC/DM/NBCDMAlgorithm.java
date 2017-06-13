@@ -2,7 +2,6 @@ package org.dmtools.clustering.algorithm.NBC.DM;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame;
 import org.dmtools.clustering.model.*;
 import org.dmtools.clustering.old.BasicClusteringParameters;
 import org.dmtools.clustering.old.DataSourceManager;
@@ -171,8 +170,13 @@ public class NBCDMAlgorithm extends CDMBasicClusteringAlgorithm implements IClus
 			frc.add(data.get(constraints.r3.get(ii)));
 		}
 		
-		MyFrame.plotResult(result, max[0], null, null, null, null);
+//		MyFrame.plotResult(result, max[0], null, null, null, null);
 
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
 		return null;
 	}
 

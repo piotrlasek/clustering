@@ -1,1 +1,6 @@
-C-DBSCAN        Eps=1000.0, MinPts15    8958    126753  96034
+C-DBSCAN    Eps=1000.0, MinPts=15    8958    126753  96034
+DBSCAN      Eps=1000.0, MinPts15     9363     38394
+
+
+
+

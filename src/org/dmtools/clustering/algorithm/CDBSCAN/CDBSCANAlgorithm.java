@@ -4,9 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame2;
+import org.dmtools.clustering.algorithm.common.MyFrame2;
 import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.datamining.resource.CDMBasicMiningObject;
 import spatialindex.spatialindex.Point;
 import util.Dump;
 
@@ -54,7 +53,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         IClusteringData data = prepareData();
 
         timer.setAlgorithmName(CDBSCANAlgorithmSettings.NAME);
-        timer.setParameters("Eps=" + Eps + ", MinPts=" + MinPts);
+        timer.setParameters(getDescription());
 
         timer.indexStart();
         dbscan.setData(data);
@@ -76,23 +75,26 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
 
         IClusteringData resultToDump = dbscan.getResult();
 
+        String logFileName = Dump.getLogFileName(CDBSCANAlgorithmSettings.NAME, getPhysicalDataSet().getDescription(),
+                getDescription() + "(clusters=" + dbscan.clusterCount() + ")");
+
         if (dump()) {
-            String dumpFileName = Dump.getDumpFileName(CDBSCANAlgorithmSettings.NAME, getPhysicalDataSet().getDescription(),
-                    "(Eps="+ Eps + ", minPts=" + MinPts + ")");
-            Dump.toFile(resultToDump.get(), dumpFileName, true);
+            Dump.toFile(resultToDump.get(), logFileName + ".csv", true);
         }
 
         if (plot()) {
             // Show result
             ArrayList<Point> result = dbscan.getDataset();
             InstanceConstraints constraints = dbscan.getConstraints();
-            MyFrame2.plotResult(result, max[0], constraints, null, null, null);
+            MyFrame2.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), dbscan.clusterCount());
         }
 
-        CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
-        basicMiningObject.setDescription(timer.getLog());
+        basicMiningObject.setDescription(timer.getLog() + "\t" + dbscan.clusterCount());
 
         return basicMiningObject;
     }
-
+    @Override
+    public String getDescription() {
+        return "(Eps="+ Eps + ", minPts=" + MinPts + ")";
+    }
 }

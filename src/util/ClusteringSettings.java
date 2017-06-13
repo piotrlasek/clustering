@@ -90,6 +90,9 @@ public class ClusteringSettings {
         if (parameters.containsKey("dump")) {
             baseAlgorithmSettings.setDump(true);
         }
+        if (parameters.containsKey("close_plot")) {
+            baseAlgorithmSettings.setClosePlot(true);
+        }
 
         return algorithmSettings;
     }

@@ -18,6 +18,7 @@ public class RTreeIndex {
 
     private RTree treeIndex;
     private ArrayList<Point> internalSetOfPoints;
+    private int datasetSize;
 
     /**
      *
@@ -27,7 +28,6 @@ public class RTreeIndex {
 
         this.internalSetOfPoints = SetOfPoints;
         MyVisitor.SetOfPoints = SetOfPoints;
-
         PropertySet ps = new PropertySet();
         ps.setProperty("FileName", "nbc-rtree");
         ps.setProperty("FillFactor", 0.1);
@@ -48,7 +48,8 @@ public class RTreeIndex {
      * @param id
      */
     public void insertData(byte[] d, Point mp, int id) {
-            treeIndex.insertData(d, mp, id);
+        treeIndex.insertData(d, mp, id);
+        datasetSize++;
     }
 
     /**
@@ -60,7 +61,7 @@ public class RTreeIndex {
     public ArrayList<Point> regionQuery(IShape point,
                                                   double Eps) {
         MyVisitor kNN = new MyVisitor();
-        treeIndex.nearestNeighborQuery(Eps, point, kNN, internalSetOfPoints.size());
+        treeIndex.nearestNeighborQuery(Eps, point, kNN, datasetSize);
         return kNN.neighbours;
     }
 

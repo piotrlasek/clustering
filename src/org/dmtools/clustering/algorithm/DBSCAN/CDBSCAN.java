@@ -3,7 +3,6 @@ package org.dmtools.clustering.algorithm.DBSCAN;
 import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.algorithm.CNBC.CNBCRTreePoint;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame;
 import org.dmtools.clustering.model.IClusteringData;
 import org.dmtools.clustering.model.IClusteringObject;
 import org.dmtools.clustering.model.IConstraintObject;
@@ -18,8 +17,6 @@ import javax.datamining.JDMException;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -78,29 +75,10 @@ public class CDBSCAN extends DBSCANBase {
 		//Post process
 		IClusteringData cd = this.getResult();
 		Collection<IClusteringObject> result = cd.get();
-		visualizeResult(result);
+		// visualizeResult(result);
 //		CSV.saveResults(result, "CDBSCAN");
 	}
 
-	/**
-	 *
-	 * @param result
-     */
-	private void visualizeResult(Collection<IClusteringObject> result) {
-		// Show result
-		MyFrame mf = new MyFrame(result, max[0], ic, null, null, null);
-		mf.setPreferredSize(new Dimension(700, 600));
-		JFrame f = new JFrame();
-		JScrollPane scrollPane = new JScrollPane(mf);
-		mf.setScrollPane(scrollPane);
-		scrollPane.setAutoscrolls(true);
-		f.add(scrollPane);
-		f.pack();
-		f.setTitle("CDBSCAN");
-		f.setSize(new Dimension(700, 600));
-		f.setVisible(true);
-		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	}
 
 	/**
 	 *

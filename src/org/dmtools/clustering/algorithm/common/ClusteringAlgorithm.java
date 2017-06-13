@@ -24,6 +24,7 @@ public class ClusteringAlgorithm {
     public RTreeIndex tree;
     public double maxx;
     protected ClusteringTimer internalTimer = new ClusteringTimer();
+    protected int clusterCount = 0;
 
     /**
      *
@@ -110,5 +111,13 @@ public class ClusteringAlgorithm {
      */
     public ClusteringTimer getInternalTimer() {
         return internalTimer;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int clusterCount() {
+        return clusterCount;
     }
 }

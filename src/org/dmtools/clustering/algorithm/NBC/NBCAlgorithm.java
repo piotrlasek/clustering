@@ -1,10 +1,8 @@
 package org.dmtools.clustering.algorithm.NBC;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
-import org.dmtools.clustering.algorithm.CNBC.MyFrame;
+import org.dmtools.clustering.algorithm.common.MyFrame2;
 import org.dmtools.clustering.model.IClusteringData;
-import org.dmtools.datamining.resource.CDMExecutionStatus;
 import util.Dump;
 
 import javax.datamining.MiningObject;
@@ -39,17 +37,16 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 	 */
 	@Override
 	public MiningObject run() {
-
-		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
-
+		log.info(NBCAlgorithmSettings.NAME + " start.");
+		log.info(NBCAlgorithmSettings.NAME + " preparing data.");
 		IClusteringData data = prepareData();
 
 		NBCRTree nbc = new NBCRTree();
+		nbc.setK(k);
 
         timer.setAlgorithmName(NBCAlgorithmSettings.NAME);
         timer.setParameters("k=" + k);
 
-		nbc.setK(k);
 		timer.indexStart();
 		nbc.setData(data);
 		timer.indexEnd();
@@ -57,22 +54,29 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 		nbc.run();
 		timer.clusteringEnd();
 
+		log.info(NBCAlgorithmSettings.NAME + " finished.");
+
 		IClusteringData result = nbc.getResult();
 
+		String logFileName = Dump.getLogFileName(NBCAlgorithmSettings.NAME,
+				getPhysicalDataSet().getDescription(),getDescription() + " (clusters=" + nbc.clusterCount() + ")");
+
 		if (dump()) {
-			String dumpFileName = Dump.getDumpFileName(NBCAlgorithmSettings.NAME,
-					getPhysicalDataSet().getDescription(), "(k=" + k + ")");
-			Dump.toFile(result.get(), dumpFileName, true);
+			Dump.toFile(result.get(), logFileName + ".csv", true);
 		}
 
 		if (plot()) {
-			MyFrame.plotResult(result.get(), max[0], null, null, null, null);
+			MyFrame2.plotResult(nbc.getDataset(), max[0], max[1], null, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
 		}
 
-		basicMiningObject.setDescription(timer.getLog());
+		basicMiningObject.setDescription(timer.getLog() + "\t" + nbc.clusterCount());
 		return basicMiningObject;
 	}
 
+	@Override
+	public String getDescription() {
+		return "(k=" + k + ")";
+	}
 }
 
 

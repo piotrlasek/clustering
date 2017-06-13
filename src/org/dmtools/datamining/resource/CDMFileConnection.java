@@ -153,6 +153,8 @@ public class CDMFileConnection implements Connection {
 			throw new JDMException(0, "Not supported.");
 		}
 
+		saveObject("clustering_result", miningObject, true);
+
 		executionStatus.setDescription(miningObject.getDescription());
 
 		saveObject(outputModelName, mcm, true);

@@ -20,7 +20,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
     Double Eps = 0.0;
     Integer MinPts = 0;
 
-    int delta = 5;
+    int delta = 3;
 
     /**
      *
@@ -98,6 +98,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
                 if (ExpandCluster(Dataset, Point, ClusterId, Eps, MinPts)) {
                     // ClusterId := nextId(ClusterId)
                     ClusterId = nextId(ClusterId);
+                    clusterCount++;
                     // END IF
                 }
                 // END IF
@@ -168,7 +169,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
                             // We also have to check whether the point is dense.
                             ArrayList<Point> reverseNeighbours =
                                     getNeighbors(nearestClusterPoint, Eps);
-                            if (reverseNeighbours.size() > MinPts && reverseNeighbours.contains(q)) {
+                            if (reverseNeighbours.size() > MinPts /*&& reverseNeighbours.contains(q)*/) {
                                 // Here, we're checking the reachability.
                                 q.setClusterId(clusterId_nq);
 
@@ -187,6 +188,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
                 }
             } else {
                 log.warn("Nearest cluster point not found.");
+                q.setClusterId(CDMCluster.NOISE);
             }
 
         }
@@ -202,7 +204,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
 
         for (Point n : neighbors) {
             CNBCRTreePoint nb = (CNBCRTreePoint) n;
-            if (nb.getClusterId() > CDMCluster.NOISE && !nb.wasDeferred()) {
+            if (nb.getClusterId() > CDMCluster.NOISE/* && !nb.wasDeferred()*/) {
                 nearestPoint = nb;
                 break;
             }

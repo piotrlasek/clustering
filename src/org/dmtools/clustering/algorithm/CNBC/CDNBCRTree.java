@@ -32,12 +32,8 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
      */
     public void run() {
         ArrayList<CNBCRTreePoint> NoiseSet = new ArrayList();
-        int cluster_count = 0;
-
         CalcNDF();
-
         NoiseSet.clear();
-        cluster_count = 0;
         ArrayList<CNBCRTreePoint> DPSet = new ArrayList();
 
         // Setting cannot-link points to DEFERRED
@@ -57,7 +53,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                     p.ndf < 1) {
                 continue;
             }
-            p.setClusterId(cluster_count); // label a new cluster
+            p.setClusterId(clusterCount); // label a new cluster
             DPSet.clear(); // initialize DPSet
 
             MyVisitor kNN = new MyVisitor();
@@ -82,7 +78,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                     CNBCRTreePoint q = (CNBCRTreePoint) kNN.neighbours.get(i);
 
                     if (q.getClusterId() == CDMCluster.UNCLASSIFIED) {
-                        q.setClusterId(cluster_count);
+                        q.setClusterId(clusterCount);
                         if (q.ndf >= 1) {
                             DPSet.add(q);
 
@@ -117,7 +113,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                     if (q.getClusterId() != CDMCluster.UNCLASSIFIED)
                         continue;
 
-                    q.setClusterId(cluster_count); // TODO cluster count
+                    q.setClusterId(clusterCount); // TODO cluster count
 
                     // if (q.ndf >= 1) DPSet.add(q)
                     if (q.ndf >= 1) {
@@ -140,7 +136,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                 }
                 // DPSet.remove(p);
             }
-            cluster_count++;
+            clusterCount++;
         }
 
         deferred.addAll(ic.cl1);
@@ -174,6 +170,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                 p.setClusterId(CDMCluster.NOISE);
         }
         */
+
     }
 
     /**
@@ -294,7 +291,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                 continue;
             }
 
-            CNBCRTreePoint nearestClusterPoint = getNearestClusterPointND(q, 2*k);
+            CNBCRTreePoint nearestClusterPoint = getNearestClusterPointND(q, 3*k); // check assigning to nearest clusters
             int clusterId_nq = nearestClusterPoint.getClusterId();
 
             IConstraintObject p = q.getParentCannotLinkPoint();
@@ -323,8 +320,10 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                                 getNeighbors(nearestClusterPoint, k);
                         if (reverseNeighbours.contains(q)) {
                             // Here, we're checking the reachability.
-                            q.setClusterId(clusterId_nq);
-                            assigned = true;
+                            //if (q.ndf >= 1) {
+                                q.setClusterId(clusterId_nq);
+                                assigned = true;
+                            //}
                             clusters++;
                         } /*else {
                             q.setClusterId(CDMCluster.NOISE);

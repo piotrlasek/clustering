@@ -86,7 +86,12 @@ public class DbScanSlicer extends CDMBasicClusteringAlgorithm
     	TI_DBSCAN();
 		return null;
     }
- 
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
     /**
      * 
      */

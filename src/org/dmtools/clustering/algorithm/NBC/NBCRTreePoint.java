@@ -18,6 +18,7 @@ public class NBCRTreePoint extends Point implements ISpatialObject {
 	public int numberOfkNB;
 	public int numberOfRkNB;
 	public boolean visited;
+	private String description;
 
 	/**
 	 *
@@ -130,4 +131,11 @@ public class NBCRTreePoint extends Point implements ISpatialObject {
 		return null;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

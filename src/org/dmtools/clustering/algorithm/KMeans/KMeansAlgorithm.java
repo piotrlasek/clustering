@@ -75,6 +75,11 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		return ccm;
 	}
 
+	@Override
+	public String getDescription() {
+		return "(k = )";
+	}
+
 	/**
 	 * 
 	 * @param point

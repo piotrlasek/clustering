@@ -22,7 +22,7 @@ public class Dump {
      * @param ignoreNoise
      */
     public static void toFile(Collection<IClusteringObject> Dataset, String fName, boolean ignoreNoise) {
-        String filePath = Workspace.getWorkspacePath() + "/data/experiment/" + fName;
+        String filePath = Workspace.getWorkspacePath() + "/results/" + fName;
         log.info("Saving results to: " + filePath);
         FileWriter writer = null;
         try {
@@ -52,10 +52,25 @@ public class Dump {
      * @param parameters
      * @return
      */
-    public static String getDumpFileName(String algorithmName, String fileName,
-                                         String parameters) {
+    public static String getLogFileName(String algorithmName, String fileName, String parameters) {
         String fileNameNoExt = fileName.split("\\.")[0];
-        String dumpFileName = fileNameNoExt + "_" + algorithmName + "_" + parameters + ".csv";
+        String dumpFileName = fileNameNoExt + "_" + algorithmName + "_" + parameters;
         return dumpFileName;
+    }
+
+    /**
+     *
+     * @param description
+     */
+    public static void saveTimes(String description) {
+        String filePath = Workspace.getWorkspacePath() + "/results/times.txt";
+        try {
+            FileWriter fw = new FileWriter(filePath, true);
+            fw.write(description + "\n");
+            fw.close();
+        } catch(IOException ioe) {
+            log.error("IOException: " + ioe.getMessage());
+        }
+        log.info("Times appended to: " + filePath);
     }
 }

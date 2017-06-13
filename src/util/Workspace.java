@@ -43,7 +43,6 @@ public class Workspace {
                 e.printStackTrace();
             }
         }
-        logger.info("Workspace path set to: " + currentWorkspacePath);
         return currentWorkspacePath;
     }
 
@@ -73,8 +72,13 @@ public class Workspace {
             String[] kvPairStrings = argsMap.get("parameters").split(";");
             for (String kvPairString : kvPairStrings) {
                 String[] kvPair = kvPairString.split(":");
-                parameters.put(kvPair[0], kvPair[1]);
-                logger.info(">>>> " + kvPair[0]);
+                if (kvPair.length == 2) {
+                    parameters.put(kvPair[0], kvPair[1]);
+                } else if (kvPair.length == 1) {
+                    parameters.put(kvPair[0], "yes");
+                } else {
+                    logger.error("Parameters error.");
+                }
             }
         }
         return parameters;
