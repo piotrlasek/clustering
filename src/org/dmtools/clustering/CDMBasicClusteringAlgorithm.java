@@ -99,6 +99,8 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 
 		int i = 0;
 		for(Object[] rawRecord : rawData) {
+			/*if (i > 10000)
+				break;*/
 			double[] record = new double[attributes.size() + 1];
 			int d = 0;
 			for(PhysicalAttribute attribute : attributes) {

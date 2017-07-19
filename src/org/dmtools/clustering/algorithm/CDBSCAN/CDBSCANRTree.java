@@ -20,7 +20,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
     Double Eps = 0.0;
     Integer MinPts = 0;
 
-    int delta = 3;
+    int delta = 0;
 
     /**
      *
@@ -42,7 +42,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
      */
     private void markDeferred(ArrayList<IConstraintObject> def) {
         for (IConstraintObject p : def) {
-            ArrayList<Point> epsNN = tree.regionQuery((IShape) p, 2*Eps);
+            ArrayList<Point> epsNN = tree.regionQuery((IShape) p, Eps);
 
             p.setClusterId(CDMCluster.DEFERRED);
             p.setParentCannotLinkPoint(p);
@@ -365,4 +365,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
         this.MinPts = minPts;
     }
 
+    public void setDelta(int delta) {
+        this.delta = delta;
+    }
 }

@@ -1,7 +1,7 @@
 package org.dmtools.clustering.algorithm.DBSCAN;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.algorithm.common.MyFrame2;
+import org.dmtools.clustering.algorithm.common.PlotPanel;
 import org.dmtools.clustering.model.IClusteringData;
 import org.dmtools.clustering.model.IClusteringObject;
 import util.Dump;
@@ -56,7 +56,7 @@ public class DBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         IClusteringData cd = dbscan.getResult();
 
         String logFileName = Dump.getLogFileName(DBSCANAlgorithmSettings.NAME, getPhysicalDataSet().getDescription(),
-                getDescription() + " (clusters = " + dbscan.clusterCount() + ")");
+                getDescription() + " (clusters=" + dbscan.clusterCount() + ")");
 
         if (dump()) {
             Dump.toFile(cd.get(), logFileName + ".csv", true); //data to dump
@@ -65,7 +65,7 @@ public class DBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         // Show result
         if (plot()) {
             Collection<IClusteringObject> result = cd.get();
-            MyFrame2.plotResult(dbscan.getDataset(), max[0], max[1], null, null, null, null, logFileName + ".png", closePlot(), dbscan.clusterCount());
+            PlotPanel.plotResult(dbscan.getDataset(), max[0], max[1], null, null, null, null, logFileName + ".png", closePlot(), dbscan.clusterCount());
         }
 
         basicMiningObject.setDescription(timer.getLog() + "\t" + dbscan.clusterCount());

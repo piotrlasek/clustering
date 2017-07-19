@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
-import org.dmtools.clustering.algorithm.common.MyFrame2;
+import org.dmtools.clustering.algorithm.common.PlotPanel;
 import org.dmtools.clustering.model.IClusteringData;
 import spatialindex.spatialindex.Point;
 import util.Dump;
@@ -23,6 +23,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
 
     private double Eps;
     private int MinPts;
+    private int delta;
 
     String ic = null;
 
@@ -38,6 +39,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         Eps = cdas.getEps();
         MinPts = cdas.getMinPts();
         ic = cdas.getIC();
+        delta = cdas.getDelta();
     }
 
     /**
@@ -62,6 +64,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         dbscan.setConstraints(ic);
         dbscan.setEps(Eps);
         dbscan.setMinPts(MinPts);
+        dbscan.setDelta(delta);
 
         log.info(CDBSCANAlgorithmSettings.NAME + " run");
         timer.clusteringStart();
@@ -76,7 +79,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
         IClusteringData resultToDump = dbscan.getResult();
 
         String logFileName = Dump.getLogFileName(CDBSCANAlgorithmSettings.NAME, getPhysicalDataSet().getDescription(),
-                getDescription() + "(clusters=" + dbscan.clusterCount() + ")");
+                getDescription() + " (clusters=" + dbscan.clusterCount() + ")");
 
         if (dump()) {
             Dump.toFile(resultToDump.get(), logFileName + ".csv", true);
@@ -86,7 +89,7 @@ public class CDBSCANAlgorithm extends CDMBasicClusteringAlgorithm {
             // Show result
             ArrayList<Point> result = dbscan.getDataset();
             InstanceConstraints constraints = dbscan.getConstraints();
-            MyFrame2.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), dbscan.clusterCount());
+            PlotPanel.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), dbscan.clusterCount());
         }
 
         basicMiningObject.setDescription(timer.getLog() + "\t" + dbscan.clusterCount());

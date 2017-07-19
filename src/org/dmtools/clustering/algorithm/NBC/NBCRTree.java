@@ -25,7 +25,10 @@ public class NBCRTree extends ClusteringAlgorithm {
      */
     public void run() {
         ArrayList<CNBCRTreePoint> NoiseSet = new ArrayList();
+
+        log.info(NBCAlgorithmSettings.NAME + " calculating NDF.");
         CalcNDF();
+        log.info(NBCAlgorithmSettings.NAME + " done.");
         NoiseSet.clear();
         ArrayList<CNBCRTreePoint> DPSet = new ArrayList();
 
@@ -84,6 +87,7 @@ public class NBCRTree extends ClusteringAlgorithm {
                 }
                 // DPSet.remove(p);
             }
+            log.info("Creating cluster: " + clusterCount() + ".");
             clusterCount++;
         }
 
@@ -104,15 +108,18 @@ public class NBCRTree extends ClusteringAlgorithm {
     private void CalcNDF() {
         ListIterator li = Dataset.listIterator();
         li = Dataset.listIterator();
-        ArrayList CandidateSet = new ArrayList();
-        MyVisitor kNN = new MyVisitor();
 
+        /*int cnt = 0;
+        int proc = 0;
+        int div = Dataset.size()/100;*/
         // for each object p in Dataset
         while (li.hasNext()) {
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();
-            CandidateSet.clear();
 
-            kNN.reset();
+            MyVisitor kNN = new MyVisitor();
+            /*CandidateSet.clear();
+            kNN.reset();*/
+
             tree.nearestNeighborQuery(k, p, kNN);
             p.numberOfkNB = kNN.kNB;
             // System.out.println("p: " + p.excell());
@@ -124,6 +131,11 @@ public class NBCRTree extends ClusteringAlgorithm {
                 q.numberOfRkNB++;
                 // System.out.println("q: " + q.excell());
             }
+            /*cnt++;
+            if (cnt % div == 0) {
+                proc += 1;
+                log.info("proc = " + proc);
+            }*/
         }
 
         // for each object q in kNB(p)

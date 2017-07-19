@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener
+public class PlotPanel extends JPanel implements MouseListener, MouseWheelListener, MouseMotionListener
 {
 
 	private final double maxX;
@@ -49,7 +49,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 
 
-	protected final static Logger log = LogManager.getLogger(MyFrame2.class.getSimpleName());
+	protected final static Logger log = LogManager.getLogger(PlotPanel.class.getSimpleName());
 
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
@@ -60,9 +60,13 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		return (int) (x * zoom);
 	}
 
-	public MyFrame2(Collection<Point> result, double maxX, InstanceConstraints ic,
+	public double getIndexedValue(int x) {
+		return x / zoom;
+	}
 
-					ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc, int clustersCount) {
+	public PlotPanel(Collection<Point> result, double maxX, InstanceConstraints ic,
+
+                     ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc, int clustersCount) {
 
 
 		this.maxX = maxX;
@@ -188,30 +192,31 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 		/*if (rtree == null) {
 
-				ArrayList<Point> dataset = new ArrayList();
+            ArrayList<Point> dataset = new ArrayList();
 
-				for(CNBCRTreePoint o : result) {
-                	double x = o.getValues()[0];
-	                double y = o.getValues()[1];
-	                String values = "" + x + ", " + y ;
-    	            byte[] d = values.getBytes();
-					CNBCRTreePoint no = new CNBCRTreePoint(new double[]{getZoomed(x),getZoomed(y)});
-					no.setDescription(values);
-					dataset.add(no);
+            for(CNBCRTreePoint o : result) {
+                double x = o.getValues()[0];
+                double y = o.getValues()[1];
+                String values = "" + x + ", " + y ;
+                byte[] d = values.getBytes();
+                CNBCRTreePoint no = new CNBCRTreePoint(new double[]{x,y});
+                no.setDescription(values);
+                dataset.add(no);
 			}
 
 		    log.info("Building an index.");
-			rtree = new RTreeIndex();
+			rtree = null;
 			try {
+				rtree = new RTreeIndex();
 				rtree.initRTree(dataset, 2);
-			} catch (IOException e) {
+                int id= 0;
+                for(Point o : dataset) {
+                    rtree.insertData(new byte[]{CDMCluster.UNCLASSIFIED}, o, id++);
+                }
+			} catch (Exception e) {
 				log.error(e);
 			}
 
-			int id= 0;
-			for(Point o : dataset) {
-                rtree.insertData(new byte[]{CDMCluster.UNCLASSIFIED}, o, id++);
-			}
 		}*/
 
 		for(CNBCRTreePoint o : result)
@@ -401,8 +406,8 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Point p = new Point(new double[] {e.getX(), e.getY()});
-		ArrayList<Point> nn = rtree.regionQuery(p, 20);
+		Point p = new Point(new double[] {getIndexedValue(e.getX()), getIndexedValue(e.getY())});
+		ArrayList<Point> nn = rtree.regionQuery(p, maxX / 10);
 		for (Point np : nn) {
 			CNBCRTreePoint cnrtp = (CNBCRTreePoint) np;
 			log.info(cnrtp.getDescription());
@@ -459,26 +464,20 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 
 		zoom += delta * preciseWheelRotation;
 		
-		int w = getZoomed(width);
-		int h = getZoomed(height);
-		
-		this.setPreferredSize(new Dimension(w, h));
-		this.setSize(new Dimension(w, h));
+        this.setPreferredSize(new Dimension(4800, 4000));
+
+		this.scrollPane.repaint();
 
 		repaint();
 	}
 
 	int ox = -1;
 	int oy = -1;
-	
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	
 
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
 		int dx = ox - arg0.getX();
 		int dy = oy - arg0.getY();
-
-		//System.out.println("= " + dx + ", " + dy);
 
 		JScrollBar sbh = scrollPane.getHorizontalScrollBar();
 		JScrollBar sbv = scrollPane.getVerticalScrollBar();
@@ -500,28 +499,28 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 	}
 
 
-
 	public static void plotResult(Collection<Point> result, double maxX, double maxY, InstanceConstraints ic,
 								  ArrayList<double[]> fml, ArrayList<double[]> fcl, ArrayList<double[]> frc,
 								String fileName, boolean closePlot, int clustersCount) {
-		MyFrame2 mf = new MyFrame2(result, maxX, ic, fml, fcl, frc, clustersCount);
-		mf.setPreferredSize(new Dimension(1200, 1000));
-		JFrame f = new JFrame();
+		PlotPanel plotPanel = new PlotPanel(result, maxX, ic, fml, fcl, frc, clustersCount);
+		plotPanel.setPreferredSize(new Dimension(2400, 2000));
+		JFrame frame = new JFrame();
 
+		JScrollPane scrollPane = new JScrollPane(plotPanel);
+		plotPanel.setScrollPane(scrollPane);
 
-		JScrollPane scrollPane = new JScrollPane(mf);
-		mf.setScrollPane(scrollPane);
 		scrollPane.setAutoscrolls(true);
-		f.add(scrollPane);
-		f.pack();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(new Dimension(1200, 1000));
-		f.setVisible(true);
+		frame.add(scrollPane);
 
-		BufferedImage bufferedImage = new BufferedImage((int) mf.getZoomed(maxX), (int) mf.getZoomed(maxY),
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(new Dimension(1200, 1000));
+		frame.setVisible(true);
+
+		BufferedImage bufferedImage = new BufferedImage((int) plotPanel.getZoomed(maxX), (int) plotPanel.getZoomed(maxY),
             BufferedImage.TYPE_INT_RGB);
 		Graphics g = bufferedImage.getGraphics();
-		mf.paintComponent(g);
+		plotPanel.paintComponent(g);
 		try {
 			String filePath = Workspace.getWorkspacePath() + "/results/" + fileName;
 			boolean res = ImageIO.write(bufferedImage, "png", new File(filePath));
@@ -537,7 +536,7 @@ public class MyFrame2 extends JPanel implements MouseListener, MouseWheelListene
 		if (closePlot) {
 			try {
 				Thread.sleep(2000); // wait two seconds
-				f.dispose();
+				frame.dispose();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

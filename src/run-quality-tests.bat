@@ -30,29 +30,29 @@ java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:%f%
 java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:125;
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:125;ic:%f%
 
-java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:5000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:%f%
 java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:6000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:%f%
-java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:8000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:8000;MinPts:15;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:5;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:6500;MinPts:15;
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6500;MinPts:15;d:5;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:7000;MinPts:15;
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:7000;MinPts:15;d:5;ic:%f%
 
 echo -----------------------------------------------------------------------
 set f=birch2
 
-java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:75;
-java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:75;ic:%f%
-java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:100;
-java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:%f%
-java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:125;
-java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:125;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:900;
+java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:900;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:950;
+java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:950;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:1000;
+java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:1000;ic:%f%
 
-java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:800;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:800;MinPts:15;ic:%f%
-java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:1000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:%f%
-java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:1200;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1200;MinPts:15;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:2000;MinPts:15;
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:2000;MinPts:15;d:3;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:2500;MinPts:15;
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:2500;MinPts:15;d:3;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:3000;MinPts:15;
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:3000;MinPts:15;d:3;ic:%f%
 
 echo -----------------------------------------------------------------------
 set f=birch3
@@ -65,11 +65,11 @@ java %cp% %wp% %dt%\%f%.txt %_nbc% %pr%;k:70;
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:70;ic:%f%
 
 java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:5000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:%f%
 java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:6000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:%f%
 java %cp% %wp% %dt%\%f%.txt %_dbs% %pr%;Eps:7000;MinPts:15;
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:7000;MinPts:15;ic:%f%
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:7000;MinPts:15;d:3;ic:%f%
 
 echo -----------------------------------------------------------------------
 echo Done.

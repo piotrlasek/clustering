@@ -32,7 +32,9 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
      */
     public void run() {
         ArrayList<CNBCRTreePoint> NoiseSet = new ArrayList();
+        log.info(CNBCAlgorithmSettings.NAME + " calculating NDF.");
         CalcNDF();
+        log.info(CNBCAlgorithmSettings.NAME + " done.");
         NoiseSet.clear();
         ArrayList<CNBCRTreePoint> DPSet = new ArrayList();
 
@@ -41,10 +43,13 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
         def.addAll(ic.cl1);
         def.addAll(ic.cl2);
 
+        log.info(CNBCAlgorithmSettings.NAME + " marking deferred (" + def.size() + ").");
         markDeferred(def);
+        log.info(CNBCAlgorithmSettings.NAME + " done.");
 
         // for each object p in Dataset
         ListIterator li = Dataset.listIterator();
+        log.info(CNBCAlgorithmSettings.NAME + " bulding clusters.");
         while (li.hasNext()) {
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();
             // if (p.getClusterId() != NULL or p.ndf < 1)) continue;
@@ -136,15 +141,20 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
                 }
                 // DPSet.remove(p);
             }
+            log.info(CNBCAlgorithmSettings.NAME + " cluster: " + clusterCount);
             clusterCount++;
         }
+
+        log.info(CNBCAlgorithmSettings.NAME + " done.");
 
         deferred.addAll(ic.cl1);
         deferred.addAll(ic.cl2);
         try {
+            log.info(CNBCAlgorithmSettings.NAME + " assigning deferred.");
             internalTimer.start("deferred");
             recluster3(deferred);
             internalTimer.end("deferred");
+            log.info(CNBCAlgorithmSettings.NAME + " done.");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -238,7 +248,7 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
     private void markDeferred(ArrayList<IConstraintObject> def) {
         for (IConstraintObject p : def) {
             MyVisitor kNN = new MyVisitor();
-            tree.nearestNeighborQuery(k, (IShape) p, kNN);
+            tree.nearestNeighborQuery(k/8, (IShape) p, kNN);
 
             p.setClusterId(CDMCluster.DEFERRED);
             p.setParentCannotLinkPoint(p);
@@ -340,10 +350,10 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
             }
         }
 
-        log.info("Deffered:   " + deferredSize);
-        log.info("Iterations: " + iteration);
-        log.info("Clusters:   " + clusters);
-        log.info("Noise:      " + noise);
+        //log.info("Deffered:   " + deferredSize);
+        //log.info("Iterations: " + iteration);
+        //log.info("Clusters:   " + clusters);
+        //log.info("Noise:      " + noise);
     }
 
     /**
@@ -544,19 +554,19 @@ public class CDNBCRTree extends InstanceConstraintsAlgorithm {
     private void CalcNDF() {
         ListIterator li = Dataset.listIterator();
         li = Dataset.listIterator();
-        ArrayList CandidateSet = new ArrayList();
-        MyVisitor kNN = new MyVisitor();
-
+        //int proc = Dataset.size() / 100;
+        //int cnt = 0;
+        //int prog = 0;
         // for each object p in Dataset
         while (li.hasNext()) {
+            /*if (cnt++ % proc == 0) {
+                log.info(CNBCAlgorithmSettings.NAME + " " + ++prog);
+            }*/
             CNBCRTreePoint p = (CNBCRTreePoint) li.next();
-            CandidateSet.clear();
-
-            kNN.reset();
+            MyVisitor kNN = new MyVisitor();
             tree.nearestNeighborQuery(k, p, kNN);
             p.numberOfkNB = kNN.kNB;
             // System.out.println("p: " + p.excell());
-
             // for each new object q in kNB(p)
             ListIterator lni = kNN.neighbours.listIterator();
             while (lni.hasNext()) {

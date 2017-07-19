@@ -84,42 +84,46 @@ public class SetConstraints {
         CNBCRTreePoint p0, p1;
         ArrayList<ArrayList<String>> list = readConstraintsFromFile(fileName);
         for(int i = 0; i < list.size(); i++){
-            ArrayList<String> currentLine = list.get(i);
+            try {
+                ArrayList<String> currentLine = list.get(i);
 
-            String firstPoint[] = currentLine.get(0).split(",");
-            double firstPointX = Double.parseDouble(firstPoint[0]);
-            double firstPointY = Double.parseDouble(firstPoint[1]);
+                String firstPoint[] = currentLine.get(0).split(",");
+                double firstPointX = Double.parseDouble(firstPoint[0]);
+                double firstPointY = Double.parseDouble(firstPoint[1]);
 
-            String secondPoint[] = currentLine.get(1).split(",");
-            double secondPointX = Double.parseDouble(secondPoint[0]);
-            double secondPointY = Double.parseDouble(secondPoint[1]);
+                String secondPoint[] = currentLine.get(1).split(",");
+                double secondPointX = Double.parseDouble(secondPoint[0]);
+                double secondPointY = Double.parseDouble(secondPoint[1]);
 
-            int type = Integer.parseInt(currentLine.get(2));
+                int type = Integer.parseInt(currentLine.get(2));
 
-            if ( type == 0) {
-                p0 = new CNBCRTreePoint(new double[]{firstPointX, firstPointY}, CDMCluster.UNCLASSIFIED);
-                p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
+                if ( type == 0) {
+                    p0 = new CNBCRTreePoint(new double[]{firstPointX, firstPointY}, CDMCluster.UNCLASSIFIED);
+                    p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
 
-                p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
-                p0.setClusterId(CDMCluster.UNCLASSIFIED);
+                    p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+                    p0.setClusterId(CDMCluster.UNCLASSIFIED);
 
-                p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
-                p1.setClusterId(CDMCluster.UNCLASSIFIED);
+                    p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+                    p1.setClusterId(CDMCluster.UNCLASSIFIED);
 
-                ic.addCannotLinkPoints(p0, p1);
-            } else if (type == 1) {
-                p0 = new CNBCRTreePoint(new double[]{firstPointX, firstPointY}, CDMCluster.UNCLASSIFIED);
-                p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
+                    ic.addCannotLinkPoints(p0, p1);
+                } else if (type == 1) {
+                    p0 = new CNBCRTreePoint(new double[]{firstPointX, firstPointY}, CDMCluster.UNCLASSIFIED);
+                    p1 = new CNBCRTreePoint(new double[]{secondPointX, secondPointY}, CDMCluster.UNCLASSIFIED);
 
-                p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
-                p0.setClusterId(CDMCluster.UNCLASSIFIED);
+                    p0 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p0));
+                    p0.setClusterId(CDMCluster.UNCLASSIFIED);
 
-                p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
-                p1.setClusterId(CDMCluster.UNCLASSIFIED);
+                    p1 = (CNBCRTreePoint) Dataset.get(Dataset.indexOf(p1));
+                    p1.setClusterId(CDMCluster.UNCLASSIFIED);
 
-                ic.addMustLinkPoints(p0, p1);
-            } else {
-                System.out.println("error when set constraints");
+                    ic.addMustLinkPoints(p0, p1);
+                } else {
+                    System.out.println("error when set constraints");
+                }
+            } catch (Exception e) {
+                log.error("Error setting constraint.");
             }
         }
     }

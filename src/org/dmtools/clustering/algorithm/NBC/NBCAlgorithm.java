@@ -1,7 +1,7 @@
 package org.dmtools.clustering.algorithm.NBC;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.algorithm.common.MyFrame2;
+import org.dmtools.clustering.algorithm.common.PlotPanel;
 import org.dmtools.clustering.model.IClusteringData;
 import util.Dump;
 
@@ -37,9 +37,9 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 	 */
 	@Override
 	public MiningObject run() {
-		log.info(NBCAlgorithmSettings.NAME + " start.");
 		log.info(NBCAlgorithmSettings.NAME + " preparing data.");
 		IClusteringData data = prepareData();
+		log.info(NBCAlgorithmSettings.NAME + " done.");
 
 		NBCRTree nbc = new NBCRTree();
 		nbc.setK(k);
@@ -47,13 +47,16 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
         timer.setAlgorithmName(NBCAlgorithmSettings.NAME);
         timer.setParameters("k=" + k);
 
+		log.info(NBCAlgorithmSettings.NAME + " indexing.");
 		timer.indexStart();
 		nbc.setData(data);
 		timer.indexEnd();
+		log.info(NBCAlgorithmSettings.NAME + " done.");
+
+		log.info(NBCAlgorithmSettings.NAME + " run.");
 		timer.clusteringStart();
 		nbc.run();
 		timer.clusteringEnd();
-
 		log.info(NBCAlgorithmSettings.NAME + " finished.");
 
 		IClusteringData result = nbc.getResult();
@@ -66,7 +69,7 @@ public class NBCAlgorithm extends CDMBasicClusteringAlgorithm {
 		}
 
 		if (plot()) {
-			MyFrame2.plotResult(nbc.getDataset(), max[0], max[1], null, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
+			PlotPanel.plotResult(nbc.getDataset(), max[0], max[1], null, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
 		}
 
 		basicMiningObject.setDescription(timer.getLog() + "\t" + nbc.clusterCount());

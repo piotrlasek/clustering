@@ -23,12 +23,12 @@ java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:random_40
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:random_60
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:random_80
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:100;ic:random_100
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_10
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_20
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_40
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_60
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_80
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;ic:random_100
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_10
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_20
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_40
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_60
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_80
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:5000;MinPts:15;d:3;ic:random_100
 
 set f=birch2
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_10
@@ -37,12 +37,12 @@ java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_40
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_60
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_80
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_100
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_10
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_20
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_40
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_60
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_80
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;ic:random_100
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_10
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_20
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_40
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_60
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_80
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:1000;MinPts:15;d:3;ic:random_100
 
 set f=birch3
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_10
@@ -51,12 +51,12 @@ java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_40
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_60
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_80
 java %cp% %wp% %dt%\%f%.txt %cnbc% %pr%;k:50;ic:random_100
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_10
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_20
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_40
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_60
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_80
-java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;ic:random_100
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_10
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_20
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_40
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_60
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_80
+java %cp% %wp% %dt%\%f%.txt %cdbs% %pr%;Eps:6000;MinPts:15;d:3;ic:random_100
 
 echo -----------------------------------------------------------------------
 echo Done.

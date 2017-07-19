@@ -14,6 +14,7 @@ public class CDBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implement
     public static String NAME = "C-DBSCAN";
     private int minPts;
     private double eps;
+    private int delta;
 
     private String ic = null; // instance constraints
 
@@ -56,11 +57,19 @@ public class CDBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implement
         this.eps = eps;
     }
 
+    public void setDelta(int delta) {
+        this.delta = delta;
+    }
+
     public String getIC() {
         return ic;
     }
 
     public void setIC(String ic) {
         this.ic = ic;
+    }
+
+    public int getDelta() {
+        return delta;
     }
 }

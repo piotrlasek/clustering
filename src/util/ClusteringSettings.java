@@ -56,10 +56,12 @@ public class ClusteringSettings {
                 algorithmSettings = new CDBSCANAlgorithmSettings();
                 double EpsCDB = new Double(parameters.get("Eps"));
                 int MinPtsCDB = new Integer(parameters.get("MinPts"));
+                int deltaCDB = new Integer(parameters.get("d"));
                 String icCDB = parameters.get("ic");
                 ((CDBSCANAlgorithmSettings) algorithmSettings).setEps(EpsCDB);
                 ((CDBSCANAlgorithmSettings) algorithmSettings).setMinPts(MinPtsCDB);
                 ((CDBSCANAlgorithmSettings) algorithmSettings).setIC(icCDB);
+                ((CDBSCANAlgorithmSettings) algorithmSettings).setDelta(deltaCDB);
                 break;
             case "NBCDMA":
                 algorithmSettings = new NBCDMAlgorithmSettings();

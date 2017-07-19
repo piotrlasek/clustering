@@ -1,7 +1,7 @@
 package org.dmtools.clustering.algorithm.CNBC;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.algorithm.common.MyFrame2;
+import org.dmtools.clustering.algorithm.common.PlotPanel;
 import org.dmtools.clustering.model.IClusteringData;
 import spatialindex.spatialindex.Point;
 import util.Dump;
@@ -50,13 +50,19 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm {
 		timer.setParameters("k=" + k);
 
 		nbc.setK(k);
+		log.info(CNBCAlgorithmSettings.NAME + " indexing.");
 		timer.indexStart();
 		nbc.setData(data);
 		timer.indexEnd();
+		log.info(CNBCAlgorithmSettings.NAME + " done.");
+		log.info(CNBCAlgorithmSettings.NAME + " setting constraints.");
 		nbc.setConstraints(ic);
+		log.info(CNBCAlgorithmSettings.NAME + " done.");
+		log.info(CNBCAlgorithmSettings.NAME + " clustering.");
 		timer.clusteringStart();
 		nbc.run();
 		timer.clusteringEnd();
+		log.info(CNBCAlgorithmSettings.NAME + " done.");
 
 		timer.merge(nbc.getInternalTimer());
 
@@ -73,7 +79,7 @@ public class CNBCAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		if (plot()) {
 			InstanceConstraints constraints = nbc.getConstraints();
-			MyFrame2.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
+			PlotPanel.plotResult(result, max[0], max[1], constraints, null, null, null, logFileName + ".png", closePlot(), nbc.clusterCount());
 		}
 
 		basicMiningObject.setDescription(timer.getLog() + "\t" + nbc.clusterCount());
