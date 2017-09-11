@@ -21,7 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * 
@@ -99,9 +98,7 @@ public class ScatterAdd extends JFrame {
         
         tempSeries.add(noise);
         
-        		
-        for(double[] point : data)
-        {
+        for(double[] point : data) {
         	if (point[point.length-1] >= 0)
         		if (!clusters.contains(point[point.length-1]))
         			clusters.add(point[point.length - 1]);
@@ -109,7 +106,6 @@ public class ScatterAdd extends JFrame {
 
 
         tempSeries.add(new XYSeries("Noise"));
-        System.out.println("Noise");
 
         for(int i = 0; i < clusters.size(); i++)
         {

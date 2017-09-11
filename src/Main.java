@@ -47,7 +47,7 @@ public class Main {
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:3;maxIterations:4"
+						"parameters=k:3;maxIterations:20;plot"
 					};
 			}
 
