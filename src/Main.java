@@ -38,16 +38,16 @@ public class Main {
 			if (args.length == 0) {
 				args = new String[]{
 						//"algorithm=C-NBC",
-						"algorithm=NBC",
-						//"data=\\data\\my-file-2d.txt",
-						"data=\\data\\experiment\\birch2.txt",
+						"algorithm=kMeans",
+						"data=\\data\\my-file-2d.txt",
+						//"data=\\data\\Checkins.txt",
+						//"data=\\data\\experiment\\birch2.txt",
 						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
 						//"parameters=k:10;dump;plot;close_plot;ic:random_4"
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:250;dump;plot;ic:birch2"
-
+						"parameters=k:3;maxIterations:4"
 					};
 			}
 

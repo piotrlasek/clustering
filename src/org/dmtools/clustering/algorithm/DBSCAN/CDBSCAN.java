@@ -29,7 +29,6 @@ public class CDBSCAN extends DBSCANBase {
 
 	public static final String NAME = "CDBSCAN";
 	ClusteringSettings clusteringSettings;
-	PhysicalDataSet physicalDataSet;
 	ArrayList<double[]> data;
 	Collection<PhysicalAttribute> attributes;
 	int numberOfDimensions;
@@ -37,6 +36,7 @@ public class CDBSCAN extends DBSCANBase {
 	double[] max = null;
 	ClusteringTimer logger = new ClusteringTimer(getName());
 	InstanceConstraints ic = new InstanceConstraints();
+	PhysicalDataSet physicalDataSet;
 
 	/**
 	 *

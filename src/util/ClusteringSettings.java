@@ -33,6 +33,13 @@ public class ClusteringSettings {
         AlgorithmSettings algorithmSettings = null;
 
        switch (algorithm) {
+           case "kMeans":
+               algorithmSettings = new KMeansAlgorithmSettings();
+               int k  = new Integer(parameters.get("k"));
+               int maxIterations = new Integer(parameters.get("maxIterations"));
+               ((KMeansAlgorithmSettings) algorithmSettings).setK(k);
+               ((KMeansAlgorithmSettings) algorithmSettings).setMaxIterations(maxIterations);
+               break;
             case "NBC":
                 algorithmSettings = new NBCAlgorithmSettings();
                 int kNBC = new Integer(parameters.get("k"));

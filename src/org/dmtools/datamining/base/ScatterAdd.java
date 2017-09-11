@@ -1,5 +1,8 @@
 package org.dmtools.datamining.base;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -33,7 +36,9 @@ public class ScatterAdd extends JFrame {
 
     ArrayList<double[]> data;
     ArrayList<double[]> tempPoints;
-    
+
+    protected final static Logger log = LogManager.getLogger(CDMBasicClusteringAlgorithm.class.getSimpleName());
+
     public ScatterAdd(String s, ArrayList<double[]> data, ArrayList<double[]> tempPoints) {
         super(s);
         this.data = data;
@@ -58,10 +63,9 @@ public class ScatterAdd extends JFrame {
         {
 			@Override
 			public String generateToolTip(XYDataset arg0, int arg1, int arg2) {
-				// TODO Auto-generated method stub
-				return "abc";
-			}
-        	
+                // TODO Auto-generated method stub
+                return "abc";
+            }
         }
         );
         
@@ -110,18 +114,16 @@ public class ScatterAdd extends JFrame {
         for(int i = 0; i < clusters.size(); i++)
         {
         	tempSeries.add(new XYSeries("Cluster " + i));
-        	System.out.println("Cluster " + i);
+        	//System.out.println("Cluster " + i);
         }
         
         // ADD NOISE
 
         for(double[] point : data) {
         	int id = (int) point[point.length-1] + 1;
-
             XYSeries s = tempSeries.get(id);
             s.add(new XYDataItem(point[0], point[1]));
-
-        	System.out.println(Arrays.toString(point));
+        	//System.out.println(Arrays.toString(point));
         }
         
         //

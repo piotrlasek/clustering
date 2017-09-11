@@ -28,7 +28,7 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 
 	protected MiningObject result;
 	protected AlgorithmSettings algorithmSettings;
-	private ArrayList<double[]> data;
+	protected ArrayList<double[]> data;
 	protected double[] min = null;
 	protected double[] max = null;
 	protected Collection<PhysicalAttribute> attributes;

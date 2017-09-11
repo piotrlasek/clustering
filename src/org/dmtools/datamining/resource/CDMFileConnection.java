@@ -108,10 +108,10 @@ public class CDMFileConnection implements Connection {
 		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
 		MiningObject miningObject;
 
-		if (ma.equals(MiningAlgorithm.kMeans)) {
+		if (ma.equals(MiningAlgorithm.valueOf("kMeans"))) {
 			// kMeans
 			KMeansAlgorithm kma = new KMeansAlgorithm(cs, pds); 
-			miningObject = kma.run();
+			miningObject = kma.runAlgorithm();
 			/* //DM kMeans
 			DM_KMeansAlgorithm kma = new DM_KMeansAlgorithm(cs, pds); 
 			kma.run();

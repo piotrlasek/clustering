@@ -1,38 +1,67 @@
 package org.dmtools.clustering.algorithm.KMeans;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.CDMCluster;
 import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.clustering.algorithm.CNBC.InstanceConstraints;
+import org.dmtools.clustering.algorithm.DBSCAN.DBSCANBase;
+import org.dmtools.clustering.algorithm.common.PlotPanel;
+import org.dmtools.clustering.model.IClusteringData;
+import org.dmtools.clustering.old.ClusteringTimer;
 import org.dmtools.datamining.base.ScatterAdd;
+import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import org.dmtools.datamining.resource.CDMBasicMiningObject;
+import spatialindex.spatialindex.Point;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 
 public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	
 	int k = 0;
-	ArrayList<double[]> data;
-	int numberOfDimensions; 
+
+	int numberOfDimensions;
 	double[] min = null;
 	double[] max = null;
 	Collection<PhysicalAttribute> attributes;
 	ArrayList<double[]> tempPoints;
-	int maxRuns = 20;
+	int maxIterations;
 	int[] clusterCount;
-	
+	ClusteringTimer logger = new ClusteringTimer(getName());
+	PhysicalDataSet physicalDataSet;
+	protected CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
+	protected final static Logger log = LogManager.getLogger(CDMBasicClusteringAlgorithm.class.getSimpleName());
+
+	/**
+	 *
+	 * @return
+	 */
+	public String getName() {
+		return KMeansAlgorithmSettings.NAME;
+	}
+
+	/**
+	 *
+	 * @param clusteringSettings
+	 * @param physicalDataSet
+	 */
 	public KMeansAlgorithm(ClusteringSettings clusteringSettings,
 			PhysicalDataSet physicalDataSet)
 	{
 		super(clusteringSettings, physicalDataSet);
-		k = (int) clusteringSettings.getMinClusterCaseCount();
-		System.out.println("k = " + k);
+		KMeansAlgorithmSettings kmas = (KMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
+
+		this.physicalDataSet = physicalDataSet;
+
+		k = kmas.getK();
+		maxIterations = kmas.getMaxIterations();
+		log.info("k = " + k);
 		clusterCount = new int[k];
 
 		// get attributes
@@ -49,30 +78,37 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		max = new double[numberOfDimensions];
 	}
 
-	@Override
-	public MiningObject run() {
+	/**
+	 *
+	 * @return
+	 */
+	public MiningObject runAlgorithm() {
 		CDMClusteringModel ccm = new CDMClusteringModel();
 
 		prepareData();
+
 		initializeTemporaryPoints();
 		
-		for(int i = 0; i < maxRuns; i++) {
+		for(int i = 0; i < maxIterations; i++) {
+			log.info("Iteration: " + i);
 			for(double[] point : data) {
 				int indexOfClosestTempPoint = 0;
 				indexOfClosestTempPoint = getIndexOfClosestCluster(point);
 				point[numberOfDimensions] = indexOfClosestTempPoint; 
 			}
-			
-			ScatterAdd sa = new ScatterAdd("K-Means - step " + (i + 1), data, tempPoints);
+
+			log.info("Updating cluster centers.");
+			updateTemporaryPoints();
+
+			ScatterAdd sa = new ScatterAdd("k-Means", data, tempPoints);
 			sa.setSize(400, 500);
 			sa.setVisible(true);
 			sa.toFront();
-			
-			updateTemporaryPoints();
 		}
-		
-		CDMCluster cluster = new CDMCluster();
-		return ccm;
+
+		log.info("Printing the result.");
+
+		return basicMiningObject;
 	}
 
 	@Override
@@ -175,7 +211,7 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 			for (int j = 0; j < numberOfDimensions; j++) {
 				tempPoint[j] = randomFromRange(j);
 			}
-			
+			log.info("Center " + i + ": " + Arrays.toString(tempPoint));
 			tempPoints.add(tempPoint);
 		}
 	}
@@ -214,9 +250,25 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	 * @return
 	 */
 	private double randomFromRange(int j) {
-		return min[j] + (Math.random() * (max[j] - min[j]));
+		Random random = new Random();
+		random.setSeed(System.nanoTime());
+		double r = random.nextDouble();
+
+		log.info("----------");
+		log.info(r);
+		log.info(min[j]);
+		log.info(max[j]);
+
+		double rfr = min[j] + (r * (max[j] - min[j]));
+
+		return rfr;
 	}
-	
+
+	public PhysicalDataSet getPhysicalDataSet() {
+		return physicalDataSet;
+	}
+
+
 }
 
 
