@@ -47,20 +47,24 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	 * @param physicalDataSet
 	 */
 	public CDMBasicClusteringAlgorithm(ClusteringSettings clusteringSettings,
-			PhysicalDataSet physicalDataSet)
-	{
-		try {
-			attributes = physicalDataSet.getAttributes();
-		} catch (JDMException e) {
-			e.printStackTrace();
-		}
-
-		numberOfDimensions = attributes.size();
+			PhysicalDataSet physicalDataSet) {
 		this.clusteringSettings = clusteringSettings;
 		this.physicalDataSet = physicalDataSet;
 
-		min = new double[numberOfDimensions];
-		max = new double[numberOfDimensions];
+		if (physicalDataSet != null) {
+			try {
+				attributes = physicalDataSet.getAttributes();
+			} catch (JDMException e) {
+				e.printStackTrace();
+			}
+
+			numberOfDimensions = attributes.size();
+
+			min = new double[numberOfDimensions];
+			max = new double[numberOfDimensions];
+		} else {
+			log.warn("Could not read dataset parameters!");
+		}
 	}
 
 

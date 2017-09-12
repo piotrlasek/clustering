@@ -31,8 +31,16 @@ public class DataSet {
     public static PhysicalDataSet setAttributes(
             CDMFilePhysicalDataSetFactory pdsf, ConnectionSpec cs) throws JDMException {
 
+
         PhysicalDataSet fpds;
         fpds = pdsf.create("DMT Physical Data Set", false);
+
+        // If the algorithm uses its own method to load the dataset return
+        // empty physical data set!
+        if (cs.getURI().contains("[CUSTOM]")) {
+            fpds.setDescription(cs.getURI());
+            return fpds;
+        }
 
         Scanner sc = null;
         String line = null;

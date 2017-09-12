@@ -33,7 +33,7 @@ public class DM_KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	{
 		super(clusteringSettings, physicalDataSet);
 		
-		//k = ((KMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).getK();
+		//k = ((PiKMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).getK();
 		k = (int) clusteringSettings.getMinClusterCaseCount();
 		clusterCount = new int[k];
 		// get attributes

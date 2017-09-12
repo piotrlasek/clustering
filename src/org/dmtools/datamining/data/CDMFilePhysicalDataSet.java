@@ -1,11 +1,7 @@
 package org.dmtools.datamining.data;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import org.dmtools.datamining.CDMException;
+import org.dmtools.datamining.base.CDMAbstractMiningObject;
 
 import javax.datamining.JDMException;
 import javax.datamining.NamedObject;
@@ -15,9 +11,11 @@ import javax.datamining.data.PhysicalAttributeRole;
 import javax.datamining.data.PhysicalDataSet;
 import javax.datamining.resource.Connection;
 import javax.datamining.statistics.AttributeStatisticsSet;
-
-import org.dmtools.datamining.CDMException;
-import org.dmtools.datamining.base.CDMAbstractMiningObject;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 
@@ -58,7 +56,7 @@ public class CDMFilePhysicalDataSet extends CDMAbstractMiningObject implements
 	 */
 	public void readData(Connection conn) throws CDMException {
 		if (separator == null) {
-			throw new CDMException("Separator not defined");
+			throw new CDMException("Separator not defined!");
 		}
 
 		connection = conn;

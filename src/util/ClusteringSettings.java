@@ -12,6 +12,7 @@ import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithmSettings;
 import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
+import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithmSettings;
 
 import javax.datamining.base.AlgorithmSettings;
 import java.util.HashMap;
@@ -40,6 +41,19 @@ public class ClusteringSettings {
                ((KMeansAlgorithmSettings) algorithmSettings).setK(k);
                ((KMeansAlgorithmSettings) algorithmSettings).setMaxIterations(maxIterations);
                break;
+            case "pikMeans":
+                algorithmSettings = new PiKMeansAlgorithmSettings();
+                int pk  = new Integer(parameters.get("k"));
+                int pmaxIterations = new Integer(parameters.get("maxIterations"));
+                int deepest = new Integer(parameters.get("deepest"));
+                int depth = new Integer(parameters.get("depth"));
+                int starting = new Integer(parameters.get("starting"));
+                ((PiKMeansAlgorithmSettings) algorithmSettings).setK(pk);
+                ((PiKMeansAlgorithmSettings) algorithmSettings).setDepth(depth);
+                ((PiKMeansAlgorithmSettings) algorithmSettings).setDeepest(deepest);
+                ((PiKMeansAlgorithmSettings) algorithmSettings).setStarting(starting);
+                ((PiKMeansAlgorithmSettings) algorithmSettings).setMaxIterations(pmaxIterations);
+                break;
             case "NBC":
                 algorithmSettings = new NBCAlgorithmSettings();
                 int kNBC = new Integer(parameters.get("k"));
@@ -72,23 +86,15 @@ public class ClusteringSettings {
                 break;
             case "NBCDMA":
                 algorithmSettings = new NBCDMAlgorithmSettings();
-                // TODO: Parameters
-                break;
-            case "K-Means":
-                algorithmSettings = new KMeansAlgorithmSettings();
-                // TODO: Parameters
                 break;
             case "DM_K-Means":
                 algorithmSettings = new DM_KMeansAlgorithmSettings();
-                // TODO: Parameters
                 break;
             case "DBSCAN-NetTraffic":
                 algorithmSettings = new DbScanNetTrafficAlgorithmSettings();
-                // TODO: Parameters
                 break;
             case "DBSCAN-Slicer":
                 algorithmSettings = new DbScanSlicerAlgorithmSettings();
-                // TODO: Parameters
         }
 
         CDMBaseAlgorithmSettings baseAlgorithmSettings = (CDMBaseAlgorithmSettings) algorithmSettings;

@@ -1,5 +1,7 @@
 package org.dmtools.datamining.resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMClusteringModel;
 import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithm;
 import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithm;
@@ -10,6 +12,7 @@ import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
 import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
 import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
 import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
+import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithm;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.Enum;
@@ -47,7 +50,9 @@ public class CDMFileConnection implements Connection {
 	CDMFileConnectionFactory factory;
 	
 	ConnectionSpec connectionSpec;
-	
+
+	protected final static Logger log = LogManager.getLogger(CDMFileConnection.class.getSimpleName());
+
 	/**
 	 * 
 	 * @param factory
@@ -91,10 +96,15 @@ public class CDMFileConnection implements Connection {
 		
 		CDMFilePhysicalDataSet pds = (CDMFilePhysicalDataSet) 
 				retrieveObject(buildDataName);
-		
-		pds.setSeparator(",");
-		pds.readData(this);
-		
+
+		if (!pds.getDescription().contains("[CUSTOM]")) {
+			pds.setSeparator(",");
+			pds.readData(this);
+		} else {
+			pds.setDescription(pds.getDescription().replace("[CUSTOM]", ""));
+			log.warn("Data set not defined!");
+		}
+
 		// Get mining algorithm
 		ClusteringSettings cs = (ClusteringSettings)
 				retrieveObject(settingsName);
@@ -108,10 +118,13 @@ public class CDMFileConnection implements Connection {
 		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
 		MiningObject miningObject;
 
-		if (ma.equals(MiningAlgorithm.valueOf("kMeans"))) {
+		if (ma.equals(MiningAlgorithm.valueOf("pikMeans"))) {
+			PiKMeansAlgorithm pkma = new PiKMeansAlgorithm(cs, pds);
+			miningObject = pkma.run();
+		} else if (ma.equals(MiningAlgorithm.valueOf("kMeans"))) {
 			// kMeans
 			KMeansAlgorithm kma = new KMeansAlgorithm(cs, pds); 
-			miningObject = kma.runAlgorithm();
+			miningObject = kma.run();
 			/* //DM kMeans
 			DM_KMeansAlgorithm kma = new DM_KMeansAlgorithm(cs, pds); 
 			kma.run();

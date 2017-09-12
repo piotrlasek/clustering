@@ -38,16 +38,18 @@ public class Main {
 			if (args.length == 0) {
 				args = new String[]{
 						//"algorithm=C-NBC",
-						"algorithm=kMeans",
-						"data=\\data\\my-file-2d.txt",
+						"algorithm=pikMeans",
+						//"algorithm=kMeans",
+						//"data=\\data\\my-file-2d.txt",
 						//"data=\\data\\Checkins.txt",
+						"data=[CUSTOM]\\data\\checkins-pyramid\\",
 						//"data=\\data\\experiment\\birch2.txt",
 						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
 						//"parameters=k:10;dump;plot;close_plot;ic:random_4"
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:3;maxIterations:20;plot"
+						"parameters=k:5;maxIterations:25;deepest:15;depth:15;starting:3;plot"
 					};
 			}
 
@@ -71,22 +73,18 @@ public class Main {
 
 	        cs.setURI(cdmPath + dataFilePath);
 
-			Connection conn = null;
+			Connection conn = fcf.getConnection(cs);
 
-			try {
-				conn = fcf.getConnection(cs);
-			} catch (JDMException jdme) {
-				log.error("The connection could not be established.");
-				log.error(jdme);
-				return;
-			}
-			
 			// Creating a physical data set.
-			// -----------------------------------------------------------------:w
-			CDMFilePhysicalDataSetFactory pdsf = new CDMFilePhysicalDataSetFactory();
-			PhysicalDataSet fpds = null;
-			fpds = DataSet.setAttributes(pdsf, cs);  // TODO
-			conn.saveObject("MyPhysicalDataSet", fpds, true);
+			// -----------------------------------------------------------------
+            if (conn != null) {
+				CDMFilePhysicalDataSetFactory pdsf = new CDMFilePhysicalDataSetFactory();
+				PhysicalDataSet fpds = null;
+				fpds = DataSet.setAttributes(pdsf, cs);  // TODO
+				conn.saveObject("MyPhysicalDataSet", fpds, true);
+			} else {
+				log.warn("The dataset was not defined!");
+			}
 			
 			// ALGORITHM PREPARATION
 			// -----------------------------------------------------------------
@@ -102,7 +100,8 @@ public class Main {
 
 			String algorithm = Workspace.getAlgorithm();
 			HashMap<String, String> parameters = Workspace.getParameters();
-			AlgorithmSettings algorithmSettings = util.ClusteringSettings.prepare(algorithm, parameters);
+			AlgorithmSettings algorithmSettings =
+                util.ClusteringSettings.prepare(algorithm, parameters);
 
 			clusteringSettings.setAlgorithmSettings(algorithmSettings);
 			conn.saveObject("ClusteringSettings", clusteringSettings, true);/**/
@@ -110,7 +109,8 @@ public class Main {
 			// BUILD TASK
 			log.info("Preparing a build task...");
 			CDMBuildTaskFactory mbtf = new CDMBuildTaskFactory();
-			BuildTask bt = mbtf.create("MyPhysicalDataSet", "ClusteringSettings", "ClusteringOutputModel");
+			BuildTask bt = mbtf.create("MyPhysicalDataSet", "ClusteringSettings",
+                "ClusteringOutputModel");
 
 			// EXECUTE
 			// -----------------------------------------------------------------
