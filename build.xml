@@ -52,41 +52,6 @@
     <exclude name="**/?*.aj"/>
   </patternset>
   
-  <!-- JDK definitions -->
-  
-  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
-  <path id="jdk.classpath.1.8">
-    <fileset dir="${jdk.home.1.8}">
-      <include name="jre/lib/charsets.jar"/>
-      <include name="jre/lib/deploy.jar"/>
-      <include name="jre/lib/javaws.jar"/>
-      <include name="jre/lib/jce.jar"/>
-      <include name="jre/lib/jfr.jar"/>
-      <include name="jre/lib/jfxswt.jar"/>
-      <include name="jre/lib/jsse.jar"/>
-      <include name="jre/lib/management-agent.jar"/>
-      <include name="jre/lib/plugin.jar"/>
-      <include name="jre/lib/resources.jar"/>
-      <include name="jre/lib/rt.jar"/>
-      <include name="jre/lib/ext/access-bridge-64.jar"/>
-      <include name="jre/lib/ext/cldrdata.jar"/>
-      <include name="jre/lib/ext/dnsns.jar"/>
-      <include name="jre/lib/ext/jaccess.jar"/>
-      <include name="jre/lib/ext/jfxrt.jar"/>
-      <include name="jre/lib/ext/localedata.jar"/>
-      <include name="jre/lib/ext/nashorn.jar"/>
-      <include name="jre/lib/ext/sunec.jar"/>
-      <include name="jre/lib/ext/sunjce_provider.jar"/>
-      <include name="jre/lib/ext/sunmscapi.jar"/>
-      <include name="jre/lib/ext/sunpkcs11.jar"/>
-      <include name="jre/lib/ext/zipfs.jar"/>
-    </fileset>
-  </path>
-  
-  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  
   
   <!-- Project Libraries -->
   
@@ -124,18 +89,6 @@
   <path id="library.spatialindex.classpath">
     <pathelement location="${basedir}/lib/spatialindex.jar"/>
   </path>
-  <!-- Register Custom Compiler Taskdefs -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
   
   <!-- Modules -->
   
@@ -145,9 +98,6 @@
   <dirname property="module.clustering.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.clustering" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.clustering" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.clustering" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.clustering" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
   
@@ -159,7 +109,6 @@
   </path>
   
   <path id="clustering.module.production.classpath">
-    <path refid="${module.jdk.classpath.clustering}"/>
     <path refid="library.jdm.classpath"/>
     <path refid="library.lva-index.classpath"/>
     <pathelement location="//clustering/lib/log4j-1.2.9.jar"/>
@@ -179,7 +128,6 @@
   </path>
   
   <path id="clustering.module.classpath">
-    <path refid="${module.jdk.classpath.clustering}"/>
     <pathelement location="${clustering.output.dir}"/>
     <path refid="library.jdm.classpath"/>
     <path refid="library.lva-index.classpath"/>
@@ -218,15 +166,15 @@
   
   <target name="compile.module.clustering" depends="compile.module.clustering.production,compile.module.clustering.tests" description="Compile module clustering"/>
   
-  <target name="compile.module.clustering.production" depends="register.custom.compilers" description="Compile module clustering; production classes">
+  <target name="compile.module.clustering.production" description="Compile module clustering; production classes">
     <mkdir dir="${clustering.output.dir}"/>
-    <javac2 destdir="${clustering.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.clustering}/javac">
+    <javac destdir="${clustering.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
       <compilerarg line="${compiler.args.clustering}"/>
       <bootclasspath refid="clustering.module.bootclasspath"/>
       <classpath refid="clustering.module.production.classpath"/>
       <src refid="clustering.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.clustering"/>
-    </javac2>
+    </javac>
     
     <copy todir="${clustering.output.dir}">
       <fileset dir="${module.clustering.basedir}/src">
@@ -236,7 +184,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.clustering.tests" depends="register.custom.compilers,compile.module.clustering.production" description="compile module clustering; test classes" unless="skip.tests"/>
+  <target name="compile.module.clustering.tests" depends="compile.module.clustering.production" description="compile module clustering; test classes" unless="skip.tests"/>
   
   <target name="clean.module.clustering" description="cleanup module">
     <delete dir="${clustering.output.dir}"/>
