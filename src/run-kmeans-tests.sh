@@ -20,7 +20,7 @@ echo "java $cp $wp $dtc $pikmea $pr;k:5;maxIterations:10;deepest:15;depth:15;sta
 echo $cp
 java $cp
 
-java -cp ".:../../../lib/*" Main
+java -cp ".:../../../lib/*" Main 
 
 
 # $wp $dtc $pikmea $pr;k:5;maxIterations:10;deepest:15;depth:15;starting:3;plot
