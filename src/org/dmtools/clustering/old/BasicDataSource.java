@@ -4,15 +4,13 @@ import org.dmtools.clustering.model.IClusteringData;
 import org.dmtools.clustering.model.IClusteringDataSource;
 import org.dmtools.clustering.model.IClusteringObserver;
 
-import javax.swing.JFrame;
-
 
 /**
  * 
  * @author Piotr Lasek
  *
  */
-public class BasicDataSource extends JFrame implements IClusteringObserver, IClusteringDataSource
+public class BasicDataSource implements IClusteringObserver, IClusteringDataSource
 {
 
 	private static final long serialVersionUID = 1L;
@@ -78,7 +76,7 @@ public class BasicDataSource extends JFrame implements IClusteringObserver, IClu
 	@Override
 	public void showDataSource() {
 		// TODO Auto-generated method stub
-		this.setVisible(true);
+		//this.setVisible(true);
 	}
 
     @Override
