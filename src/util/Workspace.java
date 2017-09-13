@@ -69,7 +69,8 @@ public class Workspace {
     public static HashMap<String, String> getParameters() {
         HashMap<String, String> parameters = new HashMap();
         if (argsMap != null && argsMap.get("parameters") != null) {
-            String[] kvPairStrings = argsMap.get("parameters").split(";");
+            String pairStrings = argsMap.get("parameters").replace("\"", "");
+            String[] kvPairStrings = pairStrings.split(";");
             for (String kvPairString : kvPairStrings) {
                 String[] kvPair = kvPairString.split(":");
                 if (kvPair.length == 2) {
