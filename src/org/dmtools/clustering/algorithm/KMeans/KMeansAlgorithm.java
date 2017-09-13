@@ -2,6 +2,7 @@ package org.dmtools.clustering.algorithm.KMeans;
 
 import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
 import org.dmtools.clustering.old.ClusteringTimer;
+import org.dmtools.datamining.base.ScatterAdd;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
@@ -81,13 +82,13 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		}
 		timer.clusteringEnd();
 
-		/*if (plot()) {
+		if (plot()) {
 			log.info("Printing the final result.");
 			ScatterAdd sa = new ScatterAdd("k-Means", data, tempPoints);
 			sa.setSize(400, 500);
 			sa.setVisible(true);
 			sa.toFront();
-		}*/
+		}
 
 		basicMiningObject.setDescription(timer.getLog());
 		return basicMiningObject;
