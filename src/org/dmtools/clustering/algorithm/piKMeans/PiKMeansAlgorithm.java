@@ -584,7 +584,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		ArrayList<double[]> highrResData = new ArrayList<double[]>();
 		ArrayList<double[]> currentMixeddata = new ArrayList<double[]>();
 		ArrayList<double[]> labeledData = new ArrayList<double[]>();
-		ArrayList<double[]> test = new ArrayList<double[]>();
+		//ArrayList<double[]> test = new ArrayList<double[]>();
 		long OldZOrder;
 		long zOrderShifted;
 		long lowZOrder, highZOrder;
@@ -612,7 +612,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 						//System.out.println("low_zorder: "+highrResData.get(index)[10]);
 						indexOfClosestTempPoint = getIndexOfClosestCluster(highrResData.get(index));
 						highrResData.get(index)[15] = indexOfClosestTempPoint;
-						test.add(highrResData.get(index));
+						//test.add(highrResData.get(index));
 						if (indexOfClosestTempPoint == -1) {
 							currentMixeddata.add(highrResData.get(index));
 						} else {
@@ -632,8 +632,6 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 						index++;
 					}
 				}
-
-
 			}
 
 			if (labeledData.size() != 0) {
