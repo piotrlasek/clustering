@@ -1,21 +1,11 @@
 package org.dmtools.clustering.algorithm.piKMeans; /**
  * Created by Nasim on 5/4/2017.
  */
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
-
-
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Points extends JPanel {
 
@@ -24,7 +14,7 @@ public class Points extends JPanel {
     private ArrayList<double[]> tempPoints;
     private Color[] color = {Color.magenta,Color.CYAN,Color.BLUE,Color.RED,Color.PINK,Color.green,Color.BLACK};
 
-    public Points(ArrayList<double[]> data, ArrayList<double[]> tmpPoints, int _final, int depth){
+    public Points(ArrayList<double[]> data, ArrayList<double[]> tmpPoints, int _final){
         this.data = new ArrayList<double[]>();
         this.data = data;
         tempPoints = tmpPoints;

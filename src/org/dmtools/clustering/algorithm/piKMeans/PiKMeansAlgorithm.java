@@ -8,6 +8,7 @@ import org.dmtools.clustering.old.ClusteringTimer;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalDataSet;
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,7 +89,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		log.info("Clustering started...");
 		timer.clusteringStart();
-		// Performing k-means iterations from 0 to r.
+		// Performing k-means iterations from 0 to maxIterations.
 		for (int r = 0; r < maxIterations; r++) {
 			layeredData = new ArrayList<ArrayList<double[]>>();
 			mixedBins = new ArrayList<double[]>();
@@ -169,16 +170,13 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		if (plot()) {
 			log.info("Plotting results...");
-            /*Points points1 = new Points(base,centerPoints, 1, 15); //15 deepest
+            Points points1 = new Points(base, centerPoints, 1); //15 deepest
             JFrame frameFrame1 = new JFrame("Points");
             frameFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frameFrame1.add(points1);
             frameFrame1.setSize(1000, 1000);
-            //frame.setLocationRelativeTo(null);
             frameFrame1.setVisible(true);
-            frameFrame1.toFront();*/
-			//System.out.println("****base size: "+ base.size());
-			//System.out.println("****data size: "+ data.size());
+            frameFrame1.toFront();
 		}
 
 		basicMiningObject.setDescription(timer.getLog());
@@ -490,10 +488,10 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 					double maxDist = farthestDist[0];
 					int indexPoint = 0;
 					int d = 0;
-					for (i = 0; i < 4; i++) {
-						if (farthestDist[i] > maxDist) {
-							maxDist = farthestDist[i];
-							indexPoint = i;
+					for (int ii = 0; ii < 4; ii++) {
+						if (farthestDist[ii] > maxDist) {
+							maxDist = farthestDist[ii];
+							indexPoint = ii;
 						}
 					}
 
@@ -502,10 +500,10 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
 					double minDist = farthestDist[0];
 					indexPoint = 0;
-					for (i = 0; i < 4; i++) {
-						if (farthestDist[i] < minDist) {
-							minDist = farthestDist[i];
-							indexPoint = i;
+					for (int ii = 0; ii < 4; ii++) {
+						if (farthestDist[ii] < minDist) {
+							minDist = farthestDist[ii];
+							indexPoint = ii;
 						}
 					}
 
@@ -584,7 +582,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		ArrayList<double[]> highrResData = new ArrayList<double[]>();
 		ArrayList<double[]> currentMixeddata = new ArrayList<double[]>();
 		ArrayList<double[]> labeledData = new ArrayList<double[]>();
-		//ArrayList<double[]> test = new ArrayList<double[]>();
+		ArrayList<double[]> test = new ArrayList<double[]>();
 		long OldZOrder;
 		long zOrderShifted;
 		long lowZOrder, highZOrder;
@@ -612,7 +610,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 						//System.out.println("low_zorder: "+highrResData.get(index)[10]);
 						indexOfClosestTempPoint = getIndexOfClosestCluster(highrResData.get(index));
 						highrResData.get(index)[15] = indexOfClosestTempPoint;
-						//test.add(highrResData.get(index));
+						test.add(highrResData.get(index));
 						if (indexOfClosestTempPoint == -1) {
 							currentMixeddata.add(highrResData.get(index));
 						} else {
@@ -645,16 +643,7 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 				//mixedBins.add(currentMixeddata);
 			}
 
-            /*Points points1 = new Points(test,centerPoints, 0);
-			JFrame frameFrame1 = new JFrame("Points");
-            frameFrame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frameFrame1.add(points1);
-            frameFrame1.setSize(1000, 1000);
-            //frame.setLocationRelativeTo(null);
-            frameFrame1.setVisible(true);
-            frameFrame1.toFront();*/
 		}
-
 	}
 
 	/**
