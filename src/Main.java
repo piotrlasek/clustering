@@ -43,13 +43,15 @@ public class Main {
 						//"data=\\data\\my-file-2d.txt",
 						//"data=\\data\\Checkins.txt",
 						"data=[CUSTOM]\\data\\checkins-pyramid\\",
+						//"data=[CUSTOM]\\data\\TaxiData\\",
 						//"data=\\data\\experiment\\birch2.txt",
 						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
 						//"parameters=k:10;dump;plot;close_plot;ic:random_4"
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:5;maxIterations:25;deepest:15;depth:15;starting:3;plot"
+						"parameters=k:20;maxIterations:25;deepest:15;depth:15;starting:3"
+
 					};
 			}
 
