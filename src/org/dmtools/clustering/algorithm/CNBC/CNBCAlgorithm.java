@@ -11,7 +11,6 @@ import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalDataSet;
 import java.util.ArrayList;
 
-
 /**
  * 
  * @author Piotr Lasek

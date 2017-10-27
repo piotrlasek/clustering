@@ -38,11 +38,12 @@ public class Main {
 			if (args.length == 0) {
 				args = new String[]{
 						//"algorithm=C-NBC",
-						"algorithm=pikMeans",
+						//"algorithm=pikMeans",
+						"algorithm=piMeans",
 						//"algorithm=kMeans",
 						//"data=\\data\\my-file-2d.txt",
-						//"data=\\data\\Checkins.txt",
-						"data=[CUSTOM]\\data\\checkins-pyramid\\",
+						"data=\\data\\Checkins.csv",
+						//"data=[CUSTOM]\\data\\checkins-pyramid\\",
 						//"data=[CUSTOM]\\data\\TaxiData\\",
 						//"data=\\data\\experiment\\birch2.txt",
 						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
@@ -50,7 +51,7 @@ public class Main {
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:20;maxIterations:25;deepest:15;depth:15;starting:3"
+						"parameters=k:20;maxIterations:25;deepest:15;depth:15;starting:3;dump"
 
 					};
 			}

@@ -12,6 +12,7 @@ import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
 import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
 import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
 import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
+import org.dmtools.clustering.algorithm.PiMeans.PiMeansAlgorithm;
 import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithm;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
@@ -118,7 +119,10 @@ public class CDMFileConnection implements Connection {
 		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
 		MiningObject miningObject;
 
-		if (ma.equals(MiningAlgorithm.valueOf("pikMeans"))) {
+		if (ma.equals(MiningAlgorithm.valueOf("piMeans"))) {
+			PiMeansAlgorithm pkma = new PiMeansAlgorithm(cs, pds);
+			miningObject = pkma.run();
+		} else if (ma.equals(MiningAlgorithm.valueOf("pikMeans"))) {
 			PiKMeansAlgorithm pkma = new PiKMeansAlgorithm(cs, pds);
 			miningObject = pkma.run();
 		} else if (ma.equals(MiningAlgorithm.valueOf("kMeans"))) {

@@ -6,6 +6,7 @@ import org.dmtools.clustering.model.IClusteringObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -45,6 +46,28 @@ public class Dump {
         }
     }
 
+    /**
+     *
+     * @param Dataset
+     * @param fName
+     * @param ignoreNoise
+     */
+    public static void toFile(ArrayList<double[]> Dataset, String fName, boolean ignoreNoise) {
+        String filePath = Workspace.getWorkspacePath() + "/results/" + fName;
+        log.info("Saving results to: " + filePath);
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(filePath);
+            for (double[] ico : Dataset) {
+                String toSave = "" + (long) ico[0] + ", " + (long) ico[1];
+
+                writer.write(toSave+"\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      *
      * @param algorithmName

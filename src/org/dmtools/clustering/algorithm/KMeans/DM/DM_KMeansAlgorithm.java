@@ -1,19 +1,17 @@
 package org.dmtools.clustering.algorithm.KMeans.DM;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
+import org.dmtools.clustering.CDMCluster;
+import org.dmtools.clustering.CDMClusteringModel;
+import org.dmtools.datamining.base.ScatterAdd;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
-
-import org.dmtools.clustering.CDMBasicClusteringAlgorithm;
-import org.dmtools.clustering.CDMCluster;
-import org.dmtools.clustering.CDMClusteringModel;
-import org.dmtools.datamining.base.ScatterAdd;
-import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class DM_KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
@@ -33,7 +31,7 @@ public class DM_KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	{
 		super(clusteringSettings, physicalDataSet);
 		
-		//k = ((PiKMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).getK();
+		//k = ((PiMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings()).getK();
 		k = (int) clusteringSettings.getMinClusterCaseCount();
 		clusterCount = new int[k];
 		// get attributes
@@ -91,7 +89,6 @@ public class DM_KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	/**
 	 * 
 	 * @param point
-	 * @param dists
 	 * @return
 	 */
 	private int getIndexOfClosestCluster(double[] point) {

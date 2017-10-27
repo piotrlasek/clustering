@@ -12,6 +12,7 @@ import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithmSettings;
 import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
+import org.dmtools.clustering.algorithm.PiMeans.PiMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithmSettings;
 
 import javax.datamining.base.AlgorithmSettings;
@@ -41,19 +42,34 @@ public class ClusteringSettings {
                ((KMeansAlgorithmSettings) algorithmSettings).setK(k);
                ((KMeansAlgorithmSettings) algorithmSettings).setMaxIterations(maxIterations);
                break;
-            case "pikMeans":
-                algorithmSettings = new PiKMeansAlgorithmSettings();
-                int pk  = new Integer(parameters.get("k"));
-                int pmaxIterations = new Integer(parameters.get("maxIterations"));
-                int deepest = new Integer(parameters.get("deepest"));
-                int depth = new Integer(parameters.get("depth"));
-                int starting = new Integer(parameters.get("starting"));
-                ((PiKMeansAlgorithmSettings) algorithmSettings).setK(pk);
-                ((PiKMeansAlgorithmSettings) algorithmSettings).setDepth(depth);
-                ((PiKMeansAlgorithmSettings) algorithmSettings).setDeepest(deepest);
-                ((PiKMeansAlgorithmSettings) algorithmSettings).setStarting(starting);
-                ((PiKMeansAlgorithmSettings) algorithmSettings).setMaxIterations(pmaxIterations);
-                break;
+           case "piMeans": {
+               algorithmSettings = new PiMeansAlgorithmSettings();
+               int pk = new Integer(parameters.get("k"));
+               int pmaxIterations = new Integer(parameters.get("maxIterations"));
+               int deepest = new Integer(parameters.get("deepest"));
+               int depth = new Integer(parameters.get("depth"));
+               int starting = new Integer(parameters.get("starting"));
+               ((PiMeansAlgorithmSettings) algorithmSettings).setK(pk);
+               ((PiMeansAlgorithmSettings) algorithmSettings).setDepth(depth);
+               ((PiMeansAlgorithmSettings) algorithmSettings).setDeepest(deepest);
+               ((PiMeansAlgorithmSettings) algorithmSettings).setStarting(starting);
+               ((PiMeansAlgorithmSettings) algorithmSettings).setMaxIterations(pmaxIterations);
+           }
+               break;
+           case "pikMeans": {
+               algorithmSettings = new PiKMeansAlgorithmSettings();
+               int pk = new Integer(parameters.get("k"));
+               int pmaxIterations = new Integer(parameters.get("maxIterations"));
+               int deepest = new Integer(parameters.get("deepest"));
+               int depth = new Integer(parameters.get("depth"));
+               int starting = new Integer(parameters.get("starting"));
+               ((PiKMeansAlgorithmSettings) algorithmSettings).setK(pk);
+               ((PiKMeansAlgorithmSettings) algorithmSettings).setDepth(depth);
+               ((PiKMeansAlgorithmSettings) algorithmSettings).setDeepest(deepest);
+               ((PiKMeansAlgorithmSettings) algorithmSettings).setStarting(starting);
+               ((PiKMeansAlgorithmSettings) algorithmSettings).setMaxIterations(pmaxIterations);
+           }
+               break;
             case "NBC":
                 algorithmSettings = new NBCAlgorithmSettings();
                 int kNBC = new Integer(parameters.get("k"));

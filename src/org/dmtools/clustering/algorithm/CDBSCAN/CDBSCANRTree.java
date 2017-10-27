@@ -112,7 +112,7 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
 
         try {
             internalTimer.start("deferred");
-            recluster3(deferred);
+            assignDeferredPoints(deferred);
             internalTimer.end("deferred");
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +122,12 @@ public class CDBSCANRTree extends InstanceConstraintsAlgorithm {
 
     } // DBSCAN
 
-    private void recluster3(ArrayList<IConstraintObject> Rd) throws Exception {
+    /**
+     *
+     * @param Rd
+     * @throws Exception
+     */
+    private void assignDeferredPoints(ArrayList<IConstraintObject> Rd) throws Exception {
         for (IConstraintObject q : Rd) {
             if (q.getClusterId() > CDMCluster.NOISE) {
                 System.out.println("Cluster id: " + q.getClusterId());

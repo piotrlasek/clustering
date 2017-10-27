@@ -12,7 +12,6 @@ import org.dmtools.datamining.resource.CDMBasicMiningObject;
 
 import javax.datamining.JDMException;
 import javax.datamining.MiningObject;
-import javax.datamining.base.AlgorithmSettings;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalAttribute;
 import javax.datamining.data.PhysicalDataSet;
@@ -27,7 +26,6 @@ import java.util.Collection;
 public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 
 	protected MiningObject result;
-	protected AlgorithmSettings algorithmSettings;
 	protected ArrayList<double[]> data;
 	protected double[] min = null;
 	protected double[] max = null;
@@ -39,7 +37,8 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 	protected ClusteringAlgorithm algorithm;
 	protected CDMBasicMiningObject basicMiningObject = new CDMBasicMiningObject();
 
-	protected final static Logger log = LogManager.getLogger(CDMBasicClusteringAlgorithm.class.getSimpleName());
+	protected final static Logger log =
+        LogManager.getLogger(CDMBasicClusteringAlgorithm.class.getSimpleName());
 
 	/**
 	 *
@@ -67,6 +66,21 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
+	public double[] getMin() {
+		return min;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public double[] getMax() {
+		return max;
+	}
 
 	@Override
 	/**
@@ -111,9 +125,10 @@ public abstract class CDMBasicClusteringAlgorithm implements CDMAlgorithm {
 				record[d] = new Double(rawData.get(i)[d].toString());
 				if (min[d] == 0)
 					min[d] = record[d];
-				else
-				if (min[d] > record[d]) min[d] = record[d];
-				if (max[d] < record[d]) max[d] = record[d];
+				else {
+					if (min[d] > record[d]) min[d] = record[d];
+					if (max[d] < record[d]) max[d] = record[d];
+				}
 				d++;
 			}
 			record[d] = -1; // UNCLUSTERED

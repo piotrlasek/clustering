@@ -17,7 +17,8 @@ import java.util.ArrayList;
  */
 public class ClusteringAlgorithm {
 
-    protected final static Logger log = LogManager.getLogger(ClusteringAlgorithm.class.getSimpleName());
+    protected final static Logger log =
+        LogManager.getLogger(ClusteringAlgorithm.class.getSimpleName());
 
     public int nDim = 0;
     public ArrayList<Point> Dataset;
@@ -37,7 +38,6 @@ public class ClusteringAlgorithm {
 
     /**
      *
-     :w
      * @param data
      */
     public void setData(IClusteringData data) {
