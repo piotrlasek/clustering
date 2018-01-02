@@ -12,6 +12,7 @@ import spatialindex.storagemanager.IBuffer;
 import spatialindex.storagemanager.MemoryStorageManager;
 import spatialindex.storagemanager.PropertySet;
 import spatialindex.storagemanager.RandomEvictionsBuffer;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ public class CNBCRTree implements IClusteringAlgorithm {
     
     public static final String NAME = "C-NBC-RTree";
 
-    
     String description;
 
     IClusteringObserver observer;
@@ -40,9 +40,7 @@ public class CNBCRTree implements IClusteringAlgorithm {
     InstanceConstraints ic = new InstanceConstraints();
 
     int nDim = 0;
-    //int id = 0;
     int k;
-    //String desc = "NBC (RTree): ";
 
     /**
      * Creates a new instance of the NBC algorithm.
@@ -101,12 +99,12 @@ public class CNBCRTree implements IClusteringAlgorithm {
             // applying cannot-link constraints
             boolean existsCannotLink = ic.existsCannotLink(kNN.neighbours);
             // CANNOT-LINK
-            if (existsCannotLink){
+            if (existsCannotLink) {
             	for (int i = 0; i < kNN.neighbours.size(); i++) {
             		CNBCRTreePoint pcl1 = (CNBCRTreePoint) kNN.neighbours.get(i);
-            		if (pcl1.getClusterId() != CDMCluster.UNCLASSIFIED) {
+            		/*if (pcl1.getClusterId() != CDMCluster.UNCLASSIFIED) {
             			System.out.println("XXX");
-            		}
+            		}*/
                     pcl1.setClusterId(CDMCluster.NOISE);
                 }
                 continue;

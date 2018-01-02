@@ -51,8 +51,7 @@ public class Main {
 						//"parameters=k:10;dump;plot;ic:random_4"
 						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
 						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:20;maxIterations:25;deepest:15;depth:15;starting:3;dump"
-
+						"parameters=k:1;maxIterations:25;deepest:15;depth:15;starting:3;dump"
 					};
 			}
 
