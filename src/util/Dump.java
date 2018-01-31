@@ -18,6 +18,24 @@ public class Dump {
 
     /**
      *
+     * @param string
+     * @param fName
+     */
+    public static void toFile(String string, String fName) {
+        String filePath = Workspace.getWorkspacePath() + "/results/" + fName;
+        log.info("Saving results to: " + filePath);
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(filePath);
+            writer.write(string);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
      * @param Dataset
      * @param fName
      * @param ignoreNoise

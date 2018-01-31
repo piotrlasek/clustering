@@ -13,6 +13,7 @@ import java.util.Map;
 public class PiCube {
 
     int maxDepth;
+
     ArrayList<HashMap<Long, PiBin>> layers;
 
     private final static Logger log = LogManager.getLogger(PiCube.class.getSimpleName());
@@ -35,16 +36,17 @@ public class PiCube {
      */
     public void build(ArrayList<double[]> data, double[] min, double[] max) {
         log.info("Building a pi-cube.");
-        HashMap<Long, PiBin> baseLayer = layers.get(maxDepth - 1);
+
+        int baseLevel = maxDepth - 1;
+
+        HashMap<Long, PiBin> baseLayer = layers.get(baseLevel);
 
         for(double[] record : data) {
             Long zoo = Morton2D.encode((long) record[0], (long) record[1]);
             PiBin bin = null;
 
             if (!baseLayer.containsKey(zoo)) {
-                // TODO:
-                //źle ustawiane są wartości min i max
-                bin = new PiBin(0, /*min, max, */maxDepth);
+                bin = new PiBin(0, baseLevel);
             } else {
                 bin = baseLayer.get(zoo);
             }
@@ -55,36 +57,30 @@ public class PiCube {
             baseLayer.put(zoo, bin);
         }
 
-        for(int level = maxDepth-1; level > 0; level--) {
+        for(int level = baseLevel; level > 0; level--) {
             HashMap<Long, PiBin> layer = layers.get(level);
             HashMap<Long, PiBin> hlLayer = layers.get(level-1);
 
-            if (level == 10) {
-               System.out.println("abc");
-            }
             for(Map.Entry<Long, PiBin> pair : layer.entrySet()) {
                 PiBin bin = pair.getValue();
                 Long originalZoo = bin.getZoo();
 
-                Long hlZoo = (long) Morton2D.zooAtLevelA(2, maxDepth, level-1, originalZoo);
+                Long hlZoo = (long) Morton2D.zooAtLevelA(2, baseLevel, level-1, originalZoo);
                 PiBin hlBin;
 
                 if (!hlLayer.containsKey(hlZoo)) {
                     // TODO
                     // tutaj tez min i max sa zle ustawiane
                     // nalezy to jakos uspojnic
-                    hlBin = new PiBin(bin.getPointsCount(), /*min, max,*/ level);
+                    hlBin = new PiBin(bin.getPointsCount(), level);
                 } else {
                     hlBin = hlLayer.get(hlZoo);
                 }
 
-                hlBin.addChild(bin);
-                bin.setParent(hlBin);
                 hlBin.setZoo(originalZoo);
+                hlBin.addChild(bin);
 
-                long[] xy = Morton2D.decode(hlZoo);
-                hlBin.setX((int) xy[0]);
-                hlBin.setY((int) xy[1]);
+                bin.setParent(hlBin);
 
                 hlLayer.put(hlZoo, hlBin);
             }

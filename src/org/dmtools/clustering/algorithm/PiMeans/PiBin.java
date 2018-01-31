@@ -52,18 +52,44 @@ public class PiBin {
 
     /**
      *
+     * @param point
+     */
+    public void addPoint(PiPoint point) {
+        if (points == null) {
+            points = new ArrayList();
+        }
+
+        points.add(point);
+        updateMinMaxXY(point.coordinates[0], point.coordinates[1]);
+        increasePointsCount(1);
+    }
+
+
+    /**
+     *
      */
     public void addChild(PiBin childBin) {
         if (childBins == null) {
             childBins = new ArrayList<>();
         }
         childBins.add(childBin);
-        double x = childBin.getX();
-        double y = childBin.getY();
+        increasePointsCount(childBin.getPointsCount());
 
-        updateMinMaxXY(x, y);
+        if (childBins.size() > 4)
+            log.error("childBins size to large");
 
-        pointsCount += childBin.getPointsCount();
+        /*double x = childBin.getX();
+        double y = childBin.getY();*/
+
+        double mix = childBin.getMinX();
+        double miy = childBin.getMinY();
+
+        double max = childBin.getMaxX();
+        double may = childBin.getMaxY();
+
+        updateMinMaxXY(mix, miy);
+        updateMinMaxXY(max, may);
+
     }
 
     /**
@@ -192,6 +218,9 @@ public class PiBin {
      */
     public void setZoo(long zoo) {
         this.zoo = zoo;
+        long[] xy = Morton2D.decode(zoo);
+        this.setX((int) xy[0]);
+        this.setY((int) xy[1]);
     }
 
     /**
@@ -231,8 +260,8 @@ public class PiBin {
         } else if (minY < y && y < maxY) {
             upperBound = Math.abs(maxX - x);
         } else {
-            upperBound = Math.sqrt(Math.pow(minX-x, 2) +
-                    Math.pow(minY-y, 2));
+            upperBound = Math.sqrt(Math.pow(maxX-x, 2) +
+                    Math.pow(maxY-y, 2));
         }
 
         return upperBound;
@@ -240,23 +269,13 @@ public class PiBin {
 
     /**
      *
-     * @param point
-     */
-    public void addPoint(PiPoint point) {
-        if (points == null) {
-            points = new ArrayList();
-        }
-        points.add(point);
-        updateMinMaxXY(point.coordinates[0], point.coordinates[1]);
-        pointsCount++;
-    }
-
-    /**
-     *
      * @param x
      */
     private void updateMinX(double x) {
-        if (x < minX) minX = x;
+        if (minX == null)
+            minX = x;
+        else if (x < minX)
+            minX = x;
     }
 
     /**
@@ -264,7 +283,10 @@ public class PiBin {
      * @param x
      */
     private void updateMaxX(double x) {
-        if (x > maxX) maxX = x;
+        if (maxX == null)
+            maxY = x;
+        else if (x > maxX)
+            maxX = x;
     }
 
     /**
@@ -272,7 +294,10 @@ public class PiBin {
      * @param y
      */
     private void updateMinY(double y) {
-        if (y < minY) minY = y;
+        if (minY == null)
+            minY = y;
+        else if (y < minY)
+            minY = y;
     }
 
     /**
@@ -280,7 +305,10 @@ public class PiBin {
      * @param y
      */
     private void updateMaxY(double y) {
-        if (y > maxY) maxY = y;
+        if (maxY == null)
+            maxY = y;
+        else if (y > maxY)
+            maxY = y;
     }
 
     /**
@@ -291,6 +319,7 @@ public class PiBin {
     private void updateMinMaxXY(double x, double y) {
         if (minX == null && maxX == null && minY == null && maxY == null) {
             minX = maxX = x;
+            minY = maxY = y;
         } else {
             updateMinX(x);
             updateMinY(y);

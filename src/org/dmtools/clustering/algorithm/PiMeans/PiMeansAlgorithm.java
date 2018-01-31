@@ -64,8 +64,8 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		PiCube picube = new PiCube(32);
 		picube.build(data, min, max);
 
-		HashMap<Long, PiBin> layer = picube.getLayer(10);
-		Dump.toFile(Utils.layerToString(layer), "layer10.csv");
+		HashMap<Long, PiBin> layer = picube.getLayer(6);
+		// Dump.toFile(Utils.layerToString(layer), "layer6.csv");
 
 		ArrayList<PiCluster> seeds = new ArrayList<>();
 
@@ -74,16 +74,25 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 			seeds.add(randomPoint);
 		}
 
+		log.info("Number of bins: " + layer.entrySet().size());
+
+		int bc = 0;
+
 		for(Map.Entry<Long, PiBin> layerEntry : layer.entrySet()) {
 			PiBin bin = layerEntry.getValue();
-			log.info(bin.getZoo());
 
 			for(PiCluster seed : seeds) {
 				double lb = bin.lowerBound(seed);
 				double ub = bin.upperBound(seed);
-				log.info(lb + ", " + ub);
+				 if (lb == ub) {
+					log.info(bc + ":\t" + bin.getPointsCount() + "\t" +
+							bin.getMaxX() + ",\t" + bin.getMinX() + ",\t" +
+							bin.getMaxY() + ",\t" + bin.getMinY());
+					lb = bin.lowerBound(seed);
+					ub = bin.upperBound(seed);
+				}
 			}
-			log.info("---");
+			bc++;
 		}
 
 		Set<Long> zoos = layer.keySet();
