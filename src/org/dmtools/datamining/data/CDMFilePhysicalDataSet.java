@@ -32,7 +32,6 @@ public class CDMFilePhysicalDataSet extends CDMAbstractMiningObject implements
 	CDMDataRecord[] records;
 	ArrayList<Object[]> rows;
 	ArrayList<PhysicalAttribute> attributes;
-	ArrayList<CDMFilePhysicalDataRecord> dataSet;
 
 	/**
 	 * 

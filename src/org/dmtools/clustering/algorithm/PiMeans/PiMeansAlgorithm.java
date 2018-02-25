@@ -36,8 +36,8 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	/**
 	 * @throws IOException
 	 */
-	public PiMeansAlgorithm(ClusteringSettings clusteringSettings,
-                            PhysicalDataSet physicalDataSet) {
+public PiMeansAlgorithm(ClusteringSettings clusteringSettings,
+                        PhysicalDataSet physicalDataSet) {
 		super(clusteringSettings, physicalDataSet);
 
 		PiMeansAlgorithmSettings pkmas =
@@ -57,7 +57,6 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	public MiningObject run() {
 		log.info("Initializing pyramid...");
         prepareData();
-        normalizeData(4);
 
 		timer.indexStart();
 
@@ -65,7 +64,7 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		picube.build(data, min, max);
 
 		HashMap<Long, PiBin> layer = picube.getLayer(6);
-		// Dump.toFile(Utils.layerToString(layer), "layer6.csv");
+		Dump.toFile(Utils.layerToString(layer), "layer6.csv");
 
 		ArrayList<PiCluster> seeds = new ArrayList<>();
 
@@ -128,37 +127,6 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
 		basicMiningObject.setDescription(timer.getLog());
 		return basicMiningObject;
-	}
-
-	/**
-	 * "Normalizes" data in an ugly way.
-	 */
-	public void normalizeData(long maxSize)
-	{
-		double[] min = getMin();
-		double[] max = getMax();
-
-		double[] nMin = new double[2];
-		double[] nMax = new double[2];
-		nMin[0] = nMax[0] = nMin[1] = nMax[1] = 0;
-
-		for(double[] record : data) {
-			record[0] -= min[0];
-			record[0] *= 1000000;
-			record[1] -= min[1];
-			record[1] *= 1000000;
-			//log.info(Arrays.toString(record));
-		}
-
-		for(double[] record : data) {
-		    for (int i = 0; i < 2; i++) {
-				if (nMin[i] > record[i]) nMin[i] = record[i];
-				if (nMax[i] < record[i]) nMax[i] = record[i];
-			}
-		}
-
-		this.min = nMin;
-		this.max = nMax;
 	}
 
 	@Override

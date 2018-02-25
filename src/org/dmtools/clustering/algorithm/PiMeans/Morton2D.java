@@ -93,4 +93,23 @@ public class Morton2D {
         double zal = zoo / p;
         return Math.floor(zal);
     }
+
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        /*long x = 3128980426L;
+        long y = 890917762L;*/
+
+        for(long x = 0; x < Long.MAX_VALUE; x += 1) {
+            long z = Morton2D.encode(x, x);
+            long[] xy = Morton2D.decode(z);
+            if (xy[0] != x) {
+                System.out.println("x: " + x);
+                break;
+            }
+        }
+
+    }
 }

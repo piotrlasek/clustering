@@ -51,6 +51,11 @@ public class PiCube {
                 bin = baseLayer.get(zoo);
             }
 
+            long[] xy = Morton2D.decode(zoo);
+
+            assert (xy[0] == (long) record[0]);
+            assert (xy[1] == (long) record[1]);
+
             bin.setZoo(zoo);
             PiPoint piPoint = new PiPoint(record, bin);
             bin.addPoint(piPoint);

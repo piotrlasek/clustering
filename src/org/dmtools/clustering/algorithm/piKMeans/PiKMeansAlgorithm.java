@@ -34,19 +34,22 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	static double[] max = new double[15];
 	static ArrayList<double[]> data;
 	static ArrayList<double[]> centerPoints;
-	static ArrayList<ArrayList<double[]>> centerPointsLists = new ArrayList<ArrayList<double[]>>();
-	;
+	static ArrayList<ArrayList<double[]>> centerPointsLists =
+        new ArrayList<ArrayList<double[]>>();
+
 	static ArrayList<double[]> base = new ArrayList<double[]>();
 	static int numberOfDimensions = 15;
 
-	ArrayList<ArrayList<double[]>> layeredData; // = new ArrayList<ArrayList<double[]>>();
+	ArrayList<ArrayList<double[]>> layeredData;
 
-	ClusteringTimer timer = new ClusteringTimer(PiKMeansAlgorithmSettings.NAME);
+	ClusteringTimer timer =
+        new ClusteringTimer(PiKMeansAlgorithmSettings.NAME);
 
 	final String COMMA_DELIMITER = ",";
 	final String NEW_LINE_SEPARATOR = "\n";
 
-	protected final static Logger log = LogManager.getLogger(PiKMeansAlgorithm.class.getSimpleName());
+	protected final static Logger log = LogManager.getLogger(
+			PiKMeansAlgorithm.class.getSimpleName());
 
 	/**
 	 * @throws IOException
@@ -56,7 +59,8 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 		super(clusteringSettings, physicalDataSet);
 
 		PiKMeansAlgorithmSettings pkmas =
-				(PiKMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
+				(PiKMeansAlgorithmSettings)
+				clusteringSettings.getAlgorithmSettings();
 
 		k = pkmas.getK();
 		maxIterations = pkmas.getMaxIterations();
@@ -96,7 +100,8 @@ public class PiKMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 			labeledData = new ArrayList<double[]>();
 			for (double[] point : data) {
 				int indexOfClosestTempPoint = 0;
-				indexOfClosestTempPoint = getIndexOfClosestCluster(point);
+				indexOfClosestTempPoint =
+                    getIndexOfClosestCluster(point);
 				point[15] = indexOfClosestTempPoint;
 				//add to mixedPoints if index is -1
 				if (indexOfClosestTempPoint == -1) {

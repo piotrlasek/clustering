@@ -11,11 +11,23 @@ import pandas as pd
 import numpy as np
 
 
-df = pd.read_csv(r'C:\Users\Piotr\GitHubProjects\tmp\clustering\data\Checkins.csv')
+df = pd.read_csv(
+    r'C:\Users\piotr\Documents\projects\clustering\data\Checkins.csv',
+    names=['x','y'])
+mms = preprocessing.MinMaxScaler(copy=True, feature_range=(0,pow(2,32)))
+mms.fit(df)
 
-min_max_scaler = preprocessing.MinMaxScaler(feature_range=(0, 100))
-np_scaled = min_max_scaler.fit_transform(df)
-dfn = pd.DataFrame(np_scaled)
-dfn = dfn - dfn.min()
+dfn = mms.transform(df)
 
-dfn.to_csv(r'C:\Users\Piotr\GitHubProjects\tmp\clustering\data\CheckinsN.csv', sep=',', index=False)
+#dfn = preprocessing.scale(df)
+#np_scaled = min_max_scaler.fit_transform(df)
+#dfn = pd.DataFrame(np_scaled)
+#dfn = dfn - dfn.min()
+#dfn
+
+dfn = pd.DataFrame(dfn)
+
+    
+
+dfn.to_csv(r'C:\Users\piotr\Documents\projects\clustering\data\CheckinsN.csv',
+    sep=',', index=False)
