@@ -39,10 +39,10 @@ public class PiBin {
 
     /**
      *
-     * @param count
+     * @param layer
      */
-    public PiBin(int count, /*double[] min, double[] max,*/ int layer) {
-        this.pointsCount = count;
+    public PiBin(int layer) {
+        this.pointsCount = 0;
         this.layer = layer;
         this.maxX = null;
         this.maxY = null;
@@ -64,7 +64,6 @@ public class PiBin {
         increasePointsCount(1);
     }
 
-
     /**
      *
      */
@@ -78,9 +77,6 @@ public class PiBin {
         if (childBins.size() > 4)
             log.error("childBins size to large");
 
-        /*double x = childBin.getX();
-        double y = childBin.getY();*/
-
         double mix = childBin.getMinX();
         double miy = childBin.getMinY();
 
@@ -89,7 +85,6 @@ public class PiBin {
 
         updateMinMaxXY(mix, miy);
         updateMinMaxXY(max, may);
-
     }
 
     /**

@@ -99,9 +99,7 @@ public class Morton2D {
      * @param args
      */
     public static void main(String[] args) {
-        /*long x = 3128980426L;
-        long y = 890917762L;*/
-
+        // testing the max possible value for x,y to compute a valid morton code value
         for(long x = 0; x < Long.MAX_VALUE; x += 1) {
             long z = Morton2D.encode(x, x);
             long[] xy = Morton2D.decode(z);
@@ -110,6 +108,5 @@ public class Morton2D {
                 break;
             }
         }
-
     }
 }

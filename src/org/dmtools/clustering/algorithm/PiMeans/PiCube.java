@@ -34,7 +34,7 @@ public class PiCube {
      *
      * @param data
      */
-    public void build(ArrayList<double[]> data, double[] min, double[] max) {
+    public void build(ArrayList<double[]> data) {
         log.info("Building a pi-cube.");
 
         int baseLevel = maxDepth - 1;
@@ -46,15 +46,12 @@ public class PiCube {
             PiBin bin = null;
 
             if (!baseLayer.containsKey(zoo)) {
-                bin = new PiBin(0, baseLevel);
+                bin = new PiBin(baseLevel);
             } else {
                 bin = baseLayer.get(zoo);
             }
 
             long[] xy = Morton2D.decode(zoo);
-
-            assert (xy[0] == (long) record[0]);
-            assert (xy[1] == (long) record[1]);
 
             bin.setZoo(zoo);
             PiPoint piPoint = new PiPoint(record, bin);
@@ -77,7 +74,7 @@ public class PiCube {
                     // TODO
                     // tutaj tez min i max sa zle ustawiane
                     // nalezy to jakos uspojnic
-                    hlBin = new PiBin(bin.getPointsCount(), level);
+                    hlBin = new PiBin(level);
                 } else {
                     hlBin = hlLayer.get(hlZoo);
                 }

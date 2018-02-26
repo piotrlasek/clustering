@@ -60,8 +60,8 @@ public PiMeansAlgorithm(ClusteringSettings clusteringSettings,
 
 		timer.indexStart();
 
-		PiCube picube = new PiCube(32);
-		picube.build(data, min, max);
+		PiCube picube = new PiCube(16);
+		picube.build(data);
 
 		HashMap<Long, PiBin> layer = picube.getLayer(6);
 		Dump.toFile(Utils.layerToString(layer), "layer6.csv");
