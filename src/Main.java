@@ -43,7 +43,7 @@ public class Main {
 						//"algorithm=kMeans",
 						//"data=\\data\\my-file-2d.txt",
 						//"data=\\data\\CheckinsN.csv",
-						"data=\\data\\CheckinsS.csv",
+						"data=\\data\\CheckinsN.csv",
 						//"data=[CUSTOM]\\data\\checkins-pyramid\\",
 						//"data=[CUSTOM]\\data\\TaxiData\\",
 						//"data=\\data\\experiment\\birch2.txt",

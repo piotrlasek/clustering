@@ -96,9 +96,36 @@ public class Morton2D {
 
     /**
      *
+     * @param zoo
+     * @return
+     */
+    public static long firstZooInBin(long zoo, int deepest, int level) {
+        long fZoo = zoo >> 2 * (deepest - level);
+        fZoo = fZoo << 2 * (deepest - level);
+        return fZoo;
+    }
+
+    /**
+     *
      * @param args
      */
     public static void main(String[] args) {
+        // test for first zoo in a bin
+        long fzoo = Morton2D.firstZooInBin(3, 16, 15);
+        assert fzoo == 0;
+
+        fzoo = Morton2D.firstZooInBin(4, 16, 15);
+        assert fzoo == 4;
+
+        fzoo = Morton2D.firstZooInBin(15, 16, 15);
+        assert fzoo == 12;
+
+        fzoo = Morton2D.firstZooInBin(15, 16, 14);
+        assert fzoo == 0;
+
+        fzoo = Morton2D.firstZooInBin(15, 16, 14);
+        assert fzoo == -1;
+
         // testing the max possible value for x,y to compute a valid morton code value
         for(long x = 0; x < Long.MAX_VALUE; x += 1) {
             long z = Morton2D.encode(x, x);

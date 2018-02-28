@@ -22,115 +22,119 @@ import java.util.Set;
  */
 public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
-	// zle liczone sa maxx i maxy w PiBin
+    // zle liczone sa maxx i maxy w PiBin
 
-	int k;
-	int maxIterations;
-	int startingStratum;
-	int depth;
+    int k;
+    int maxIterations;
+    int startingStratum;
+    int depth;
 
-	ClusteringTimer timer = new ClusteringTimer(PiMeansAlgorithmSettings.NAME);
+    ClusteringTimer timer = new ClusteringTimer(PiMeansAlgorithmSettings.NAME);
 
-	protected final static Logger log = LogManager.getLogger(PiMeansAlgorithm.class.getSimpleName());
+    protected final static Logger log = LogManager.getLogger(PiMeansAlgorithm.class.getSimpleName());
 
-	/**
-	 * @throws IOException
-	 */
-public PiMeansAlgorithm(ClusteringSettings clusteringSettings,
-                        PhysicalDataSet physicalDataSet) {
-		super(clusteringSettings, physicalDataSet);
+    /**
+     * @throws IOException
+     */
+    public PiMeansAlgorithm(ClusteringSettings clusteringSettings,
+                            PhysicalDataSet physicalDataSet) {
+        super(clusteringSettings, physicalDataSet);
 
-		PiMeansAlgorithmSettings pkmas =
-				(PiMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
+        PiMeansAlgorithmSettings pkmas =
+                (PiMeansAlgorithmSettings) clusteringSettings.getAlgorithmSettings();
 
-		k = pkmas.getK();
-		maxIterations = pkmas.getMaxIterations();
-		startingStratum = pkmas.getStarting();
-		depth = pkmas.getDepth();
-	}
+        k = pkmas.getK();
+        maxIterations = pkmas.getMaxIterations();
+        startingStratum = pkmas.getStarting();
+        depth = pkmas.getDepth();
+    }
 
 
-
-	/**
-	 * @return
-	 */
-	public MiningObject run() {
-		log.info("Initializing pyramid...");
+    /**
+     * @return
+     */
+    public MiningObject run() {
+        log.info("Initializing the pyramid...");
         prepareData();
+        min[0] = 0;
+        min[1] = 0;
+        max[0] = Math.pow(2, 16) - 1;
+        max[1] = Math.pow(2, 16) - 1;
 
-		timer.indexStart();
+        timer.indexStart();
 
-		PiCube picube = new PiCube(16);
-		picube.build(data);
+        PiCube picube = new PiCube(16);
+        picube.build(data);
 
-		HashMap<Long, PiBin> layer = picube.getLayer(6);
-		Dump.toFile(Utils.layerToString(layer), "layer6.csv");
+        HashMap<Long, PiBin> layer = picube.getLayer(6);
+        Dump.toFile(Utils.layerToString(layer), "layer6.csv");
 
-		ArrayList<PiCluster> seeds = new ArrayList<>();
+        ArrayList<PiCluster> seeds = new ArrayList<>();
 
-		for (int i = 0; i < k; i++) {
-			PiCluster randomPoint = PiCluster.random(min, max);
-			seeds.add(randomPoint);
-		}
+        for (int i = 0; i < k; i++) {
+            PiCluster randomPoint = PiCluster.random(min, max);
+            seeds.add(randomPoint);
+        }
 
-		log.info("Number of bins: " + layer.entrySet().size());
+        log.info("Number of bins: " + layer.entrySet().size());
 
-		int bc = 0;
+        int bc = 0;
 
-		for(Map.Entry<Long, PiBin> layerEntry : layer.entrySet()) {
-			PiBin bin = layerEntry.getValue();
+        for (Map.Entry<Long, PiBin> layerEntry : layer.entrySet()) {
+            PiBin bin = layerEntry.getValue();
 
-			for(PiCluster seed : seeds) {
-				double lb = bin.lowerBound(seed);
-				double ub = bin.upperBound(seed);
-				 if (lb == ub) {
-					log.info(bc + ":\t" + bin.getPointsCount() + "\t" +
-							bin.getMaxX() + ",\t" + bin.getMinX() + ",\t" +
-							bin.getMaxY() + ",\t" + bin.getMinY());
-					lb = bin.lowerBound(seed);
-					ub = bin.upperBound(seed);
-				}
-			}
-			bc++;
-		}
+            for (PiCluster seed : seeds) {
+                double lb = bin.lowerBound(seed);
+                double ub = bin.upperBound(seed);
+                if (lb == ub) { // takie same wychodza w przypadku kiedy mamy do czynienia
+                    // z takimi smaymi wartosciami min i max
+                    log.info(bc + ":\t" + bin.getPointsCount() + "\t" +
+                            bin.getMaxX() + ",\t" + bin.getMinX() + ",\t" +
+                            bin.getMaxY() + ",\t" + bin.getMinY());
+                    lb = bin.lowerBound(seed);
+                    ub = bin.upperBound(seed);
+                }
+            }
+            bc++;
+        }
 
-		Set<Long> zoos = layer.keySet();
+        Set<Long> zoos = layer.keySet();
 
-	/*	for(Long z : zoos) {
+        /*for(Long z : zoos) {
 			PiBin b = layer.get(z);
 			PiCluster c = new PiCluster(new double[]{0,0});
 			double ub = b.upperBound(c);
 			log.info(b.getX() + ", " + b.getY() + " -> " + ub);
 		} */
 
-		timer.indexEnd();
+        timer.indexEnd();
 
-		log.info("Clustering started...");
+        log.info("Clustering started...");
 
-		timer.clusteringStart();
+        timer.clusteringStart();
 
-		timer.clusteringEnd();
+        timer.clusteringEnd();
 
-		// Dumping results to a file(s) and/or plotting results.
-		if (dump()) {
-			String logFileName = Dump.getLogFileName(PiKMeansAlgorithmSettings.NAME,
-					getPhysicalDataSet().getDescription(), getDescription() );
+        // Dumping results to a file(s) and/or plotting results.
+        if (dump()) {
+            String logFileName = Dump.getLogFileName(PiKMeansAlgorithmSettings.NAME,
+                    getPhysicalDataSet().getDescription(), getDescription());
 
-			log.info("Writing results to " + logFileName);
-			// writeResults();
-			Dump.toFile(data, logFileName + ".csv", true);
-		}
+            log.info("Writing results to " + logFileName);
+            // writeResults();
+            Dump.toFile(data, logFileName + ".csv", true);
+        }
 
-		if (plot()) {
-			log.info("Plotting results...");
-		}
+        if (plot()) {
+            log.info("Plotting results...");
+        }
 
-		basicMiningObject.setDescription(timer.getLog());
-		return basicMiningObject;
-	}
+        basicMiningObject.setDescription(timer.getLog());
+        return basicMiningObject;
+    }
 
-	@Override
-	public String getDescription() {
-		return "(k=" + k + ", mi=" + maxIterations + ")";
-	}
+    @Override
+    public String getDescription() {
+        return "(k=" + k + ", mi=" + maxIterations + ")";
+    }
 }

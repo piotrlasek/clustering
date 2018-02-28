@@ -17,7 +17,6 @@ public class Distance {
         return Distance.sqrtMink(DistanceM2(a, b, m), m);
     }
     
-    
     public static double Distance(ISpatialObject a, ISpatialObject b) {
     	return getDistance(a, b);
     }

@@ -14,9 +14,11 @@ import numpy as np
 df = pd.read_csv(
     r'C:\Users\piotr\Documents\projects\clustering\data\Checkins.csv',
     names=['x','y'])
+
+df = df[df.columns.tolist()[::-1]]
 # Range should be something like 2^16 due the Morton2D code
 # limitations
-mms = preprocessing.MinMaxScaler(copy=True, feature_range=(0,pow(2,32)))
+mms = preprocessing.MinMaxScaler(copy=True, feature_range=(0,pow(2,16)-1))
 mms.fit(df)
 
 dfn = mms.transform(df)
