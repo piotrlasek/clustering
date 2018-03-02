@@ -69,6 +69,9 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
         HashMap<Long, PiBin> layer = picube.getLayer(6);
         Dump.toFile(Utils.layerToString(layer), "layer6.csv");
 
+        layer = picube.getLayer(3);
+        Dump.toFile(Utils.layerToString(layer), "layer3.csv");
+
         ArrayList<PiCluster> seeds = new ArrayList<>();
 
         for (int i = 0; i < k; i++) {

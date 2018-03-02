@@ -107,6 +107,17 @@ public class Morton2D {
 
     /**
      *
+     * @param deepest
+     * @param level
+     * @return
+     */
+    public static long binSizeAtLevel(int deepest, int level) {
+        long size = (long) Math.pow(2, deepest - level);
+        return size;
+    }
+
+    /**
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -123,17 +134,58 @@ public class Morton2D {
         fzoo = Morton2D.firstZooInBin(15, 16, 14);
         assert fzoo == 0;
 
-        fzoo = Morton2D.firstZooInBin(15, 16, 14);
-        assert fzoo == -1;
+        fzoo = Morton2D.firstZooInBin(12, 16, 14);
+        assert fzoo == 0;
+
+        fzoo = Morton2D.firstZooInBin(63, 16, 15);
+        assert fzoo == 60;
+
+        fzoo = Morton2D.firstZooInBin(63, 16, 15);
+        assert fzoo == 60;
+
+        fzoo = Morton2D.firstZooInBin(63, 16, 14);
+        assert fzoo == 48;
+
+        fzoo = Morton2D.firstZooInBin(63, 16, 13);
+        assert fzoo == 0;
+
+        // testing max and min in a bin on a certain level
+
+        long[] xy = Morton2D.decode(49);
+        assert xy[0] == 5;
+        assert xy[1] == 4;
+
+        //long z = (long) Morton2D.zooAtLevelA(2, 16, 15, 49);
+        long z = (long) Morton2D.firstZooInBin(49, 16, 15);
+        xy = Morton2D.decode(z);
+        long s = Morton2D.binSizeAtLevel(16, 15);
+        long maxx = xy[0] + s - 1;
+        long maxy = xy[1] + s - 1;
+
+        assert maxx == 5;
+        assert maxy == 5;
+
+        // --------------------------------------------------------------------
+
+        z = (long) Morton2D.firstZooInBin(61, 16, 13);
+        xy = Morton2D.decode(z);
+        s = Morton2D.binSizeAtLevel(16, 13);
+        maxx = xy[0] + s - 1;
+        maxy = xy[1] + s - 1;
+
+        assert maxx == 7;
+        assert maxy == 7;
+
+        // --------------------------------------------------------------------
 
         // testing the max possible value for x,y to compute a valid morton code value
-        for(long x = 0; x < Long.MAX_VALUE; x += 1) {
+        /*for(long x = 0; x < Long.MAX_VALUE; x += 1) {
             long z = Morton2D.encode(x, x);
-            long[] xy = Morton2D.decode(z);
-            if (xy[0] != x) {
+            long[] xyd = Morton2D.decode(z);
+            if (xyd[0] != x) {
                 System.out.println("x: " + x);
                 break;
             }
-        }
+        }*/
     }
 }

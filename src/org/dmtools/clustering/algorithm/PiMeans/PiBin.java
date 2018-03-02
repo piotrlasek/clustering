@@ -17,10 +17,10 @@ public class PiBin {
     private int x;
     private int y;
 
-    private Double maxX;
-    private Double maxY;
-    private Double minX;
-    private Double minY;
+    private long maxX;
+    private long maxY;
+    private long minX;
+    private long minY;
 
     ArrayList<PiBin> childBins;
 
@@ -40,14 +40,26 @@ public class PiBin {
     /**
      *
      * @param layer
+     * @param originalZoo
      */
-    public PiBin(int layer) {
+    public PiBin(int layer, Long originalZoo) {
         this.pointsCount = 0;
         this.layer = layer;
-        this.maxX = null;
-        this.maxY = null;
-        this.minX = null;
-        this.minY = null;
+        this.zoo = originalZoo;
+
+        double zooAtLevel = Morton2D.zooAtLevelA(PiCube.dim, PiCube.maxDepth, layer, originalZoo);
+        double firstZooInBinAtLevel = Morton2D.firstZooInBin(originalZoo, PiCube.maxDepth, layer);
+
+        long xy[] = Morton2D.decode((long) firstZooInBinAtLevel);
+        int size = (int) Morton2D.binSizeAtLevel(PiCube.maxDepth, layer);
+
+        x = (int) xy[0];
+        y = (int) xy[1];
+
+        this.minX = xy[0];
+        this.minY = xy[1];
+        this.maxX = xy[0] + size - 1;
+        this.maxY = xy[1] + size - 1;
     }
 
     /**
@@ -58,10 +70,18 @@ public class PiBin {
         if (points == null) {
             points = new ArrayList();
         }
-
         points.add(point);
-        updateMinMaxXY(point.coordinates[0], point.coordinates[1]);
         increasePointsCount(1);
+
+        // tests
+        long pZoo = Morton2D.encode((long) point.coordinates[0], (long) point.coordinates[1]);
+        long fZoo1 = Morton2D.firstZooInBin(pZoo, PiCube.maxDepth, this.layer);
+        long fZoo2 = Morton2D.firstZooInBin(zoo, PiCube.maxDepth, this.layer);
+        assert fZoo1 == fZoo2;
+        assert minX <= point.coordinates[0];
+        assert minY <= point.coordinates[1];
+        assert maxX >= point.coordinates[0];
+        assert maxY >= point.coordinates[1];
     }
 
     /**
@@ -71,20 +91,70 @@ public class PiBin {
         if (childBins == null) {
             childBins = new ArrayList<>();
         }
+
         childBins.add(childBin);
         increasePointsCount(childBin.getPointsCount());
 
-        if (childBins.size() > 4)
-            log.error("childBins size to large");
+        assert childBins.size() <= 4;
 
-        double mix = childBin.getMinX();
-        double miy = childBin.getMinY();
+        int pointsCountInChildBins = 0;
+        for(PiBin b : childBins) {
+           pointsCountInChildBins += b.getPointsCount();
+        }
 
-        double max = childBin.getMaxX();
-        double may = childBin.getMaxY();
+        assert this.getPointsCount() == pointsCountInChildBins;
+    }
 
-        updateMinMaxXY(mix, miy);
-        updateMinMaxXY(max, may);
+    /**
+     *
+     * @return
+     */
+    public double lowerBound(PiCluster piCluster) {
+        double[] coordinates = piCluster.coordinates;
+        double lowerBound = -1;
+        double x = coordinates[0];
+        double y = coordinates[1];
+
+        if (minX < x && x < maxX) {
+            lowerBound = Math.abs(minY - y);
+        } else if (minY < y && y < maxY) {
+            lowerBound = Math.abs(minX - x);
+        } else {
+            lowerBound = Math.sqrt(Math.pow(minX-x, 2) +
+                    Math.pow(minY-y, 2));
+        }
+
+        return lowerBound;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double upperBound(PiCluster piCluster) {
+        double[] coordinates = piCluster.coordinates;
+        double upperBound = -1;
+        double x = coordinates[0];
+        double y = coordinates[1];
+
+        if (minX < x && x < maxX) {
+            upperBound = Math.abs(maxY - y);
+        } else if (minY < y && y < maxY) {
+            upperBound = Math.abs(maxX - x);
+        } else {
+            upperBound = Math.sqrt(Math.pow(maxX-x, 2) +
+                    Math.pow(maxY-y, 2));
+        }
+
+        return upperBound;
+    }
+
+    /**
+     *
+     * @param parent
+     */
+    public void setParent(PiBin parent) {
+        this.parent = parent;
     }
 
     /**
@@ -145,26 +215,10 @@ public class PiBin {
 
     /**
      *
-     * @param maxX
-     */
-    public void setMaxX(Double maxX) {
-        this.maxX = maxX;
-    }
-
-    /**
-     *
      * @return
      */
     public double getMaxY() {
         return maxY;
-    }
-
-    /**
-     *
-     * @param maxY
-     */
-    public void setMaxY(double maxY) {
-        this.maxY = maxY;
     }
 
     /**
@@ -177,14 +231,6 @@ public class PiBin {
 
     /**
      *
-     * @param minX
-     */
-    public void setMinX(Double minX) {
-        this.minX = minX;
-    }
-
-    /**
-     *
      * @return
      */
     public double getMinY() {
@@ -193,141 +239,9 @@ public class PiBin {
 
     /**
      *
-     * @param minY
-     */
-    public void setMinY(double minY) {
-        this.minY = minY;
-    }
-
-    /**
-     *
      * @return
      */
     public long getZoo() {
         return zoo;
-    }
-
-    /**
-     *
-     * @param zoo
-     */
-    public void setZoo(long zoo) {
-        this.zoo = zoo;
-        long[] xy = Morton2D.decode(zoo);
-        this.setX((int) xy[0]);
-        this.setY((int) xy[1]);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double lowerBound(PiCluster piCluster) {
-        double[] coordinates = piCluster.coordinates;
-        double lowerBound = -1;
-        double x = coordinates[0];
-        double y = coordinates[1];
-
-        if (minX < x && x < maxX) {
-            lowerBound = Math.abs(minY - y);
-        } else if (minY < y && y < maxY) {
-            lowerBound = Math.abs(minX - x);
-        } else {
-            lowerBound = Math.sqrt(Math.pow(minX-x, 2) +
-                Math.pow(minY-y, 2));
-        }
-
-        return lowerBound;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public double upperBound(PiCluster piCluster) {
-        double[] coordinates = piCluster.coordinates;
-        double upperBound = -1;
-        double x = coordinates[0];
-        double y = coordinates[1];
-
-        if (minX < x && x < maxX) {
-            upperBound = Math.abs(maxY - y);
-        } else if (minY < y && y < maxY) {
-            upperBound = Math.abs(maxX - x);
-        } else {
-            upperBound = Math.sqrt(Math.pow(maxX-x, 2) +
-                    Math.pow(maxY-y, 2));
-        }
-
-        return upperBound;
-    }
-
-    /**
-     *
-     * @param x
-     */
-    private void updateMinX(double x) {
-        if (minX == null)
-            minX = x;
-        else if (x < minX)
-            minX = x;
-    }
-
-    /**
-     *
-     * @param x
-     */
-    private void updateMaxX(double x) {
-        if (maxX == null)
-            maxY = x;
-        else if (x > maxX)
-            maxX = x;
-    }
-
-    /**
-     *
-     * @param y
-     */
-    private void updateMinY(double y) {
-        if (minY == null)
-            minY = y;
-        else if (y < minY)
-            minY = y;
-    }
-
-    /**
-     *
-     * @param y
-     */
-    private void updateMaxY(double y) {
-        if (maxY == null)
-            maxY = y;
-        else if (y > maxY)
-            maxY = y;
-    }
-
-    /**
-     *
-     * @param x
-     * @param y
-     */
-    private void updateMinMaxXY(double x, double y) {
-        if (minX == null && maxX == null && minY == null && maxY == null) {
-            minX = maxX = x;
-            minY = maxY = y;
-        } else {
-            updateMinX(x);
-            updateMinY(y);
-            updateMaxX(x);
-            updateMaxY(y);
-        }
-    }
-
-    /**
-     *
-     * @param parent
-     */
-    public void setParent(PiBin parent) {
-        this.parent = parent;
     }
 }
