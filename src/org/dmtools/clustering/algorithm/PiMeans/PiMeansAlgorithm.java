@@ -11,10 +11,7 @@ import javax.datamining.MiningObject;
 import javax.datamining.clustering.ClusteringSettings;
 import javax.datamining.data.PhysicalDataSet;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Nasim Razavi
@@ -51,6 +48,53 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 
 
     /**
+     *
+     * @param bin
+     * @param seeds
+     */
+    public void clusterBin(PiBin bin, ArrayList<PiCluster> seeds) {
+        //  assign bin to a cluster if it hasn't been assigned to any cluster yet
+        if (bin.getCluster() == null) {
+
+            HashMap<Double, PiCluster> lbDist = new HashMap<>();
+            HashMap<Double, PiCluster> ubDist = new HashMap<>();
+
+            for (PiCluster seed : seeds) {
+                double lb = bin.lowerBound(seed);
+                double ub = bin.upperBound(seed);
+                lbDist.put(lb, seed);
+                ubDist.put(ub, seed);
+            }
+
+            Double minLbKey = Collections.min(lbDist.keySet());
+            Double minUbKey = Collections.min(ubDist.keySet());
+
+            PiCluster cLb = lbDist.get(minLbKey);
+            PiCluster cUb = ubDist.get(minUbKey);
+
+            //if (minUbKey >= 2*bin.getSize() && minLbKey >= 2* bin.getSize() && cLb == cUb) {
+            //if (minUbKey >= 2*bin.getSize() && minLbKey >= 2* bin.getSize() && cLb == cUb) {
+            if (cLb == cUb) {
+                // assing the cluster if it is possible
+                log.info("Assign bin " + bin.getZoo() + " on layer " +
+                        bin.getLayer() + " to cluster " + cLb.getId());
+                bin.setCluster(cLb);
+            } else {
+                // System.out.println("Not possible...");
+                for (PiBin llBin : bin.getChildBins()) {
+                    clusterBin(llBin, seeds);
+                }
+            }
+            /*else {
+                // if it is not, then process the lower level bins
+                for (PiBin llBin : bin.getChildBins()) {
+                    clusterBin(llBin, seeds);
+                }
+            }*/
+        }
+    }
+
+    /**
      * @return
      */
     public MiningObject run() {
@@ -61,62 +105,54 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
         max[0] = Math.pow(2, 16) - 1;
         max[1] = Math.pow(2, 16) - 1;
 
+        int initialLayer = 2;
+
         timer.indexStart();
 
         PiCube picube = new PiCube(16);
         picube.build(data);
 
-        HashMap<Long, PiBin> layer = picube.getLayer(6);
-        Dump.toFile(Utils.layerToString(layer), "layer6.csv");
-
-        layer = picube.getLayer(3);
-        Dump.toFile(Utils.layerToString(layer), "layer3.csv");
-
         ArrayList<PiCluster> seeds = new ArrayList<>();
 
+        /*
         for (int i = 0; i < k; i++) {
             PiCluster randomPoint = PiCluster.random(min, max);
             seeds.add(randomPoint);
-        }
+        }*/
 
-        log.info("Number of bins: " + layer.entrySet().size());
+        PiCluster s1 = new PiCluster(new double[]{10000, 50000});
+        s1.setId(0);
+        seeds.add(s1);
+        PiCluster s2 = new PiCluster(new double[]{20000, 45000});
+        s2.setId(1);
+        seeds.add(s2);
+        PiCluster s3 = new PiCluster(new double[]{35000, 50000});
+        s3.setId(2);
+        seeds.add(s3);
 
-        int bc = 0;
+        PiCluster s4 = new PiCluster(new double[]{40000, 45000});
+        s4.setId(3);
+        seeds.add(s4);
+        // select the initial layer
+        HashMap<Long, PiBin> layer = picube.getLayer(initialLayer);
 
+        // do the clustering!
         for (Map.Entry<Long, PiBin> layerEntry : layer.entrySet()) {
             PiBin bin = layerEntry.getValue();
-
-            for (PiCluster seed : seeds) {
-                double lb = bin.lowerBound(seed);
-                double ub = bin.upperBound(seed);
-                if (lb == ub) { // takie same wychodza w przypadku kiedy mamy do czynienia
-                    // z takimi smaymi wartosciami min i max
-                    log.info(bc + ":\t" + bin.getPointsCount() + "\t" +
-                            bin.getMaxX() + ",\t" + bin.getMinX() + ",\t" +
-                            bin.getMaxY() + ",\t" + bin.getMinY());
-                    lb = bin.lowerBound(seed);
-                    ub = bin.upperBound(seed);
-                }
-            }
-            bc++;
+            this.clusterBin(bin, seeds);
         }
 
-        Set<Long> zoos = layer.keySet();
+        layer = picube.getLayer(initialLayer);
+        Dump.toFile(Utils.clusteredLayerToString(seeds, layer), "layer" + 4 + "clust.csv");
 
-        /*for(Long z : zoos) {
-			PiBin b = layer.get(z);
-			PiCluster c = new PiCluster(new double[]{0,0});
-			double ub = b.upperBound(c);
-			log.info(b.getX() + ", " + b.getY() + " -> " + ub);
-		} */
+
+        log.info("Number of bins: " + layer.entrySet().size());
 
         timer.indexEnd();
 
         log.info("Clustering started...");
 
         timer.clusteringStart();
-
-        timer.clusteringEnd();
 
         // Dumping results to a file(s) and/or plotting results.
         if (dump()) {
@@ -131,6 +167,8 @@ public class PiMeansAlgorithm extends CDMBasicClusteringAlgorithm {
         if (plot()) {
             log.info("Plotting results...");
         }
+
+        timer.clusteringEnd();
 
         basicMiningObject.setDescription(timer.getLog());
         return basicMiningObject;

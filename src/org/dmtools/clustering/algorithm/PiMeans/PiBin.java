@@ -4,30 +4,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Piotr Lasek on 11.10.2017.
  */
 public class PiBin {
     protected final static Logger log = LogManager.getLogger(PiBin.class.getSimpleName());
+
     private final int layer;
-
     private long zoo;
-
     private int x;
     private int y;
-
     private long maxX;
     private long maxY;
     private long minX;
     private long minY;
-
-    ArrayList<PiBin> childBins;
-
-    ArrayList<PiPoint> points;
-
-    int pointsCount;
+    private ArrayList<PiBin> childBins;
+    private ArrayList<PiPoint> points;
+    //private int pointsCount;
     private PiBin parent;
+    private PiCluster cluster;
 
     /**
      *
@@ -43,7 +40,6 @@ public class PiBin {
      * @param originalZoo
      */
     public PiBin(int layer, Long originalZoo) {
-        this.pointsCount = 0;
         this.layer = layer;
         this.zoo = originalZoo;
 
@@ -51,7 +47,7 @@ public class PiBin {
         double firstZooInBinAtLevel = Morton2D.firstZooInBin(originalZoo, PiCube.maxDepth, layer);
 
         long xy[] = Morton2D.decode((long) firstZooInBinAtLevel);
-        int size = (int) Morton2D.binSizeAtLevel(PiCube.maxDepth, layer);
+        int size = this.getSize();
 
         x = (int) xy[0];
         y = (int) xy[1];
@@ -64,6 +60,15 @@ public class PiBin {
 
     /**
      *
+     * @return
+     */
+    public int getSize() {
+        int size = (int) Morton2D.binSizeAtLevel(PiCube.maxDepth, layer);
+        return size;
+    }
+
+    /**
+     *
      * @param point
      */
     public void addPoint(PiPoint point) {
@@ -71,7 +76,6 @@ public class PiBin {
             points = new ArrayList();
         }
         points.add(point);
-        increasePointsCount(1);
 
         // tests
         long pZoo = Morton2D.encode((long) point.coordinates[0], (long) point.coordinates[1]);
@@ -93,7 +97,13 @@ public class PiBin {
         }
 
         childBins.add(childBin);
-        increasePointsCount(childBin.getPointsCount());
+        //
+        // increasePointsCount(childBin.getPointsCount());
+        if (points == null) {
+            points = new ArrayList<>();
+        }
+
+        points.addAll(childBin.getPoint());
 
         assert childBins.size() <= 4;
 
@@ -109,15 +119,23 @@ public class PiBin {
      *
      * @return
      */
+    public ArrayList<PiBin> getChildBins() {
+        return childBins;
+    }
+
+    /**
+     *
+     * @return
+     */
     public double lowerBound(PiCluster piCluster) {
         double[] coordinates = piCluster.coordinates;
         double lowerBound = -1;
         double x = coordinates[0];
         double y = coordinates[1];
 
-        if (minX < x && x < maxX) {
+        if (minX < x && x <= maxX) {
             lowerBound = Math.abs(minY - y);
-        } else if (minY < y && y < maxY) {
+        } else if (minY < y && y <= maxY) {
             lowerBound = Math.abs(minX - x);
         } else {
             lowerBound = Math.sqrt(Math.pow(minX-x, 2) +
@@ -137,9 +155,9 @@ public class PiBin {
         double x = coordinates[0];
         double y = coordinates[1];
 
-        if (minX < x && x < maxX) {
+        if (minX < x && x <= maxX) {
             upperBound = Math.abs(maxY - y);
-        } else if (minY < y && y < maxY) {
+        } else if (minY < y && y <= maxY) {
             upperBound = Math.abs(maxX - x);
         } else {
             upperBound = Math.sqrt(Math.pow(maxX-x, 2) +
@@ -159,18 +177,34 @@ public class PiBin {
 
     /**
      *
-     * @param i
+     * @return
      */
-    public void increasePointsCount(int i) {
-        pointsCount += i;
+    public int getPointsCount() {
+        return points.size();
+    }
+
+    /**
+     *
+     * @param cluster
+     */
+    public void setCluster(PiCluster cluster) {
+        this.cluster = cluster;
     }
 
     /**
      *
      * @return
      */
-    public int getPointsCount() {
-        return pointsCount;
+    public PiCluster getCluster() {
+        return cluster;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Collection<? extends PiPoint> getPoint() {
+        return points;
     }
 
     /**
@@ -243,5 +277,9 @@ public class PiBin {
      */
     public long getZoo() {
         return zoo;
+    }
+
+    public int getLayer() {
+        return layer;
     }
 }

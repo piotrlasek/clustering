@@ -17,7 +17,8 @@ public class PiCube {
 
     ArrayList<HashMap<Long, PiBin>> layers;
 
-    private final static Logger log = LogManager.getLogger(PiCube.class.getSimpleName());
+    private final static Logger log = LogManager.getLogger(
+            PiCube.class.getSimpleName());
 
     /**
      *
@@ -68,7 +69,8 @@ public class PiCube {
                 PiBin bin = pair.getValue();
                 Long originalZoo = bin.getZoo();
 
-                Long hlZoo = (long) Morton2D.zooAtLevelA(PiCube.dim, baseLevel, higherLevel, originalZoo);
+                Long hlZoo = (long) Morton2D.zooAtLevelA(PiCube.dim, baseLevel,
+                    higherLevel, originalZoo);
                 PiBin hlBin;
 
                 if (!hlLayer.containsKey(hlZoo)) {
