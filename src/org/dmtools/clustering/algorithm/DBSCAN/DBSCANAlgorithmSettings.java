@@ -9,7 +9,7 @@ import javax.datamining.base.AlgorithmSettings;
 
 public class DBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
-	public static String NAME = "DBSCAN";
+	public static final String NAME = "DBSCAN";
 	private int minPts;
 	private double eps;
 

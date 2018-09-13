@@ -4,16 +4,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dmtools.clustering.CDMClusteringModel;
 import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithm;
+import org.dmtools.clustering.algorithm.CDBSCAN.CDBSCANAlgorithmSettings;
 import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithm;
+import org.dmtools.clustering.algorithm.CNBC.CNBCAlgorithmSettings;
 import org.dmtools.clustering.algorithm.DBSCAN.DBSCANAlgorithm;
+import org.dmtools.clustering.algorithm.DBSCAN.DBSCANAlgorithmSettings;
 import org.dmtools.clustering.algorithm.DBSCAN.DbScanNetTraffic;
 import org.dmtools.clustering.algorithm.DBSCAN.DbScanSlicer;
 import org.dmtools.clustering.algorithm.KMeans.DM.DM_KMeansAlgorithm;
 import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithm;
+import org.dmtools.clustering.algorithm.KMeans.KMeansAlgorithmSettings;
+import org.dmtools.clustering.algorithm.KMeans.KMeansPpAlgorithm;
+import org.dmtools.clustering.algorithm.KMeans.KMeansPpAlgorithmSettings;
 import org.dmtools.clustering.algorithm.NBC.DM.NBCDMAlgorithm;
 import org.dmtools.clustering.algorithm.NBC.NBCAlgorithm;
+import org.dmtools.clustering.algorithm.NBC.NBCAlgorithmSettings;
 import org.dmtools.clustering.algorithm.PiMeans.PiMeansAlgorithm;
+import org.dmtools.clustering.algorithm.PiMeans.PiMeansAlgorithmSettings;
 import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithm;
+import org.dmtools.clustering.algorithm.piKMeans.PiKMeansAlgorithmSettings;
 import org.dmtools.datamining.data.CDMFilePhysicalDataSet;
 
 import javax.datamining.Enum;
@@ -119,33 +128,32 @@ public class CDMFileConnection implements Connection {
 		CDMExecutionStatus executionStatus = new CDMExecutionStatus();
 		MiningObject miningObject;
 
-		if (ma.equals(MiningAlgorithm.valueOf("piMeans"))) {
+        if (ma.equals(MiningAlgorithm.valueOf(KMeansPpAlgorithmSettings.NAME))) {
+			KMeansPpAlgorithm pkma = new KMeansPpAlgorithm(cs, pds);
+			miningObject = pkma.run();
+		} else if (ma.equals(MiningAlgorithm.valueOf(PiMeansAlgorithmSettings.NAME))) {
 			PiMeansAlgorithm pkma = new PiMeansAlgorithm(cs, pds);
 			miningObject = pkma.run();
-		} else if (ma.equals(MiningAlgorithm.valueOf("pikMeans"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(PiKMeansAlgorithmSettings.NAME))) {
 			PiKMeansAlgorithm pkma = new PiKMeansAlgorithm(cs, pds);
 			miningObject = pkma.run();
-		} else if (ma.equals(MiningAlgorithm.valueOf("kMeans"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(KMeansAlgorithmSettings.NAME))) {
 			// kMeans
 			KMeansAlgorithm kma = new KMeansAlgorithm(cs, pds); 
 			miningObject = kma.run();
-			/* //DM kMeans
-			DM_KMeansAlgorithm kma = new DM_KMeansAlgorithm(cs, pds); 
-			kma.run();
-			*/
-		} else if (ma.equals(MiningAlgorithm.valueOf("NBC"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(NBCAlgorithmSettings.NAME))) {
 			// NBC
 			NBCAlgorithm kma = new NBCAlgorithm(cs, pds); 
 			miningObject = kma.run();
-		} else if (ma.equals(MiningAlgorithm.valueOf("C-NBC"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(CNBCAlgorithmSettings.NAME))) {
 			// NBC
 			CNBCAlgorithm kma = new CNBCAlgorithm(cs, pds); 
 			miningObject = kma.run();
-		} else if (ma.equals(MiningAlgorithm.valueOf("DBSCAN"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(DBSCANAlgorithmSettings.NAME))) {
 			// NBC
 			DBSCANAlgorithm kma = new DBSCANAlgorithm(cs, pds);
 			miningObject = kma.run();
-		} else if (ma.equals(MiningAlgorithm.valueOf("C-DBSCAN"))) {
+		} else if (ma.equals(MiningAlgorithm.valueOf(CDBSCANAlgorithmSettings.NAME))) {
 			// NBC
 			CDBSCANAlgorithm kma = new CDBSCANAlgorithm(cs, pds);
 			miningObject = kma.run();

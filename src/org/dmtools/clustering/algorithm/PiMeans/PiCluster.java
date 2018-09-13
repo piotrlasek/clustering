@@ -1,5 +1,8 @@
 package org.dmtools.clustering.algorithm.PiMeans;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -9,6 +12,7 @@ public class PiCluster extends PiPoint {
 
     public static int nextId = 0;
     private int id;
+    ArrayList<PiPoint> points;
 
     /**
      *
@@ -41,6 +45,18 @@ public class PiCluster extends PiPoint {
 
     /**
      *
+     * @param coordinates
+     */
+    public void setCoordinates(double[] coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void clear() {
+        this.points.clear();
+    }
+
+    /**
+     *
      * @return
      */
     public int getId() {
@@ -53,6 +69,25 @@ public class PiCluster extends PiPoint {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     *
+     * @param points
+     */
+    public void addPoints(Collection<? extends PiPoint> points) {
+        if (this.points == null)
+            this.points = new ArrayList<>();
+
+        this.points.addAll(points);
+    }
+
+    public String toString() {
+        return this.getId() + ": " + Arrays.toString(coordinates);
+    }
+
+    public ArrayList<PiPoint> getPoints() {
+        return points;
     }
 }
 

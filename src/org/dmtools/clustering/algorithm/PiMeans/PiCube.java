@@ -44,6 +44,7 @@ public class PiCube {
         // base layer
         HashMap<Long, PiBin> baseLayer = layers.get(baseLevel-1);
 
+        log.info("Building the base layer.");
         for(double[] record : data) {
             Long originalZoo = Morton2D.encode((long) record[0], (long) record[1]);
             PiBin bin;
@@ -61,6 +62,8 @@ public class PiCube {
 
         // higher layers
         for(int level = baseLevel; level > 1; level--) {
+
+            log.info("Building the layer number " + level + ".");
             int higherLevel = level-1;
             HashMap<Long, PiBin> layer = layers.get(level - 1);
             HashMap<Long, PiBin> hlLayer = layers.get(higherLevel - 1);

@@ -63,12 +63,12 @@ public class KMeansAlgorithm extends CDMBasicClusteringAlgorithm {
 	public MiningObject run() {
 
 		timer.setParameters("(k=" + k + ", mi=" + maxIterations + ")");
-		timer.indexStart();
+        timer.indexStart();
 		prepareData();
-		initializeTemporaryPoints();
 		timer.indexEnd();
 
 		timer.clusteringStart();
+		initializeTemporaryPoints();
 		for (int i = 0; i < maxIterations; i++) {
 			// log.info("Iteration: " + i);
 			for (double[] point : data) {

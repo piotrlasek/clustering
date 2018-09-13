@@ -13,7 +13,7 @@ import javax.datamining.base.AlgorithmSettings;
 public class PiMeansAlgorithmSettings   extends CDMBaseAlgorithmSettings
                                         implements AlgorithmSettings {
 
-	public static String NAME = "piMeans";
+	public static final String NAME = "pi-Means";
 	private int k;
 	private int maxIterations;
 	private int deepest;

@@ -11,7 +11,7 @@ import javax.datamining.base.AlgorithmSettings;
  * Created by Piotr Lasek on 30.05.2017.
  */
 public class CDBSCANAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
-    public static String NAME = "C-DBSCAN";
+    public static final String NAME = "C-DBSCAN";
     private int minPts;
     private double eps;
     private int delta;

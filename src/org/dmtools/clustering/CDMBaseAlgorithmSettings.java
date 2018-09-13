@@ -1,7 +1,7 @@
 package org.dmtools.clustering;
 
 /**
- * Created by Piotr on 01.06.2017.
+ * Created by Piotr Lasek on 01.06.2017.
  */
 public class CDMBaseAlgorithmSettings {
     private boolean plot = false;

@@ -37,23 +37,26 @@ public class Main {
 
 			if (args.length == 0) {
 				args = new String[]{
-						//"algorithm=C-NBC",
-						//"algorithm=pikMeans",
-						"algorithm=piMeans",
-						//"algorithm=kMeans",
-						//"data=\\data\\my-file-2d.txt",
-						//"data=\\data\\CheckinsN.csv",
-						"data=\\data\\CheckinsN.csv",
-						//"data=[CUSTOM]\\data\\checkins-pyramid\\",
-						//"data=[CUSTOM]\\data\\TaxiData\\",
-						//"data=\\data\\experiment\\birch2.txt",
-						//"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
-						//"parameters=k:10;dump;plot;close_plot;ic:random_4"
-						//"parameters=k:10;dump;plot;ic:random_4"
-						//"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
-						//"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-						"parameters=k:4;maxIterations:25;deepest:15;depth:15;starting:3;dump"
-					};
+                    //"algorithm=C-NBC",
+                   // "algorithm=pikMeans",
+                    //"algorithm=pi-Means",
+                    //"algorithm=k-Means",
+                    "algorithm=k-Means++",
+                    //"data=\\data\\my-file-2d.txt",
+                    //"data=\\data\\CheckinsN.csv",
+                    //"data=\\data\\CheckinsN.csv",
+                    "data=\\data\\random_1-1.csv", // the efficiency of building the pyramid is not fast because of a unified distribution of points resulting in a large number of cells
+                    //"data=\\data\\random_3-1.csv",
+                    //"data=[CUSTOM]\\data\\checkins-pyramid\\",
+                    //"data=[CUSTOM]\\data\\TaxiData\\",
+                    //"data=\\data\\experiment\\birch2.txt",
+                    //"parameters=Eps:10;MinPts:4;dump:yes;plot:yes;ic:random_10"
+                    //"parameters=k:10;dump;plot;close_plot;ic:random_4"
+                    //"parameters=k:10;dump;plot;ic:random_4"
+                    //"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
+                    //"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
+                    "parameters=k:8;maxIterations:5;deepest:15;depth:15;starting:12;dump"
+                };
 			}
 
 			Workspace.readArgs(args);

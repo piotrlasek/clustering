@@ -14,7 +14,7 @@ import javax.datamining.base.AlgorithmSettings;
  */
 public class CNBCAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
-	public static String NAME = "C-NBC";
+	public static final String NAME = "C-NBC";
 	private int k;
 	private String ic = null; // instance constraints
 

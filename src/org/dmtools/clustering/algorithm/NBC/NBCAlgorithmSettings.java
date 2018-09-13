@@ -16,7 +16,7 @@ import javax.datamining.base.AlgorithmSettings;
 public class NBCAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
 	private int k;
-	public static String NAME = "NBC";
+	public static final String NAME = "NBC";
 
 	static {
 		try {

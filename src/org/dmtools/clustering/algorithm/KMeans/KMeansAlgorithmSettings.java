@@ -2,25 +2,39 @@ package org.dmtools.clustering.algorithm.KMeans;
 
 import org.dmtools.clustering.CDMBaseAlgorithmSettings;
 
+import javax.datamining.JDMException;
 import javax.datamining.MiningAlgorithm;
 import javax.datamining.VerificationReport;
 import javax.datamining.base.AlgorithmSettings;
 
 public class KMeansAlgorithmSettings extends CDMBaseAlgorithmSettings implements AlgorithmSettings {
 
-	public static String NAME = "k-Means";
+	public static final String NAME = "k-Means";
 	private int k;
 	private int maxIterations;
 
 	@Override
 	public MiningAlgorithm getMiningAlgorithm() {
-		// TODO Auto-generated method stub
-		return MiningAlgorithm.kMeans;
+		try {
+			return MiningAlgorithm.valueOf(NAME);
+		} catch (JDMException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
+	/**
+	 *
+	 */
+	static {
+		try {
+			MiningAlgorithm.addExtension(NAME);
+		} catch (JDMException e) {
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public VerificationReport verify() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

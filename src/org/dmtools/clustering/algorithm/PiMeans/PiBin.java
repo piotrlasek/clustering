@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Created by Piotr Lasek on 11.10.2017.
@@ -22,17 +23,9 @@ public class PiBin {
     private long minY;
     private ArrayList<PiBin> childBins;
     private ArrayList<PiPoint> points;
-    //private int pointsCount;
     private PiBin parent;
-    private PiCluster cluster;
-
-    /**
-     *
-     * @param count
-     */
-    /*public PiBin(int count) {
-        this.pointsCount = count;
-    }*/
+    private HashMap<Integer, PiCluster> clusters;
+    private double[] centreSum;
 
     /**
      *
@@ -40,6 +33,7 @@ public class PiBin {
      * @param originalZoo
      */
     public PiBin(int layer, Long originalZoo) {
+        centreSum = new double[2];
         this.layer = layer;
         this.zoo = originalZoo;
 
@@ -77,6 +71,9 @@ public class PiBin {
         }
         points.add(point);
 
+        centreSum[0] += point.coordinates[0];
+        centreSum[1] += point.coordinates[1];
+
         // tests
         long pZoo = Morton2D.encode((long) point.coordinates[0], (long) point.coordinates[1]);
         long fZoo1 = Morton2D.firstZooInBin(pZoo, PiCube.maxDepth, this.layer);
@@ -90,6 +87,14 @@ public class PiBin {
 
     /**
      *
+     * @return
+     */
+    public double[] getCentreSum() {
+        return centreSum;
+    }
+
+    /**
+     *
      */
     public void addChild(PiBin childBin) {
         if (childBins == null) {
@@ -97,19 +102,22 @@ public class PiBin {
         }
 
         childBins.add(childBin);
-        //
+
         // increasePointsCount(childBin.getPointsCount());
         if (points == null) {
             points = new ArrayList<>();
         }
 
-        points.addAll(childBin.getPoint());
+        points.addAll(childBin.getPoints());
 
         assert childBins.size() <= 4;
 
         int pointsCountInChildBins = 0;
+
         for(PiBin b : childBins) {
-           pointsCountInChildBins += b.getPointsCount();
+            centreSum[0] += b.getCentreSum()[0];
+            centreSum[1] += b.getCentreSum()[1];
+            pointsCountInChildBins += b.getPointsCount();
         }
 
         assert this.getPointsCount() == pointsCountInChildBins;
@@ -187,23 +195,28 @@ public class PiBin {
      *
      * @param cluster
      */
-    public void setCluster(PiCluster cluster) {
-        this.cluster = cluster;
+    public void setClusters(PiCluster cluster, int run) {
+        if (this.clusters == null)
+            this.clusters = new HashMap<>();
+        this.clusters.put(run, cluster);
     }
 
     /**
      *
      * @return
      */
-    public PiCluster getCluster() {
-        return cluster;
+    public PiCluster getClusters(int run) {
+        if (clusters == null)
+            return null;
+        else
+            return clusters.get(run);
     }
 
     /**
      *
      * @return
      */
-    public Collection<? extends PiPoint> getPoint() {
+    public Collection<? extends PiPoint> getPoints() {
         return points;
     }
 
