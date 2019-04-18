@@ -39,13 +39,13 @@ public class Main {
 				args = new String[]{
                     //"algorithm=C-NBC",
                    // "algorithm=pikMeans",
-                    //"algorithm=pi-Means",
+                    "algorithm=pi-Means",
                     //"algorithm=k-Means",
-                    "algorithm=k-Means++",
+                    //"algorithm=k-Means++",
                     //"data=\\data\\my-file-2d.txt",
+                    "data=\\data\\CheckinsN.csv",
                     //"data=\\data\\CheckinsN.csv",
-                    //"data=\\data\\CheckinsN.csv",
-                    "data=\\data\\random_1-1.csv", // the efficiency of building the pyramid is not fast because of a unified distribution of points resulting in a large number of cells
+                    //"data=\\data\\random_1-1.csv", // the efficiency of building the pyramid is not fast because of a unified distribution of points resulting in a large number of cells
                     //"data=\\data\\random_3-1.csv",
                     //"data=[CUSTOM]\\data\\checkins-pyramid\\",
                     //"data=[CUSTOM]\\data\\TaxiData\\",

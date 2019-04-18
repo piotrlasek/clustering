@@ -62,6 +62,10 @@ public class Utils {
      */
     public static String clusteredLayerToString(ArrayList<PiCluster> seeds, HashMap<Long, PiBin> layer, int run) {
         StringBuilder result = new StringBuilder();
+
+        // x, y, s (size), id (clusterid), cnt (points count in a bin)
+        result.append("x,y,s,id,cnt\n");
+
         for(Map.Entry<Long, PiBin> entry : layer.entrySet()) {
             PiBin piBin = entry.getValue();
             ArrayList<PiBin> assignedBins = new ArrayList<PiBin>();

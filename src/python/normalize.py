@@ -12,7 +12,7 @@ import numpy as np
 
 
 df = pd.read_csv(
-    r'C:\Users\piotr\Documents\projects\clustering\data\Checkins.csv',
+    r'C:\Users\piotr\IdeaProjects\clustering\data\Checkins.csv',
     names=['x','y'])
 
 df = df[df.columns.tolist()[::-1]]
@@ -33,5 +33,5 @@ dfn = pd.DataFrame(dfn)
 
     
 
-dfn.to_csv(r'C:\Users\piotr\Documents\projects\clustering\data\CheckinsN.csv',
+dfn.to_csv(r'C:\Users\piotr\IdeaProjects\clustering\data\CheckinsN.csv',
     sep=',', index=False)
