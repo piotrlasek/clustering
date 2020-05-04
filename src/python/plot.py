@@ -19,14 +19,15 @@ def get_spaced_colors(n):
 
 colors = get_spaced_colors(10)
 
-# pts
 cp = r'C:\Users\piotr\IdeaProjects\clustering\data\CheckinsN.csv'
-dfp = pd.read_csv(cp, names=['x', 'y'])
+#cp = r'C:\Users\piotr\IdeaProjects\clustering\data\random_100000.csv'
 
-#dfp = dfp.sample(900000)
+dfp = pd.read_csv(cp, names=['x', 'y'])
+#dfp = dfp.sample(1000)
 
 # res
 cr = r'C:\Users\piotr\IdeaProjects\clustering\results\CheckinsN_pikMeans_(k=8, mi=5)_iter_4.csv'
+#cr = r'C:\Users\piotr\IdeaProjects\clustering\results\random_100000_pikMeans_(k=8, mi=5)_iter_4.csv'
 
 dfr = pd.read_csv(cr)
 
@@ -43,6 +44,8 @@ ax.set_ylim(0, pow(2,16)-1)
 
 ax.scatter(x, y, facecolor='black', s=1, alpha=0.2)
 
+print('Printing cells...')
+
 for i, r in dfr.iterrows():
     cid = int(r['id'])
     
@@ -58,3 +61,5 @@ for i, r in dfr.iterrows():
         ax.add_patch(rect)
 
 plt.show()
+
+print('Done.')
