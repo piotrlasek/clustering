@@ -52,7 +52,8 @@ public class PiCluster extends PiPoint {
     }
 
     public void clear() {
-        this.points.clear();
+        if (this.points != null)
+            this.points.clear();
     }
 
     /**

@@ -39,13 +39,14 @@ public class Main {
 				args = new String[]{
                     //"algorithm=C-NBC",
                    // "algorithm=pikMeans",
-                    //"algorithm=pi-Means",
-                    "algorithm=k-Means",
+                    "algorithm=pi-Means",
+                    //"algorithm=k-Means",
                     //"algorithm=k-Means++",
-                    //"data=\\data\\my-file-2d.txt",
+					//"data=\\data\\my-file-2d.txt",
+					"data=\\data\\my-file-2d-normalized.csv",
                     //"data=\\data\\CheckinsN.csv",
-                    //"data=\\data\\CheckinsN.csv",
-                    "data=\\data\\random_100000.csv", // the efficiency of building the pyramid is not fast because of a unified distribution of points resulting in a large number of cells
+                    //"data=\\data\\CheckinsS.csv",
+                    //"data=\\data\\random_100000.csv", // the efficiency of building the pyramid is not fast because of a unified distribution of points resulting in a large number of cells
                     //"data=\\data\\random_3-1.csv",
                     //"data=[CUSTOM]\\data\\checkins-pyramid\\",
                     //"data=[CUSTOM]\\data\\TaxiData\\",
@@ -55,7 +56,7 @@ public class Main {
                     //"parameters=k:10;dump;plot;ic:random_4"
                     //"parameters=Eps:10;MinPts:4;dump:yes;ic:random_10"
                     //"parameters=Eps:6000;MinPts:15;dump;plot;ic:birch2"
-                    "parameters=k:8;maxIterations:5;deepest:15;depth:15;starting:12;dump"
+                    "parameters=k:4;maxIterations:5;deepest:15;depth:15;starting:12;dump"
                 };
 			}
 

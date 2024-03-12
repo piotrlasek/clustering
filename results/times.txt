@@ -1,0 +1,7 @@
+pi-Means	(k=8, mi=5)	28	3	
+pi-Means	(k=2, mi=5)	27	4	
+pi-Means	(k=2, mi=5)	20	8	
+pi-Means	(k=2, mi=5)	58	12	
+pi-Means	(k=2, mi=5)	59	21	
+pi-Means	(k=4, mi=5)	95	31	
+pi-Means	(k=4, mi=5)	45	22	

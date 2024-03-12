@@ -1,0 +1,1 @@
+Pliki pod picube powinny być znormalizowane do przedziału 0 - 2^16

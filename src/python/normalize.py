@@ -12,9 +12,10 @@ import numpy as np
 
 
 df = pd.read_csv(
-    r'C:\Users\piotr\IdeaProjects\clustering\data\Checkins.csv',
-    names=['x','y'])
+    r'C:\Users\piotr\IdeaProjects\clustering\data\my-file-2d.txt',
+    names=['x','y', 'c'])
 
+df.drop(['c'])
 df = df[df.columns.tolist()[::-1]]
 # Range should be something like 2^16 due the Morton2D code
 # limitations
@@ -33,5 +34,5 @@ dfn = pd.DataFrame(dfn)
 
     
 
-dfn.to_csv(r'C:\Users\piotr\IdeaProjects\clustering\data\CheckinsN.csv',
+dfn.to_csv(r'C:\Users\piotr\IdeaProjects\clustering\data\my-file-2d-norm.csv',
     sep=',', index=False)

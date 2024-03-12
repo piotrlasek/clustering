@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dd8e12ee-ba53-4e57-868b-78df008dacf1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/iText_2_1_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/my-file-2d-norm.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/my-file-2d-normalized.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/constraints-plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMBaseAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMBasicClusteringAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMBasicClusteringModel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMCluster.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMClusteringModel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMClusteringSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMClusteringSettingsFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMCondition.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMPredicate.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMRule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMRuleOperator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/CDMRuleTranslationFormat.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CDBSCAN/CDBSCANAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CDBSCAN/CDBSCANAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CDBSCAN/CDBSCANRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CDNBCRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCRTree$MyVisitor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/CNBCRTreePoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/InstanceConstraints.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/NbcSpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/CNBC/PointToRemove.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/CDBSCAN.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/CDBSCANAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANRTreeTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANTriangle.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANTriangleRef.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANTriangleRefMink.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANVAFILE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANVAFILE.txte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DBSCANVAFILE.txtee" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DbScanNetTraffic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DbScanNetTrafficAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DbScanSlicer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DbScanSlicerAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/DBSCAN/DbscanSpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/DM/DM_KMeansAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/DM/DM_KMeansAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/KMeansAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/KMeansAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/KMeansPpAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/KMeans/KMeansPpAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DiffusionIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DiffusionObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DimensionsMatrix.-oldjava" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DimensionsMatrix.-oldjavae" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DimensionsMatrix.-oldjavaee" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/DimensionsMatrix.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/InstanceConstraints.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/MatrixUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/NBCDMAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/NBCDMAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/NBCDiffusionIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/DM/RelativeMatrix.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NBCAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NBCAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NBCBase.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NBCRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NBCRTreePoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/NbcSpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/Point.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicClusterInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicClusteringData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicClusteringObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicClusteringParameters.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicDataSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicSpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/BasicVAFile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/Cell.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/ClusteringLogger.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataSourceManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataView2D$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataView2D$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataView2D$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataView2D$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/DataView2D.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusterInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringDataSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringObserver.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringOutput.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/IClusteringParameters.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/ISpatialIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/ISpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/LvaHashTree$LvaNode.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/LvaHashTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/PointView.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBC/required/VectorDist.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/ClusteringTextIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/DBSCANTextIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/NBCTextIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/NBCTextIndexAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/TextIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/NBCTextIndex/TextObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/Distance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/Morton2D.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiBin.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiCluster.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiCube.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiMeansAlgorithm$BoundManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiMeansAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiMeansAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/PiPoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/PiMeans/Utils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/ClusteringAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/ColorUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/InstanceConstraintsAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/MyVisitor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/PlotPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/common/RTreeIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/piKMeans/PiKMeansAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/piKMeans/PiKMeansAlgorithmSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/algorithm/piKMeans/Points.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/evaluator/SilhouetteCoefficient$Cluster.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/evaluator/SilhouetteCoefficient.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusterInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringDataSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringObserver.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringOutput.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IClusteringParameters.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/IConstraintObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/ISpatialIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/model/ISpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicClusterInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicClusteringData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicClusteringObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicClusteringParameters.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicDataSource.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicSpatialObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/BasicVAFile.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/Cell.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/ClusteringTimer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataSourceManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataView2D$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataView2D$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataView2D$3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataView2D$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/DataView2D.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/LvaHashTree$LvaNode.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/LvaHashTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/PointView.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/VectorDist.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/rtree/CustomRTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/rtree/CustomRTreePoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/rtree/CustomRTreeTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/rtree/CustomRTreeVisitor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/triangle/TriangleIndex.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/triangle/TriangleIndex.txte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/clustering/old/triangle/TriangleIndex.txtee" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/CDMCollection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/CDMException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/CDMExecutionHandle.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/CDMVerificationReport.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/CDMAbstractAttributeStatisticSet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/CDMAbstractMiningObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/CDMAbstractModel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/CDMNamedObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/ScatterAdd$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/base/ScatterAdd.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMAlgorithm.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMDataRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMFilePhysicalDataRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMFilePhysicalDataSet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMFilePhysicalDataSetFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMLogicalData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMPhysicalAttribute.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/data/CDMPhysicalAttributeFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/resource/CDMBasicMiningObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/resource/CDMExecutionStatus.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/resource/CDMFileConnection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/resource/CDMFileConnectionFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/resource/CDMFileConnectionSpec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/task/CDMBuildTask.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/org/dmtools/datamining/task/CDMBuildTaskFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/._.DS_Store" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/._iidml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/BasicMiningObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/FileConnection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/FileConnectionFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/FileConnectionSpec.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/FilePhysicalDataRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/FilePhysicalDataSet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyBuildTask.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyBuildTaskFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyCluster.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyClusteringModel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyClusteringSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyClusteringSettingsFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyConnection.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/pl/iidml/MyPhysicalDataSetFactory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/figure_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/.idea/genrep.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/abc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/genrep/genrep.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/normalize.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/plot1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/sample_result.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/python/silhouette.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/run-efficiency-tests.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/run-kmeans-tests.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/run-kmeans-tests.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/run-quality-tests-birch3.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/run-quality-tests.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Index$OverlapEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Index$OverlapEntryComparator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Index.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Leaf.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node$ReinsertEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node$ReinsertEntryComparator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node$RstarSplitEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node$RstarSplitEntryComparatorHigh.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node$RstarSplitEntryComparatorLow.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Node.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree$Data.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree$NNComparator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree$NNEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree$NNEntryComparator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree$ValidateEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/RTree.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/Statistics.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/rtree/makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IData.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IEntry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/INearestNeighborComparator.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/INode.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/INodeCommand.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IQueryStrategy.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IShape.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/ISpatialIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IStatistics.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/IVisitor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/Point.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/RWLock.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/Region.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/SpatialIndex.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/spatialindex/makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/Buffer$Entry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/Buffer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/DiskStorageManager$Entry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/DiskStorageManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/IBuffer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/IStorageManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/InvalidPageException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/MemoryStorageManager$Entry.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/MemoryStorageManager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/PropertySet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/RandomEvictionsBuffer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/spatialindex/storagemanager/makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/ClusteringSettings.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/DataSet.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Distance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Dump.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/GenConstraints.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Painter$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Painter$MyPoint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Painter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/SetConstraints.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/clustering/util/Workspace.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/results/times.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/python/jupyter/plot-bins.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/python/jupyter/plot-dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clustering.iml" beforeDir="false" afterPath="$PROJECT_DIR$/clustering.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/CheckinsS.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/CheckinsS.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments-plan.txt" beforeDir="false" afterPath="$PROJECT_DIR$/experiments-plan.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/dmtools/clustering/algorithm/PiMeans/PiCluster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/dmtools/clustering/algorithm/PiMeans/PiCluster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/python/normalize.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/python/normalize.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2dYfkbHozf9VKFGjX2mmetyl1DP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/SRC/clustering/lib/weka-3-7-7-monolithic.jar",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.30708662",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\SRC\clustering\data" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="clustering" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dd8e12ee-ba53-4e57-868b-78df008dacf1" name="Changes" comment="" />
+      <created>1710190076618</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710190076618</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/dmtools/clustering/algorithm/PiMeans/Utils.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="layer" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
